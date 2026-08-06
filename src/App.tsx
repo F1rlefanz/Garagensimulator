@@ -19,12 +19,14 @@ import { fahrzeugNachId, REFERENZ_FAHRZEUG, Seitenprofil } from './domain/fahrze
 import { m, pruefeGeometrie } from './domain/garage';
 import { pruefeGarage, URTEIL_LABEL } from './lib/garagenpruefung';
 import { Befunde } from './ui/Befunde';
-import { Eingaben } from './ui/Eingaben';
+import { EingabenFahrzeug, EingabenGarage } from './ui/Eingaben';
+import { Garagenbefund } from './ui/Garagenbefund';
 import { Riss } from './ui/Riss';
+import { Seitenpanel, StatusLeiste } from './ui/Seitenpanel';
 
 const GRAD_PRO_SEKUNDE = 34;
 
-/** Zahl im deutschen Format, ohne „-0,00". */
+/** Zahl im deutschen Format, ohne „-0,00“. */
 function zahl(v: number, stellen = 3): string {
   const bereinigt = Math.abs(v) < 0.5 * 10 ** -stellen ? 0 : v;
   return bereinigt.toFixed(stellen).replace('.', ',');
@@ -42,6 +44,7 @@ export default function App() {
   const [zeigeFahrzeug, setZeigeFahrzeug] = useState(true);
   const [zeigeKonstruktion, setZeigeKonstruktion] = useState(true);
   const [rueckwaerts, setRueckwaerts] = useState(true);
+  const [panelOffen, setPanelOffen] = useState(false);
 
   const fahrzeug = fahrzeugNachId(fahrzeugId) ?? REFERENZ_FAHRZEUG;
 
@@ -127,219 +130,203 @@ export default function App() {
   ];
 
   return (
-    <div className="blatt">
-      <div className="innenrahmen">
-        <header className="schriftkopf">
-          <div>
-            <p className="eyebrow">Bestandsgarage · Schnitt A–A · Seitenansicht</p>
-            <h1>
-              Vorstehendes
-              <br />
-              Schwingtor
-            </h1>
-          </div>
-          <div className="kopf-daten">
-            <span>Maße</span>
-            <b>Nachmessung 06.08.2026</b>
-            <span>Bezug</span>
-            <b>(0,0) = Torschließebene</b>
-            <span>Modell</span>
-            <b>2D-Kinematik, θ = 0° zu</b>
-            <span>Befunde</span>
-            <b>
-              {befunde.filter((b) => b.schwere === 'fehler').length} Fehler,{' '}
-              {befunde.filter((b) => b.schwere === 'warnung').length} Warnungen
-            </b>
-          </div>
-        </header>
+    <>
+      <div className="blatt">
+        <div className="innenrahmen">
+          <header className="schriftkopf">
+            <div>
+              <p className="eyebrow">Bestandsgarage · Schnitt A–A · Seitenansicht</p>
+              <h1>
+                Vorstehendes
+                <br />
+                Schwingtor
+              </h1>
+            </div>
+            <div className="kopf-daten">
+              <span>Maße</span>
+              <b>Nachmessung 06.08.2026</b>
+              <span>Bezug</span>
+              <b>(0,0) = Torschließebene</b>
+              <span>Modell</span>
+              <b>2D-Kinematik, θ = 0° zu</b>
+              <span>Fahrzeug</span>
+              <b>{fahrzeug.bezeichnung}</b>
+            </div>
+          </header>
 
-        <section>
-          <div className="zeichnung-rahmen">
-            <Riss
-              config={config}
-              winkelGrad={winkel}
-              maxWinkel={maxWinkel}
-              fahrzeug={fahrzeug}
-              zeigeFahrzeug={zeigeFahrzeug}
-              zeigeKonstruktion={zeigeKonstruktion}
-              rueckwaerts={rueckwaerts}
-              fahrzeugKontur={kontur as Array<[number, number]>}
-              kollision={kollision}
-            />
-          </div>
-
-          <div className="bedienung">
-            <div className="scrubber">
-              <div className="scrubber-kopf">
-                <span>Toröffnung θ</span>
-                <span>
-                  <b>{zahl(Math.min(winkel, maxWinkel), 1)}°</b> von {zahl(maxWinkel, 1)}°
-                </span>
-              </div>
-              <input
-                type="range"
-                min={0}
-                max={maxWinkel}
-                step={0.1}
-                value={Math.min(winkel, maxWinkel)}
-                aria-label="Toröffnungswinkel in Grad"
-                onChange={(e) => {
+          <div className="arbeitsflaeche">
+            <div className="zone-links">
+              <EingabenGarage
+                config={config}
+                einfahrtBreite={einfahrtBreite}
+                onConfig={handleConfig}
+                onZuruecksetzen={() => {
+                  setConfig(DEFAULT_CONFIG);
+                  handleFahrzeug(REFERENZ_FAHRZEUG.id);
+                  setAbstandRueckwand(0);
+                  setWinkel(0);
                   anhalten();
-                  setWinkel(parseFloat(e.target.value));
                 }}
               />
             </div>
 
-            <button type="button" onClick={() => setLaeuft((v) => !v)}>
-              {laeuft ? 'Anhalten' : 'Abspielen'}
-            </button>
-            <button
-              type="button"
-              className="sekundaer"
-              onClick={() => {
-                anhalten();
-                setWinkel(scheitel.winkelGrad);
-              }}
-            >
-              Scheitel {zahl(scheitel.winkelGrad, 1)}°
-            </button>
-
-            <div className="schalter">
-              <label>
-                <input type="checkbox" checked={zeigeFahrzeug} onChange={(e) => setZeigeFahrzeug(e.target.checked)} />
-                Fahrzeug einblenden
-              </label>
-              <label>
-                <input type="checkbox" checked={rueckwaerts} onChange={(e) => setRueckwaerts(e.target.checked)} />
-                Rückwärts eingeparkt
-              </label>
-              <label>
-                <input type="checkbox" checked={zeigeKonstruktion} onChange={(e) => setZeigeKonstruktion(e.target.checked)} />
-                Konstruktionslinien
-              </label>
-            </div>
-          </div>
-        </section>
-
-        <section className="ablesungen">
-          {ablesungen.map(([label, wert, einheit, zustand]) => (
-            <div className={`kachel${label === 'Überstand Vorplatz' ? ' betont' : ''}`} key={label}>
-              <div className="kachel-label">{label}</div>
-              <div className={`kachel-wert${zustand ? ' ' + zustand : ''}`}>
-                {wert}
-                <span className="einheit">{einheit}</span>
+            <div className="zone-mitte">
+              <div className="zeichnung-rahmen">
+                <Riss
+                  config={config}
+                  winkelGrad={winkel}
+                  maxWinkel={maxWinkel}
+                  fahrzeug={fahrzeug}
+                  zeigeFahrzeug={zeigeFahrzeug}
+                  zeigeKonstruktion={zeigeKonstruktion}
+                  rueckwaerts={rueckwaerts}
+                  fahrzeugKontur={kontur as Array<[number, number]>}
+                  kollision={kollision}
+                />
               </div>
-            </div>
-          ))}
-          <div className="kachel">
-            <div className="kachel-label">Kollision Tor ↔ Fahrzeug</div>
-            <div className={`kachel-wert ${kollision ? 'schlecht' : 'gut'}`}>
-              {kollision ? 'Ja' : 'Nein'}
-            </div>
-            <div className="kachel-fussnote">geprüft wird nur die Torunterkante</div>
-          </div>
-          <div className="kachel">
-            <div className="kachel-label">Passt in die Garage</div>
-            <div
-              className={`kachel-wert ${
-                garagenbefund.urteil === 'sicher'
-                  ? 'gut'
-                  : garagenbefund.urteil === 'passt-nicht'
-                    ? 'schlecht'
-                    : ''
-              }`}
-            >
-              {URTEIL_LABEL[garagenbefund.urteil]}
-            </div>
-            <div className="kachel-fussnote">
-              {garagenbefund.engsteReserve === undefined
-                ? 'keine Achse belegt'
-                : `engste Achse ${zahl(garagenbefund.engsteReserve * 100, 1)} cm`}
-            </div>
-          </div>
-        </section>
 
-        <div className="spalten">
-          <Eingaben
-            config={config}
-            fahrzeug={fahrzeug}
-            fahrzeugId={fahrzeugId}
-            seitenprofil={seitenprofil}
-            abstandRueckwand={Math.min(abstandRueckwand, maxAbstand)}
-            maxAbstand={maxAbstand}
-            einfahrtBreite={einfahrtBreite}
-            onConfig={handleConfig}
-            onFahrzeug={handleFahrzeug}
-            onProfil={handleProfil}
-            onAbstand={setAbstandRueckwand}
-            onZuruecksetzen={() => {
-              setConfig(DEFAULT_CONFIG);
-              handleFahrzeug(REFERENZ_FAHRZEUG.id);
-              setAbstandRueckwand(0);
-              setWinkel(0);
-              anhalten();
-            }}
-          />
-          <div>
-            <Befunde befunde={befunde} />
-
-            <h2 className="block-titel" style={{ marginTop: 'var(--sp-5)' }}>
-              Passt es hinein?
-            </h2>
-            <p className="block-hinweis">
-              Statische Prüfung gegen die nachgemessene Garage — unabhängig von der
-              Torbewegung. Die Vergleichsmatrix rechnete mit 5,10 m Länge, 2,19 m
-              Höhe und 2,30 m Breite; hier gelten die tatsächlich gemessenen Werte.
-            </p>
-            {garagenbefund.achsen.map((a) => (
-              <div className={`befund ${a.urteil === 'passt-nicht' ? 'fehler' : a.urteil === 'knapp' ? 'warnung' : 'geloest'}`} key={a.achse}>
-                <div className="befund-kopf">
-                  <span>{a.bezeichnung}</span>
-                  <span>·</span>
-                  <span>{URTEIL_LABEL[a.urteil]}</span>
-                  {a.reserve !== undefined && (
-                    <>
-                      <span>·</span>
-                      <span>{zahl(a.reserve * 100, 1)} cm Reserve</span>
-                    </>
-                  )}
+              <div className="bedienung">
+                <div className="scrubber">
+                  <div className="scrubber-kopf">
+                    <span>Toröffnung θ</span>
+                    <span>
+                      <b>{zahl(Math.min(winkel, maxWinkel), 1)}°</b> von {zahl(maxWinkel, 1)}°
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={maxWinkel}
+                    step={0.1}
+                    value={Math.min(winkel, maxWinkel)}
+                    aria-label="Toröffnungswinkel in Grad"
+                    onChange={(e) => {
+                      anhalten();
+                      setWinkel(parseFloat(e.target.value));
+                    }}
+                  />
                 </div>
-                <p>
-                  Verfügbar {zahl(a.verfuegbar, 3)} m
-                  {a.benoetigt === undefined
-                    ? ', Fahrzeugmaß nicht belegt'
-                    : `, benötigt ${zahl(a.benoetigt, 3)} m`}
-                  . {a.anmerkung}
-                </p>
-              </div>
-            ))}
-            {garagenbefund.heckklappeOeffenbar !== undefined && (
-              <div className={`befund ${garagenbefund.heckklappeOeffenbar ? 'geloest' : 'fehler'}`}>
-                <div className="befund-kopf">
-                  <span>Heckklappe</span>
-                  <span>·</span>
-                  <span>{garagenbefund.heckklappeOeffenbar ? 'lässt sich öffnen' : 'lässt sich nicht öffnen'}</span>
+
+                <button type="button" onClick={() => setLaeuft((v) => !v)}>
+                  {laeuft ? 'Anhalten' : 'Abspielen'}
+                </button>
+                <button
+                  type="button"
+                  className="sekundaer"
+                  onClick={() => {
+                    anhalten();
+                    setWinkel(scheitel.winkelGrad);
+                  }}
+                >
+                  Scheitel {zahl(scheitel.winkelGrad, 1)}°
+                </button>
+
+                <div className="schalter">
+                  <label>
+                    <input type="checkbox" checked={zeigeFahrzeug} onChange={(e) => setZeigeFahrzeug(e.target.checked)} />
+                    Fahrzeug einblenden
+                  </label>
+                  <label>
+                    <input type="checkbox" checked={rueckwaerts} onChange={(e) => setRueckwaerts(e.target.checked)} />
+                    Rückwärts eingeparkt
+                  </label>
+                  <label>
+                    <input type="checkbox" checked={zeigeKonstruktion} onChange={(e) => setZeigeKonstruktion(e.target.checked)} />
+                    Konstruktionslinien
+                  </label>
                 </div>
-                <p>
-                  Bei geöffneter Heckklappe braucht das Fahrzeug{' '}
-                  {zahl(fahrzeug.hoeheHeckOffen ?? 0, 3)} m, verfügbar sind{' '}
-                  {zahl(config.CLEAR_HEIGHT, 3)} m unter der Laufschiene.
-                </p>
               </div>
-            )}
+
+              <section className="ablesungen">
+                {ablesungen.map(([label, wert, einheit, zustand]) => (
+                  <div className={`kachel${label === 'Überstand Vorplatz' ? ' betont' : ''}`} key={label}>
+                    <div className="kachel-label">{label}</div>
+                    <div className={`kachel-wert${zustand ? ' ' + zustand : ''}`}>
+                      {wert}
+                      <span className="einheit">{einheit}</span>
+                    </div>
+                  </div>
+                ))}
+                <div className="kachel">
+                  <div className="kachel-label">Kollision Tor ↔ Fahrzeug</div>
+                  <div className={`kachel-wert ${kollision ? 'schlecht' : 'gut'}`}>
+                    {kollision ? 'Ja' : 'Nein'}
+                  </div>
+                  <div className="kachel-fussnote">geprüft wird nur die Torunterkante</div>
+                </div>
+                <div className="kachel">
+                  <div className="kachel-label">Passt in die Garage</div>
+                  <div
+                    className={`kachel-wert ${
+                      garagenbefund.urteil === 'sicher'
+                        ? 'gut'
+                        : garagenbefund.urteil === 'passt-nicht'
+                          ? 'schlecht'
+                          : ''
+                    }`}
+                  >
+                    {URTEIL_LABEL[garagenbefund.urteil]}
+                  </div>
+                  <div className="kachel-fussnote">
+                    {garagenbefund.engsteReserve === undefined
+                      ? 'keine Achse belegt'
+                      : `engste Achse ${zahl(garagenbefund.engsteReserve * 100, 1)} cm`}
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="zone-rechts">
+              <EingabenFahrzeug
+                config={config}
+                fahrzeug={fahrzeug}
+                fahrzeugId={fahrzeugId}
+                seitenprofil={seitenprofil}
+                abstandRueckwand={Math.min(abstandRueckwand, maxAbstand)}
+                maxAbstand={maxAbstand}
+                onConfig={handleConfig}
+                onFahrzeug={handleFahrzeug}
+                onProfil={handleProfil}
+                onAbstand={setAbstandRueckwand}
+              />
+            </div>
           </div>
+
+          <footer className="fuss">
+            <span>
+              Fahrzeugfront bei x = {zahl(fahrzeugFront(config, Math.min(abstandRueckwand, maxAbstand)), 3)} m ·
+              Federzone endet bei {zahl(config.SPRING_DEPTH, 3)} m
+            </span>
+            <span>
+              <a href="https://github.com/F1rlefanz/Garagensimulator">github.com/F1rlefanz/Garagensimulator</a>
+            </span>
+          </footer>
         </div>
-
-        <footer className="fuss">
-          <span>
-            Fahrzeugfront bei x = {zahl(fahrzeugFront(config, Math.min(abstandRueckwand, maxAbstand)), 3)} m ·
-            Federzone endet bei {zahl(config.SPRING_DEPTH, 3)} m
-          </span>
-          <span>
-            <a href="https://github.com/F1rlefanz/Garagensimulator">github.com/F1rlefanz/Garagensimulator</a>
-          </span>
-        </footer>
       </div>
-    </div>
+
+      <StatusLeiste
+        fehler={befunde.filter((b) => b.schwere === 'fehler').length}
+        warnungen={befunde.filter((b) => b.schwere === 'warnung').length}
+        urteil={URTEIL_LABEL[garagenbefund.urteil]}
+        urteilZustand={
+          garagenbefund.urteil === 'sicher'
+            ? 'gut'
+            : garagenbefund.urteil === 'passt-nicht'
+              ? 'schlecht'
+              : 'neutral'
+        }
+        offen={panelOffen}
+        onOeffnen={() => setPanelOffen((v) => !v)}
+      />
+
+      <Seitenpanel offen={panelOffen} onSchliessen={() => setPanelOffen(false)}>
+        <Befunde befunde={befunde} />
+        <Garagenbefund
+          befund={garagenbefund}
+          fahrzeug={fahrzeug}
+          lichteHoehe={config.CLEAR_HEIGHT}
+        />
+      </Seitenpanel>
+    </>
   );
 }

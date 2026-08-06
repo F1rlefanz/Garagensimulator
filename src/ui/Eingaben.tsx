@@ -15,6 +15,10 @@ import { MESSWERTE, MesswertSchluessel } from '../domain/garage';
  * Jedes Garagenfeld ist an einen Messwert aus `src/domain/garage.ts` gebunden
  * und zeigt dessen Symbol und Vertrauensgrad. Die Beschriftungen stammen aus dem
  * Domänenmodell — hier wird nichts doppelt gepflegt.
+ *
+ * Der Riss steht zwischen den beiden Eingabespalten, deshalb sind die Eingaben
+ * auf zwei Komponenten verteilt: links alles, was am Bauwerk hängt, rechts
+ * alles, was am Fahrzeug hängt. Beide teilen sich die Hilfskomponenten unten.
  */
 
 /** Zahl im deutschen Format. */
@@ -86,61 +90,26 @@ function Katalogzeile({ label, wert, einheit = 'm' }: { label: string; wert?: nu
   );
 }
 
-interface EingabenProps {
+interface EingabenGarageProps {
   config: GarageConfig;
-  fahrzeug: Fahrzeug;
-  fahrzeugId: string;
-  seitenprofil?: Seitenprofil;
-  abstandRueckwand: number;
-  maxAbstand: number;
   einfahrtBreite: number;
   onConfig: (key: keyof GarageConfig, wert: number) => void;
-  onFahrzeug: (id: string) => void;
-  onProfil: (feld: keyof Omit<Seitenprofil, 'quellenstufe'>, wert: number) => void;
-  onAbstand: (wert: number) => void;
   onZuruecksetzen: () => void;
 }
 
-export function Eingaben({
+/** Linke Spalte: Garage, Laufschiene, Torblatt und Mechanik. */
+export function EingabenGarage({
   config,
-  fahrzeug,
-  fahrzeugId,
-  seitenprofil,
-  abstandRueckwand,
-  maxAbstand,
   einfahrtBreite,
   onConfig,
-  onFahrzeug,
-  onProfil,
-  onAbstand,
   onZuruecksetzen,
-}: EingabenProps) {
-  const editierbar = istEditierbar(fahrzeugId);
-
-  // Nach Kategorie gruppieren, damit die Liste mit 30 Einträgen lesbar bleibt.
-  const gruppen = new Map<string, Fahrzeug[]>();
-  for (const f of AUSWAHL) {
-    const schluessel = f.id === fahrzeugId && !editierbar ? f.kategorie : f.kategorie;
-    const label = istEditierbar(f.id) ? 'Freie Eingabe' : KATEGORIE_LABEL[schluessel];
-    if (!gruppen.has(label)) gruppen.set(label, []);
-    gruppen.get(label)!.push(f);
-  }
-
-  const profilFelder: Array<[string, keyof Omit<Seitenprofil, 'quellenstufe'>]> = [
-    ['Motorhaube Länge', 'haubenLaenge'],
-    ['Motorhaube Höhe (Front)', 'haubenHoehe'],
-    ['Windschutzscheibe waagerecht', 'scheibenLaenge'],
-    ['Dachlänge', 'dachLaenge'],
-  ];
-
+}: EingabenGarageProps) {
   return (
-    <section>
-      <h2 className="block-titel">Eingaben</h2>
+    <section className="spalte">
+      <h2 className="block-titel">Eingaben · Garage</h2>
       <p className="block-hinweis">
-        Alle Längen in Metern. Die Garagenmaße stammen aus{' '}
-        <code>src/domain/garage.ts</code>, die Fahrzeugmaße aus dem Katalog in{' '}
-        <code>src/domain/fahrzeuge.ts</code>. Änderungen hier gelten nur für die
-        laufende Sitzung.
+        Alle Längen in Metern. Die Maße stammen aus <code>src/domain/garage.ts</code>.
+        Änderungen hier gelten nur für die laufende Sitzung.
       </p>
 
       <div className="gruppe">
@@ -209,9 +178,67 @@ export function Eingaben({
         </div>
       </div>
 
+      <button type="button" className="sekundaer" onClick={onZuruecksetzen}>
+        Alles zurücksetzen
+      </button>
+    </section>
+  );
+}
+
+interface EingabenFahrzeugProps {
+  config: GarageConfig;
+  fahrzeug: Fahrzeug;
+  fahrzeugId: string;
+  seitenprofil?: Seitenprofil;
+  abstandRueckwand: number;
+  maxAbstand: number;
+  onConfig: (key: keyof GarageConfig, wert: number) => void;
+  onFahrzeug: (id: string) => void;
+  onProfil: (feld: keyof Omit<Seitenprofil, 'quellenstufe'>, wert: number) => void;
+  onAbstand: (wert: number) => void;
+}
+
+/** Rechte Spalte: Modellauswahl, Fahrzeugmaße, Seitenprofil. */
+export function EingabenFahrzeug({
+  config,
+  fahrzeug,
+  fahrzeugId,
+  seitenprofil,
+  abstandRueckwand,
+  maxAbstand,
+  onConfig,
+  onFahrzeug,
+  onProfil,
+  onAbstand,
+}: EingabenFahrzeugProps) {
+  const editierbar = istEditierbar(fahrzeugId);
+
+  // Nach Kategorie gruppieren, damit die Liste mit 30 Einträgen lesbar bleibt.
+  const gruppen = new Map<string, Fahrzeug[]>();
+  for (const f of AUSWAHL) {
+    const label = istEditierbar(f.id) ? 'Freie Eingabe' : KATEGORIE_LABEL[f.kategorie];
+    if (!gruppen.has(label)) gruppen.set(label, []);
+    gruppen.get(label)!.push(f);
+  }
+
+  const profilFelder: Array<[string, keyof Omit<Seitenprofil, 'quellenstufe'>]> = [
+    ['Motorhaube Länge', 'haubenLaenge'],
+    ['Motorhaube Höhe (Front)', 'haubenHoehe'],
+    ['Windschutzscheibe waagerecht', 'scheibenLaenge'],
+    ['Dachlänge', 'dachLaenge'],
+  ];
+
+  return (
+    <section className="spalte">
+      <h2 className="block-titel">Eingaben · Fahrzeug</h2>
+      <p className="block-hinweis">
+        Katalogmaße stammen aus <code>src/domain/fahrzeuge.ts</code> und sind
+        gesperrt. Frei editierbar ist nur der Eintrag „Individuell“.
+      </p>
+
       <div className="gruppe">
-        <h3 className="gruppe-titel">Fahrzeug</h3>
-        <div className="feld">
+        <h3 className="gruppe-titel">Modell</h3>
+        <div className="feld feld-breit">
           <label htmlFor="fahrzeug-auswahl">Modell</label>
           <select id="fahrzeug-auswahl" value={fahrzeugId} onChange={(e) => onFahrzeug(e.target.value)}>
             {[...gruppen].map(([label, liste]) => (
@@ -225,7 +252,10 @@ export function Eingaben({
             ))}
           </select>
         </div>
+      </div>
 
+      <div className="gruppe">
+        <h3 className="gruppe-titel">Maße</h3>
         <div className="feld">
           <label htmlFor="feld-CAR_LENGTH">
             Fahrzeuglänge
@@ -261,7 +291,7 @@ export function Eingaben({
         <Katalogzeile label="Ladelänge" wert={fahrzeug.ladelaenge} />
         <Katalogzeile label="Innenhöhe Laderaum" wert={fahrzeug.innenhoeheLaderaum} />
 
-        <div className="feld">
+        <div className="feld feld-breit">
           <label htmlFor="feld-abstand">
             Abstand zur Rückwand
             <span className="symbol">
@@ -279,7 +309,7 @@ export function Eingaben({
           />
         </div>
 
-        <p className="block-hinweis" style={{ marginTop: 'var(--sp-2)' }}>
+        <p className="block-hinweis quellenzeile">
           Quellenstufe {fahrzeug.quellenstufe} — {STUFE_LABEL[fahrzeug.quellenstufe]}.
           {fahrzeug.notiz ? ` ${fahrzeug.notiz}` : ''}
         </p>
@@ -302,7 +332,7 @@ export function Eingaben({
                 />
               </div>
             ))}
-            <p className="block-hinweis" style={{ marginTop: 'var(--sp-2)' }}>
+            <p className="block-hinweis quellenzeile">
               Quellenstufe {seitenprofil.quellenstufe} — {STUFE_LABEL[seitenprofil.quellenstufe]}.
               Diese vier Maße stehen in keinem Datenblatt und bestimmen die
               Kollisionsprüfung unmittelbar.
@@ -317,10 +347,6 @@ export function Eingaben({
           </p>
         )}
       </div>
-
-      <button type="button" className="sekundaer" onClick={onZuruecksetzen}>
-        Alles zurücksetzen
-      </button>
     </section>
   );
 }
