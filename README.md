@@ -1,0 +1,157 @@
+# Garagensimulator
+
+Kinematische Simulation eines **vorstehenden Garagen-Schwingtors** mit
+Übertotpunkt-Hebelmechanik und Prüfung, ob ein Fahrzeug trotz der
+Schwenkbewegung des Tors sicher in die Bestandsgarage passt.
+
+Aktueller Stand: **2D-Vertikalschnitt**. Langfristiges Ziel ist ein 3D-Modell
+der Garage samt Einpark-Animation (siehe [Roadmap](docs/04-roadmap.md)).
+
+![2D-Schema des Vertikalschnitts](docs/bilder/01-schema-2d-schnitt.png)
+
+## Schnellstart
+
+Voraussetzung: Node.js 22 (siehe `.nvmrc`).
+
+```bash
+git clone https://github.com/F1rlefanz/Garagensimulator.git
+cd Garagensimulator
+npm ci        # exakt den Stand aus package-lock.json installieren
+npm run dev   # Entwicklungsserver mit Hot Reload auf http://localhost:3000
+```
+
+`npm run dev` ist die eigentliche Live-Vorschau: Jede gespeicherte Änderung an
+einem Messwert in `src/domain/garage.ts` schlägt ohne Neuladen in der Zeichnung
+durch.
+
+| Befehl | Wirkung |
+| --- | --- |
+| `npm run dev` | Entwicklungsserver mit Hot Reload |
+| `npm run build` | Produktionsbuild nach `dist/` |
+| `npm run preview` | Produktionsbuild lokal ausliefern |
+| `npm run lint` | TypeScript-Typprüfung (`tsc --noEmit`) |
+| `npm test` | Testlauf (Vitest) |
+| `npm run check` | Typprüfung + Tests + Build |
+| `npm run build:einzeldatei` | eigenständige HTML-Datei nach `dist-einzeldatei/` |
+
+## Aufbau
+
+```
+src/
+├── domain/                  Messwerte und Fahrzeugdaten — die einzige Quelle für Zahlen
+│   ├── garage.ts               Garagen- und Tormaße, Konsistenzprüfung
+│   └── fahrzeuge.ts            Fahrzeugkatalog
+├── lib/                     Berechnung, rein funktional, ohne React
+│   ├── kinematics.ts           Tor-Kinematik
+│   └── fahrzeuggeometrie.ts    Parkstellung, Kontur, Kollisionsprüfung
+├── ui/                      Darstellung
+│   ├── Riss.tsx                der Vertikalschnitt
+│   ├── Eingaben.tsx            Messwert- und Fahrzeugfelder
+│   └── Befunde.tsx             Meldungen der Konsistenzprüfung
+├── fonts/                   eingebettete Schriften (OFL)
+└── App.tsx                  Zusammensetzung
+
+scripts/einzeldatei.mjs      Build zu einer eigenständigen HTML-Datei
+docs/                        Handoff, Messwerte, offene Fragen, Roadmap, Architektur
+```
+
+Messwerte werden **ausschließlich** in `src/domain/` gepflegt. `DEFAULT_CONFIG`
+in `src/lib/kinematics.ts` leitet sich vollständig daraus ab.
+
+## Modell
+
+Bezugssystem des 2D-Schnitts: Ursprung in der **Torschließebene** auf
+Straßenniveau, `+x` in die Garage hinein, `+y` nach oben. Ein negatives `x`
+liegt vor der Garage.
+
+| Punkt | Bedeutung |
+| --- | --- |
+| `A` | Festlager des Schwenkarms an der Zarge (ortsfest) |
+| `P` | Anlenkpunkt des Schwenkarms am Torblatt |
+| `T` | Achse der Laufrolle in der Deckenlaufschiene |
+| `O` / `B` | Ober- und Unterkante des Torblatts |
+| `F` | Federpunkt am Schwenkarm, hinter `A` auf derselben Achse |
+
+### Zwei Höhenbezüge
+
+| Bezug | Lage | Worauf er sich bezieht |
+| --- | --- | --- |
+| Torschließebene | `y = 0` | Torblatt, Schwenkarm, Festlager |
+| Garagenboden | `y = 0,124 m` | lichte Höhe, Garagenhöhe, Laufschiene, Fahrzeug |
+
+Dazwischen liegen die Eisenschwelle und die dahinter ansteigende Rampe. Dieser
+Versatz löst zwei Dinge auf, die lange wie Widersprüche aussahen: dass die
+Laufrolle rechnerisch über ihrer Schiene lag, und dass Torblatt und Garage beide
+mit 2,37 m gemessen wurden. Es sind zwei Spannen von zwei Nullpunkten — über der
+Schließebene bleiben zwischen Toroberkante und Decke rund 15 cm Luft.
+
+### Kennzahlen
+
+Beim Öffnen fährt die Laufrolle `T` waagerecht in die Garage, während die
+Unterkante `B` nach außen auf den Vorplatz schwenkt.
+
+| Kennzahl | Wert |
+| --- | --- |
+| Größter Öffnungswinkel | **87,7°** — mechanischer Anschlag, wenn `P` senkrecht über `A` steht |
+| Größter Überstand von `B` auf den Vorplatz | **1,148 m bei 59,4°**, auf 1,14 m Höhe |
+| Überstand bei voller Öffnung | 0,085 m |
+| Weg der Laufrolle nach innen | 2,238 m (Schiene ist 2,300 m lang) |
+| Nutzbare Tiefe | 5,220 m (Rohbau 5,37 − 0,12 Federzone − 0,03 Dämmung) |
+| Schmalste Stelle der Einfahrt | 2,240 m, bestimmt von den Schwenkarmen |
+
+Der Überstand ist **nicht monoton**: Maßgeblich für den Freiraum vor der Garage
+ist nicht die Endstellung, sondern der Durchgang bei rund 60°.
+
+## Datenstand
+
+Stand: Nachmessung vom 06.08.2026. **Kein harter Widerspruch mehr im Modell** —
+`pruefeGeometrie()` meldet nur noch Warnungen im Bereich der Messunsicherheit.
+
+Zwei unabhängige Gegenproben stützen das Ergebnis: Der maximale Weg der
+Laufrolle (2,238 m) passt in die getrennt gemessene Schienenlänge (2,300 m), und
+die Höhe der Rollenachse ergibt sich über Torblatt und Schwenkarm auf 2,5 cm
+gleich.
+
+> **Offen bleibt eine Messung:** Der Bodenversatz von 12,4 cm ist aus der
+> Zwangsbedingung abgeleitet, nicht gemessen. Zulässig sind 9,3 bis 15,5 cm.
+> Details und die übrigen Punkte: [`docs/03-offene-fragen.md`](docs/03-offene-fragen.md).
+
+`pruefeGeometrie()` in `src/domain/garage.ts` meldet die Befunde zur Laufzeit.
+`src/domain/garage.test.ts` hält den Stand fest: Wird ein Punkt durch Nachmessen
+geklärt, schlägt der Test fehl und erinnert daran, Messwerte, Dokumentation und
+Test gemeinsam nachzuziehen.
+
+## Fahrzeuge
+
+Die Auswahl in der Oberfläche bietet `Individuell` (frei editierbar) und einen
+festen Katalog, dessen Maße gesperrt sind. Gepflegt wird er in
+[`src/domain/fahrzeuge.ts`](src/domain/fahrzeuge.ts).
+
+Jedes Fahrzeug trägt zwei Datenstände. Beim VW Caddy Maxi (2026) sind die
+Außenmaße recherchiert und über zwei Quellen abgeglichen — Länge 4,851 m, Höhe
+1,829 m, Breite 1,855 m ohne bzw. 2,10 m mit Spiegeln. Das **Seitenprofil**
+dagegen (Haubenlänge, Haubenhöhe, Dachlänge) steht in keinem Datenblatt, ist
+geschätzt und bestimmt die Kollisionsprüfung. Die Oberfläche weist darauf hin.
+
+## Veröffentlichung
+
+`.github/workflows/pages.yml` baut den aktuellen Stand bei jedem Push auf `main`
+und veröffentlicht ihn über GitHub Pages — aber erst, nachdem Typprüfung und
+Tests durchgelaufen sind. Was nicht grün ist, geht nicht online.
+
+**Es gibt genau eine Implementierung.** Entwicklungsserver, veröffentlichte
+Seite und geteilte Vorschau sind dasselbe Programm, nur anders ausgeliefert;
+`npm run build:einzeldatei` packt es in eine einzelne HTML-Datei. Eine
+nachgebaute Vorschau hätte eine zweite Kinematik enthalten — und damit eine
+zweite Wahrheit über die Maße.
+
+## Dokumentation
+
+| Dokument | Inhalt |
+| --- | --- |
+| [`docs/01-handoff.md`](docs/01-handoff.md) | Transkript des Handoff-Dokuments — die fachliche Quelle |
+| [`docs/02-messwerte.md`](docs/02-messwerte.md) | Gepflegte Messwerte mit Herkunft und Vertrauensgrad |
+| [`docs/03-offene-fragen.md`](docs/03-offene-fragen.md) | Widersprüche in den Messwerten, was nachzumessen ist |
+| [`docs/04-roadmap.md`](docs/04-roadmap.md) | Weg von 2D nach 3D |
+| [`docs/05-architektur.md`](docs/05-architektur.md) | Aufbau, Technologiewahl, Ablageort |
+| [`docs/bilder/`](docs/bilder/) | Schemaskizze und Fotos der Tormechanik |

@@ -1,0 +1,39 @@
+# Abhängigkeiten und Build
+node_modules/
+dist/
+dist-einzeldatei/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# Geheimnisse — nichts davon gehört in ein öffentliches Repository
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+*.credentials.json
+secrets.json
+
+# Betriebssystem
+.DS_Store
+.AppleDouble
+Thumbs.db
+desktop.ini
+
+# Editoren
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*~
+
+# Protokolle und Zwischenstände
+*.log
+npm-debug.log*
+.npm/
+.eslintcache
