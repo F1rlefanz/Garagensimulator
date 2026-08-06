@@ -120,7 +120,7 @@ Schwenkarm hinter `A`.
 ```
 src/domain/     Messwerte und Fahrzeugdaten, keine Berechnung, keine UI
 src/lib/        Kinematik, Fahrzeuggeometrie, Garagenprüfung — rein funktional
-src/ui/         Riss, Eingaben, Befunde
+src/ui/         Riss, Eingaben, Befunde, Garagenbefund, Seitenpanel
 src/App.tsx     Zusammensetzung
 scripts/        Build zur eigenständigen HTML-Datei
 docs/           Handoff, Messwerte, offene Fragen, Roadmap, Architektur
