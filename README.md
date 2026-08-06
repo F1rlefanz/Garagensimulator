@@ -47,8 +47,10 @@ src/
 │   └── garagenpruefung.ts      passt das Fahrzeug hinein: Länge, Höhe, Breite
 ├── ui/                      Darstellung
 │   ├── Riss.tsx                der Vertikalschnitt
-│   ├── Eingaben.tsx            Messwert- und Fahrzeugfelder
-│   └── Befunde.tsx             Meldungen der Konsistenzprüfung
+│   ├── Eingaben.tsx            linke Spalte Garage, rechte Spalte Fahrzeug
+│   ├── Befunde.tsx             Meldungen der Konsistenzprüfung
+│   ├── Garagenbefund.tsx       Urteil je Achse: Länge, Höhe, Breite, Heckklappe
+│   └── Seitenpanel.tsx         Statusleiste und eingeklapptes Befunde-Panel
 ├── fonts/                   eingebettete Schriften (OFL)
 └── App.tsx                  Zusammensetzung
 

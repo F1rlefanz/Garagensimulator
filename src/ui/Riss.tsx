@@ -14,6 +14,18 @@ const Y0 = 2.72; // Weltkoordinate des oberen Blattrands
 const BREITE = 1500;
 const HOEHE = 645;
 
+/*
+ * Schriftgrößen in viewBox-Einheiten. Sie skalieren mit der Zeichnung: Der Riss
+ * steht seit dem Dreispalter in einer rund 950 px breiten Mittelspalte statt
+ * über die volle Blattbreite, wird also auf etwa 62 % verkleinert. Die Bemaßung
+ * ist deshalb um ein knappes Sechstel größer angelegt als im ersten Entwurf,
+ * damit sie dort noch entzifferbar bleibt.
+ */
+const SCHRIFT_BEMASSUNG = 14.5;
+const SCHRIFT_BESCHRIFTUNG = 13;
+const SCHRIFT_KLEIN = 12.5;
+const SCHRIFT_PUNKT = 17;
+
 const mx = (x: number) => (x + X0) * PPM;
 const my = (y: number) => (Y0 - y) * PPM;
 const kommaZahl = (v: number, stellen = 2) => v.toFixed(stellen).replace('.', ',');
@@ -75,7 +87,7 @@ function Mass({
         x={mx(mitteX)}
         y={my(mitteY)}
         fontFamily="PlexMono, monospace"
-        fontSize={12.5}
+        fontSize={SCHRIFT_BEMASSUNG}
         textAnchor="middle"
         dy={-6}
         stroke="none"
@@ -194,10 +206,10 @@ export function Riss({
         stroke="var(--tinte)"
         strokeWidth={2.4}
       />
-      <text x={mx(-1.45)} y={my(decke - 0.14)} fill="var(--gedaempft)" fontFamily="PlexMono, monospace" fontSize={11} letterSpacing="0.14em">
+      <text x={mx(-1.45)} y={my(decke - 0.14)} fill="var(--gedaempft)" fontFamily="PlexMono, monospace" fontSize={SCHRIFT_BESCHRIFTUNG} letterSpacing="0.14em">
         VORPLATZ
       </text>
-      <text x={mx(config.SPRING_DEPTH + 0.08)} y={my(boden)} dy={15} fill="var(--gedaempft)" fontFamily="PlexMono, monospace" fontSize={10.5}>
+      <text x={mx(config.SPRING_DEPTH + 0.08)} y={my(boden)} dy={15} fill="var(--gedaempft)" fontFamily="PlexMono, monospace" fontSize={SCHRIFT_KLEIN}>
         GARAGENBODEN +{kommaZahl(boden * 100, 1)} CM
       </text>
 
@@ -234,7 +246,7 @@ export function Riss({
       />
       <line x1={mx(0)} y1={my(schieneOK)} x2={mx(config.RAIL_LENGTH)} y2={my(schieneOK)} stroke="var(--lager)" strokeWidth={1.4} />
       <line x1={mx(0)} y1={my(schieneUK)} x2={mx(config.RAIL_LENGTH)} y2={my(schieneUK)} stroke="var(--lager)" strokeWidth={1.4} />
-      <text x={mx(config.RAIL_LENGTH + 0.07)} y={my(schieneUK + 0.02)} fill="var(--lager)" fontFamily="PlexMono, monospace" fontSize={11}>
+      <text x={mx(config.RAIL_LENGTH + 0.07)} y={my(schieneUK + 0.02)} fill="var(--lager)" fontFamily="PlexMono, monospace" fontSize={SCHRIFT_BESCHRIFTUNG}>
         LAUFSCHIENE L={kommaZahl(config.RAIL_LENGTH)}
       </text>
 
@@ -257,7 +269,7 @@ export function Riss({
             y={my(boden + 0.22)}
             fill="var(--gedaempft)"
             fontFamily="PlexMono, monospace"
-            fontSize={11.5}
+            fontSize={SCHRIFT_BESCHRIFTUNG}
             textAnchor="middle"
             letterSpacing="0.05em"
           >
@@ -304,7 +316,7 @@ export function Riss({
         <g key={name}>
           <circle cx={mx(px)} cy={my(py)} r={5.5} fill={farbe} />
           <circle cx={mx(px)} cy={my(py)} r={5.5} fill="none" stroke="var(--blatt-2)" strokeWidth={1.4} />
-          <text x={mx(px)} y={my(py)} dx={ddx} dy={ddy} fill={farbe} fontFamily="PlexMono, monospace" fontSize={15} fontWeight={700} textAnchor={anchor}>
+          <text x={mx(px)} y={my(py)} dx={ddx} dy={ddy} fill={farbe} fontFamily="PlexMono, monospace" fontSize={SCHRIFT_PUNKT} fontWeight={700} textAnchor={anchor}>
             {name}
           </text>
         </g>
