@@ -385,11 +385,15 @@ button.sekundaer {
 }
 @media (min-width: 1400px) {
   .arbeitsflaeche {
-    /* Obergrenze für die Seitenspalten: Auf einem Ultrawide-Schirm würden 17 %
-       sonst über 500 px breit — ein Eingabefeld wird davon nicht besser. */
+    /*
+     * Die Seitenspalten wachsen mit der Breite, aber nur bis 24 rem: Ein
+     * Eingabefeld wird von 500 px Breite nicht besser, der Riss von 200 px
+     * mehr schon. Ohne den Prozentanteil bekämen die Seiten schon bei 1500 px
+     * ihre volle Breite und würden der Mitte den Platz wegnehmen.
+     */
     grid-template-columns:
-      minmax(268px, 24rem) minmax(0, 1fr)
-      minmax(268px, 24rem);
+      minmax(268px, min(20%, 24rem)) minmax(0, 1fr)
+      minmax(268px, min(20%, 24rem));
     grid-template-areas: 'links mitte rechts';
   }
 }
