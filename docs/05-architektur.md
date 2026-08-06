@@ -89,12 +89,28 @@ bezieht ihre Farben aus denselben Custom Properties wie der Rest der Seite.
 
 ## Veröffentlichung
 
-`.github/workflows/pages.yml` baut bei jedem Push auf `main` und veröffentlicht
-über GitHub Pages — aber erst nach Typprüfung und Tests. Was nicht grün ist,
-geht nicht online. `.github/workflows/ci.yml` prüft jeden Pull Request.
+`.github/workflows/pages.yml` baut bei jedem Push auf `main` und legt das
+Ergebnis im Branch `gh-pages` ab — aber erst nach Typprüfung und Tests. Was
+nicht grün ist, geht nicht online. `.github/workflows/ci.yml` prüft jeden Pull
+Request. Beide Workflows haben einen `concurrency`-Block, damit überholte Läufe
+abbrechen statt sich zu stapeln.
 
-Beide Workflows haben einen `concurrency`-Block: Überholte Läufe brechen ab,
-statt sich in der Warteschlange zu stapeln.
+**Warum über einen Branch und nicht über `actions/deploy-pages`:** Die Seite
+wird so direkt aus `gh-pages` ausgeliefert und bleibt auch dann erreichbar, wenn
+gerade kein Actions-Runner verfügbar ist. Das ist keine graue Theorie — beim
+Einrichten wurden zwei Läufe nacheinander nach sechs Minuten in der
+Warteschlange abgebrochen, ohne je einen Runner zugeteilt zu bekommen.
+
+Der Branch lässt sich zur Not von Hand befüllen, ganz ohne Actions:
+
+```bash
+npm run build -- --base=/Garagensimulator/
+touch dist/.nojekyll
+# Inhalt von dist/ als Wurzel in den Branch gh-pages legen und pushen
+```
+
+Einmalige Einstellung im Repository: *Settings → Pages → Source: Deploy from a
+branch → `gh-pages` / `(root)`*.
 
 ## Datenschutz
 

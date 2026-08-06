@@ -1,25 +1,26 @@
 name: Pages
 
-# Veröffentlicht den Build bei jedem Push auf main. Damit ist die Online-Ansicht
-# immer der Stand des Hauptbranches — ohne dass jemand etwas anstoßen muss.
+# Baut bei jedem Push auf main und legt das Ergebnis im Branch `gh-pages` ab.
+#
+# Warum über einen Branch und nicht über actions/deploy-pages: Die Seite wird
+# dann von GitHub direkt aus dem Branch ausgeliefert und bleibt auch dann
+# erreichbar, wenn gerade kein Actions-Runner verfügbar ist. Der Branch lässt
+# sich zur Not von Hand befüllen — `npm run build -- --base=/<repo>/`, Inhalt
+# von `dist/` samt `.nojekyll` in den Branch, fertig.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Nur ein Deployment gleichzeitig. Überholte Läufe werden abgebrochen, statt
-# sich in der Warteschlange zu stapeln.
 concurrency:
   group: pages
   cancel-in-progress: true
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 jobs:
-  build:
+  veroeffentlichen:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -41,25 +42,17 @@ jobs:
 
       # Project Pages liegen unter /<repo>/, deshalb der Basispfad.
       - name: Build
-        run: npm run build -- --base=/${{ github.event.repository.name }}/
+        run: |
+          npm run build -- --base=/${{ github.event.repository.name }}/
+          touch dist/.nojekyll
 
-      # enablement schaltet Pages beim ersten Lauf selbst frei — sonst müsste
-      # die Quelle einmal von Hand auf „GitHub Actions" gestellt werden.
-      - uses: actions/configure-pages@v5
+      - name: Nach gh-pages veröffentlichen
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          enablement: true
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: Claude
+          user_email: noreply@anthropic.com
+          commit_message: "Gebaute Seite fuer GitHub Pages (${{ github.sha }})"
