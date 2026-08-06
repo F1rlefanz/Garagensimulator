@@ -156,8 +156,10 @@ Die Seite läuft unter **<https://f1rlefanz.github.io/Garagensimulator/>**.
 `.github/workflows/pages.yml` baut den aktuellen Stand bei jedem Push auf `main`
 und legt ihn im Branch `gh-pages` ab — aber erst, nachdem Typprüfung und Tests
 durchgelaufen sind. Was nicht grün ist, geht nicht online. Ausgeliefert wird
-direkt aus dem Branch, damit die Seite auch dann erreichbar bleibt, wenn gerade
-kein Actions-Runner frei ist.
+direkt aus dem Branch; der gebaute Stand liegt dort als fertiges Artefakt und
+lässt sich zur Not von Hand befüllen. Eine *neue* Veröffentlichung braucht
+trotzdem einen Actions-Runner — warum, steht in
+[`docs/05-architektur.md`](docs/05-architektur.md).
 
 **Es gibt genau eine Implementierung.** Entwicklungsserver, veröffentlichte
 Seite und geteilte Vorschau sind dasselbe Programm, nur anders ausgeliefert;
