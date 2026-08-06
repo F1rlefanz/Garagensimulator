@@ -1,7 +1,7 @@
 {
   "name": "garagensimulator",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Kinematische Simulation eines vorstehenden Garagen-Schwingtors und Prüfung der Einpark-Passgenauigkeit.",
   "type": "module",
   "engines": {
