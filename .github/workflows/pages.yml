@@ -68,6 +68,12 @@ jobs:
 
   veroeffentlichen:
     needs: bauen
+    # Die Umgebung `github-pages` laesst nur Veroeffentlichungen vom
+    # Standardbranch zu. Ein Lauf auf einem Feature-Branch soll deshalb bauen
+    # und pruefen, aber nicht ausliefern — sonst scheitert er sekundenschnell an
+    # der Schutzregel, ohne je einen Runner zu bekommen, und faerbt den Pull
+    # Request rot, obwohl nichts kaputt ist.
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
