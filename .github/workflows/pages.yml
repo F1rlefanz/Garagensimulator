@@ -12,8 +12,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Eigener Gruppenname: Nebenlaeufigkeitsgruppen gelten repository-weit, nicht
+# pro Workflow. Hiesse die Gruppe "pages", koennte dieser Workflow GitHubs
+# eigene Auslieferung abbrechen, die denselben Namen verwendet.
 concurrency:
-  group: pages
+  group: seite-bauen
   cancel-in-progress: true
 
 permissions:
