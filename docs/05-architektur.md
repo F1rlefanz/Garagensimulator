@@ -108,42 +108,38 @@ bezieht ihre Farben aus denselben Custom Properties wie der Rest der Seite.
 
 ## Veröffentlichung
 
-`.github/workflows/pages.yml` baut bei jedem Push auf `main` und legt das
-Ergebnis im Branch `gh-pages` ab — aber erst nach Typprüfung und Tests. Was
-nicht grün ist, geht nicht online. `.github/workflows/ci.yml` prüft jeden Pull
-Request. Beide Workflows haben einen `concurrency`-Block, damit überholte Läufe
-abbrechen statt sich zu stapeln.
+`.github/workflows/pages.yml` baut bei jedem Push auf `main` und veröffentlicht
+das Ergebnis — aber erst nach Typprüfung und Tests. Was nicht grün ist, geht
+nicht online. `.github/workflows/ci.yml` prüft jeden Pull Request.
 
-**Warum über einen Branch und nicht über `actions/deploy-pages`:** Der gebaute
-Stand liegt als fertiges Artefakt im Branch und lässt sich zur Not von Hand
-befüllen, ohne dass unser Workflow läuft. Eine **bereits veröffentlichte** Seite
-bleibt außerdem erreichbar, wenn gerade kein Runner frei ist — ausgeliefert wird
-statisch, ohne Actions.
+Auslieferungsquelle ist **GitHub Actions**, nicht ein Branch. Der Workflow baut
+in Job `bauen`, lädt das Ergebnis als Pages-Artefakt hoch und veröffentlicht es
+in Job `veroeffentlichen` über `actions/deploy-pages`.
+`actions/configure-pages` mit `enablement: true` stellt die Quelle notfalls
+selbst um, sodass der Gang in die Einstellungen entfällt.
 
-**Was der Branch dagegen nicht löst:** Eine *neue* Veröffentlichung braucht
-trotzdem einen Runner. GitHub startet dafür einen eigenen Workflow
-`pages build and deployment`, den wir nicht kontrollieren. Beim Einrichten am
-06.08.2026 blieb dessen `build`-Job 15 Minuten mit leerem `runner_name` in der
-Warteschlange und wurde abgebrochen — während unser eigener `Pages`-Workflow im
-selben Zeitraum problemlos Runner bekam. Die Umstellung auf den Branch hat die
-Abhängigkeit vom Runner also nicht beseitigt, sondern nur verschoben.
+### Warum nicht über einen `gh-pages`-Branch
 
-Wer sie ganz loswerden will, muss den umgekehrten Weg gehen: *Settings → Pages →
-Source: GitHub Actions* und im eigenen Workflow `actions/upload-pages-artifact`
-plus `actions/deploy-pages` verwenden. Dann läuft alles in dem Workflow, der
-nachweislich Runner bekommt — um den Preis, dass es kein von Hand befüllbares
-Artefakt mehr gibt.
+Das war der erste Anlauf und es war der falsche. Die Begründung damals lautete,
+ein Branch mache die Seite unabhängig vom Actions-Runner. Das stimmt nur für
+eine **bereits veröffentlichte** Seite — die wird statisch ausgeliefert.
 
-Der Branch lässt sich zur Not von Hand befüllen, ganz ohne Actions:
+Eine *neue* Veröffentlichung braucht so oder so einen Runner. Beim Weg über den
+Branch startet GitHub dafür einen **eigenen** Workflow
+`pages build and deployment`, den wir nicht kontrollieren. Am 06.08.2026 blieb
+dessen `build`-Job dreimal hintereinander viertelstundenlang mit leerem
+`runner_name` in der Warteschlange und wurde abgebrochen — während unsere
+eigenen Workflows im selben Zeitraum in 25 bis 55 Sekunden durchliefen. Der
+Branch hat die Abhängigkeit vom Runner also nicht beseitigt, sondern in eine
+Warteschlange verschoben, an die wir nicht herankommen.
 
-```bash
-npm run build -- --base=/Garagensimulator/
-touch dist/.nojekyll
-# Inhalt von dist/ als Wurzel in den Branch gh-pages legen und pushen
-```
+Alles in einem Workflow heißt: **eine** Warteschlange, und zwar die, die
+nachweislich bedient wird. Der Preis ist, dass es kein von Hand befüllbares
+Artefakt mehr gibt — der Branch `gh-pages` wird nicht mehr gepflegt.
 
-Einmalige Einstellung im Repository: *Settings → Pages → Source: Deploy from a
-branch → `gh-pages` / `(root)`*.
+Der `concurrency`-Block heißt bewusst nicht `pages`: Gruppen gelten
+repository-weit, nicht pro Workflow. `cancel-in-progress` steht hier auf
+`false` — ein halb ausgelieferter Stand wäre schlimmer als ein überholter.
 
 ## Datenschutz
 

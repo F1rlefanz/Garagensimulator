@@ -154,11 +154,14 @@ bleiben rechnerisch 15 mm — innerhalb der Messunsicherheit, siehe
 Die Seite läuft unter **<https://f1rlefanz.github.io/Garagensimulator/>**.
 
 `.github/workflows/pages.yml` baut den aktuellen Stand bei jedem Push auf `main`
-und legt ihn im Branch `gh-pages` ab — aber erst, nachdem Typprüfung und Tests
-durchgelaufen sind. Was nicht grün ist, geht nicht online. Ausgeliefert wird
-direkt aus dem Branch; der gebaute Stand liegt dort als fertiges Artefakt und
-lässt sich zur Not von Hand befüllen. Eine *neue* Veröffentlichung braucht
-trotzdem einen Actions-Runner — warum, steht in
+und veröffentlicht ihn — aber erst, nachdem Typprüfung und Tests durchgelaufen
+sind. Was nicht grün ist, geht nicht online.
+
+Bauen und Veröffentlichen stecken bewusst in **einem** Workflow. Der Umweg über
+einen `gh-pages`-Branch war der erste Anlauf und scheiterte daran, dass GitHub
+dafür einen eigenen, nicht kontrollierbaren Workflow startet — der wartete
+wiederholt eine Viertelstunde vergeblich auf einen Runner, während unsere
+eigenen Läufe in unter einer Minute durch waren. Die Begründung steht in
 [`docs/05-architektur.md`](docs/05-architektur.md).
 
 **Es gibt genau eine Implementierung.** Entwicklungsserver, veröffentlichte
