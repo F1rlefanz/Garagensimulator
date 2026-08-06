@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Von Hand ausloesbar. Wird ein Pull Request von einer App angelegt, loest das
+  # `pull_request`-Ereignis keinen Lauf aus — dann bleibt dieser Weg.
+  workflow_dispatch:
 
 # Ein Lauf je Branch. Wird nachgepusht, bricht der überholte Lauf ab, statt in
 # der Warteschlange um dieselben Runner zu konkurrieren.

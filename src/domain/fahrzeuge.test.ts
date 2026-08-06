@@ -35,38 +35,72 @@ describe('Fahrzeugauswahl', () => {
 });
 
 describe('Katalogeinträge', () => {
-  it('hält das Seitenprofil in sich schlüssig', () => {
+  it('hält jedes belegte Seitenprofil in sich schlüssig', () => {
     for (const f of AUSWAHL) {
-      const { haubenLaenge, scheibenLaenge, dachLaenge } = f.seitenprofil;
+      if (!f.seitenprofil) continue;
+
+      const { haubenLaenge, scheibenLaenge, dachLaenge, haubenHoehe } = f.seitenprofil;
       const bisHeckkante = haubenLaenge + scheibenLaenge + dachLaenge;
 
       // Hinter dem Dach bleibt der Heckueberhang — er darf nicht negativ werden.
       expect(bisHeckkante, `${f.id}: Profil länger als das Fahrzeug`).toBeLessThanOrEqual(f.laenge);
-      expect(f.seitenprofil.haubenHoehe, `${f.id}`).toBeLessThan(f.hoehe);
+      expect(haubenHoehe, `${f.id}: Haube höher als das Fahrzeug`).toBeLessThan(f.hoehe);
     }
   });
 
-  it('gibt für jedes recherchierte Maß eine Quelle an', () => {
-    for (const f of FAHRZEUGE) {
-      if (f.datenstand === 'recherchiert' || f.datenstand === 'herstellerangabe') {
-        expect(f.quelle, `${f.id} ohne Quellenangabe`).toBeTruthy();
+  it('führt keine Maße ohne Quellenstufe', () => {
+    for (const f of AUSWAHL) {
+      expect(['A', 'B', 'C', 'D'], `${f.id}`).toContain(f.quellenstufe);
+      if (f.seitenprofil) {
+        expect(['A', 'B', 'C', 'D'], `${f.id}: Seitenprofil`).toContain(
+          f.seitenprofil.quellenstufe,
+        );
       }
     }
   });
 
-  it('markiert das Seitenprofil als geschätzt, solange es nicht nachgemessen ist', () => {
-    // Diese drei Maße stehen in keinem Datenblatt und bestimmen die
-    // Kollisionsprüfung. Werden sie am Fahrzeug nachgemessen, schlägt der Test
-    // fehl — dann ist auch die Warnung in der UI zu entfernen.
-    expect(REFERENZ_FAHRZEUG.profilDatenstand).toBe('geschaetzt');
+  it('erfindet kein Seitenprofil für recherchierte Fahrzeuge', () => {
+    // Diese vier Maße stehen in keinem Datenblatt. Sie zu schätzen ließe das Tor
+    // freier aussehen, als es ist — deshalb bleiben sie leer, und die Prüfung
+    // rechnet mit einem Quader über die volle Höhe. Wird eines am Fahrzeug
+    // nachgemessen, schlägt dieser Test fehl; dann sind Wert, Quellenstufe und
+    // der Hinweis in der Oberfläche gemeinsam nachzuziehen.
+    const mitProfil = FAHRZEUGE.filter((f) => f.seitenprofil !== undefined);
+
+    expect(mitProfil.map((f) => f.id)).toEqual([]);
   });
 
-  it('führt beim Referenzfahrzeug die Breite mit und ohne Spiegel', () => {
+  it('hält jedes belegte Maß im plausiblen Bereich', () => {
+    for (const f of AUSWAHL) {
+      expect(f.laenge, `${f.id}: Länge`).toBeGreaterThan(3);
+      expect(f.laenge, `${f.id}: Länge`).toBeLessThan(8);
+      expect(f.hoehe, `${f.id}: Höhe`).toBeGreaterThan(1.3);
+      expect(f.hoehe, `${f.id}: Höhe`).toBeLessThan(3.2);
+
+      if (f.breiteOhneSpiegel !== undefined && f.breiteMitSpiegeln !== undefined) {
+        expect(f.breiteMitSpiegeln, `${f.id}: Spiegel verschmälern nicht`).toBeGreaterThan(
+          f.breiteOhneSpiegel,
+        );
+      }
+      if (f.hoeheHeckOffen !== undefined) {
+        expect(f.hoeheHeckOffen, `${f.id}: Heckklappe`).toBeGreaterThan(f.hoehe);
+      }
+      if (f.ladelaenge !== undefined) {
+        expect(f.ladelaenge, `${f.id}: Ladelänge`).toBeLessThan(f.laenge);
+      }
+    }
+  });
+});
+
+describe('Referenzfahrzeug', () => {
+  it('ist der Caddy Maxi mit Herstellerdatenblatt', () => {
+    expect(REFERENZ_FAHRZEUG.id).toBe('vw-caddy-sb-maxi');
+    expect(REFERENZ_FAHRZEUG.quellenstufe).toBe('A');
+  });
+
+  it('führt die Breite mit und ohne Spiegel', () => {
     expect(REFERENZ_FAHRZEUG.breiteOhneSpiegel).toBeCloseTo(1.855, 3);
     expect(REFERENZ_FAHRZEUG.breiteMitSpiegeln).toBeCloseTo(2.1, 2);
-    expect(REFERENZ_FAHRZEUG.breiteMitSpiegeln!).toBeGreaterThan(
-      REFERENZ_FAHRZEUG.breiteOhneSpiegel!,
-    );
   });
 
   it('passt mit ausgeklappten Spiegeln durch die schmalste Stelle der Einfahrt', () => {

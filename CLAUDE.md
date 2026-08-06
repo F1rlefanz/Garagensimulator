@@ -77,11 +77,27 @@ anpassen, ohne die Dokumentation mitzuführen.
 
 ## Fahrzeuge
 
-`src/domain/fahrzeuge.ts` führt einen festen Katalog plus den Eintrag
-`INDIVIDUELL`. Nur letzterer ist in der UI editierbar — Katalogmaße sind
-gesperrt. Jedes Fahrzeug trägt zwei Datenstände: einen für die Außenmaße, einen
-für das Seitenprofil. Letzteres steht in keinem Datenblatt, bestimmt aber die
-Kollisionsprüfung; solange es geschätzt ist, weist die UI darauf hin.
+`src/domain/fahrzeuge.ts` führt einen festen Katalog (30 Einträge aus der
+Vergleichsmatrix „Autokauf") plus den Eintrag `INDIVIDUELL`. Nur letzterer ist in
+der UI editierbar — Katalogmaße sind gesperrt.
+
+Jedes Fahrzeug trägt eine **Quellenstufe** A–D aus der Systematik der Matrix:
+A Herstellerdatenblatt, B Fachredaktion mit eigener Messung, C Portaldaten,
+D Forum. Sie wird angezeigt und nicht hochgestuft.
+
+Optionale Felder sind `undefined`, wenn das Maß nicht belegt ist — nie ein
+Ersatzwert. `pruefeGarage()` in `src/lib/garagenpruefung.ts` meldet solche Achsen
+als `nicht-pruefbar`, statt sie zu bestehen.
+
+Das `seitenprofil` ist **optional und bei keinem Katalogfahrzeug gesetzt** — es
+steht in keinem Datenblatt. Ohne Profil rechnet `fahrzeugKontur()` mit einem
+Quader über die volle Höhe. Diese Richtung ist Absicht: Ein geschätztes Profil
+ließe das Tor freier aussehen, als es ist. Kein Profil erfinden, auch nicht
+„nur für die Zeichnung".
+
+Die Spalte `GARAGEN-URTEIL` der Matrix ist **nicht** übernommen: Sie rechnete mit
+5.100 / 2.190 / 2.300 mm statt der nachgemessenen 5.220 / 2.170 / 2.240 mm.
+Urteile kommen aus `garagenpruefung.ts`, nicht aus der Tabelle.
 
 ## Abgeleitet, nicht gesetzt
 
@@ -103,7 +119,7 @@ Schwenkarm hinter `A`.
 
 ```
 src/domain/     Messwerte und Fahrzeugdaten, keine Berechnung, keine UI
-src/lib/        Kinematik und Fahrzeuggeometrie, rein funktional
+src/lib/        Kinematik, Fahrzeuggeometrie, Garagenprüfung — rein funktional
 src/ui/         Riss, Eingaben, Befunde
 src/App.tsx     Zusammensetzung
 scripts/        Build zur eigenständigen HTML-Datei

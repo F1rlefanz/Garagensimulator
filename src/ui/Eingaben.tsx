@@ -1,14 +1,43 @@
 import { GarageConfig } from '../lib/kinematics';
-import { AUSWAHL, DATENSTAND_LABEL, Fahrzeug, istEditierbar } from '../domain/fahrzeuge';
+import {
+  AUSWAHL,
+  Fahrzeug,
+  istEditierbar,
+  KATEGORIE_LABEL,
+  Seitenprofil,
+  STUFE_LABEL,
+} from '../domain/fahrzeuge';
 import { MESSWERTE, MesswertSchluessel } from '../domain/garage';
 
 /**
  * Eingabefelder für Garage, Tor und Fahrzeug.
  *
- * Jedes Feld ist an einen Messwert aus `src/domain/garage.ts` gebunden und zeigt
- * dessen Symbol und Vertrauensgrad. Die Beschriftungen stammen aus dem
+ * Jedes Garagenfeld ist an einen Messwert aus `src/domain/garage.ts` gebunden
+ * und zeigt dessen Symbol und Vertrauensgrad. Die Beschriftungen stammen aus dem
  * Domänenmodell — hier wird nichts doppelt gepflegt.
  */
+
+/** Zahl im deutschen Format. */
+function kommaZahl(v: number, stellen: number): string {
+  return v.toFixed(stellen).replace('.', ',');
+}
+
+/** Kurzbeschriftung fürs Formular — die Langfassung steht als Tooltip. */
+const KURZ: Partial<Record<MesswertSchluessel, string>> = {
+  gesamtlaengeGarage: 'Rohbaulänge innen',
+  federwegTiefe: 'Tiefe der Federzone',
+  styroporDicke: 'Styropor-Dämmung',
+  schmalsteStelleEinfahrt: 'Schmalste Stelle Einfahrt',
+  lichteHoehe: 'Lichte Durchfahrtshöhe',
+  laufschieneProfilhoehe: 'Bauhöhe Schienenprofil',
+  laufschienenLaenge: 'Nutzbare Schienenlänge',
+  rolleZuAnlenkpunkt: 'Anlenkpunkt P → Rolle T',
+  anlenkpunktZuUnterkante: 'Unterkante B → Anlenkpunkt P',
+  rolleZuOberkante: 'Oberkante O → Rolle T',
+  lagerbolzenHoehe: 'Höhe Festlager A',
+  lagerbolzenTiefe: 'Tiefenversatz Festlager A',
+  lagerbolzenZuFederpunkt: 'Lagerbolzen A → Federpunkt F',
+};
 
 interface FeldProps {
   schluessel: MesswertSchluessel;
@@ -30,7 +59,7 @@ function Feld({ schluessel, configKey, config, schritt = 0.005, onChange }: Feld
   return (
     <div className="feld">
       <label htmlFor={`feld-${configKey}`}>
-        {kurzName(schluessel)}
+        {KURZ[schluessel] ?? schluessel}
         <span className="symbol">{mw.symbol}</span>
         {marke}
       </label>
@@ -45,40 +74,29 @@ function Feld({ schluessel, configKey, config, schritt = 0.005, onChange }: Feld
   );
 }
 
-/** Kurzbeschriftung fürs Formular — die Langfassung steht als Tooltip am Messwert. */
-const KURZ: Partial<Record<MesswertSchluessel, string>> = {
-  gesamtlaengeGarage: 'Rohbaulänge innen',
-  federwegTiefe: 'Tiefe der Federzone',
-  styroporDicke: 'Styropor-Dämmung',
-  garagenhoehe: 'Innenhöhe Boden–Decke',
-  lichteHoehe: 'Lichte Durchfahrtshöhe',
-  laufschieneProfilhoehe: 'Bauhöhe Schienenprofil',
-  laufschienenLaenge: 'Nutzbare Schienenlänge',
-  rolleZuAnlenkpunkt: 'Anlenkpunkt P → Rolle T',
-  anlenkpunktZuUnterkante: 'Unterkante B → Anlenkpunkt P',
-  rolleZuOberkante: 'Oberkante O → Rolle T',
-  lagerbolzenHoehe: 'Höhe Festlager A',
-  lagerbolzenTiefe: 'Tiefenversatz Festlager A',
-  lagerbolzenZuFederpunkt: 'Lagerbolzen A → Federpunkt F',
-};
-
-function kurzName(schluessel: MesswertSchluessel): string {
-  return KURZ[schluessel] ?? schluessel;
-}
-
-/** Zahl im deutschen Format. */
-function kommaZahl(v: number, stellen: number): string {
-  return v.toFixed(stellen).replace('.', ',');
+/** Eine Zeile mit einem Maß aus dem Katalog, das nicht editierbar ist. */
+function Katalogzeile({ label, wert, einheit = 'm' }: { label: string; wert?: number; einheit?: string }) {
+  return (
+    <div className="feld">
+      <label>{label}</label>
+      <div className="abgeleitet-wert">
+        {wert === undefined ? 'nicht belegt' : `${kommaZahl(wert, 3)} ${einheit}`}
+      </div>
+    </div>
+  );
 }
 
 interface EingabenProps {
   config: GarageConfig;
   fahrzeug: Fahrzeug;
   fahrzeugId: string;
+  seitenprofil?: Seitenprofil;
   abstandRueckwand: number;
   maxAbstand: number;
+  einfahrtBreite: number;
   onConfig: (key: keyof GarageConfig, wert: number) => void;
   onFahrzeug: (id: string) => void;
+  onProfil: (feld: keyof Omit<Seitenprofil, 'quellenstufe'>, wert: number) => void;
   onAbstand: (wert: number) => void;
   onZuruecksetzen: () => void;
 }
@@ -87,29 +105,41 @@ export function Eingaben({
   config,
   fahrzeug,
   fahrzeugId,
+  seitenprofil,
   abstandRueckwand,
   maxAbstand,
+  einfahrtBreite,
   onConfig,
   onFahrzeug,
+  onProfil,
   onAbstand,
   onZuruecksetzen,
 }: EingabenProps) {
   const editierbar = istEditierbar(fahrzeugId);
 
-  const fahrzeugFelder: Array<[string, keyof GarageConfig]> = [
-    ['Fahrzeuglänge', 'CAR_LENGTH'],
-    ['Fahrzeughöhe', 'CAR_HEIGHT'],
-    ['Motorhaube Länge', 'CAR_HOOD_LENGTH'],
-    ['Motorhaube Höhe (Front)', 'CAR_HOOD_HEIGHT'],
-    ['Dachlänge', 'CAR_ROOF_LENGTH'],
+  // Nach Kategorie gruppieren, damit die Liste mit 30 Einträgen lesbar bleibt.
+  const gruppen = new Map<string, Fahrzeug[]>();
+  for (const f of AUSWAHL) {
+    const schluessel = f.id === fahrzeugId && !editierbar ? f.kategorie : f.kategorie;
+    const label = istEditierbar(f.id) ? 'Freie Eingabe' : KATEGORIE_LABEL[schluessel];
+    if (!gruppen.has(label)) gruppen.set(label, []);
+    gruppen.get(label)!.push(f);
+  }
+
+  const profilFelder: Array<[string, keyof Omit<Seitenprofil, 'quellenstufe'>]> = [
+    ['Motorhaube Länge', 'haubenLaenge'],
+    ['Motorhaube Höhe (Front)', 'haubenHoehe'],
+    ['Windschutzscheibe waagerecht', 'scheibenLaenge'],
+    ['Dachlänge', 'dachLaenge'],
   ];
 
   return (
     <section>
       <h2 className="block-titel">Eingaben</h2>
       <p className="block-hinweis">
-        Alle Längen in Metern. Die Ausgangswerte stammen aus{' '}
-        <code>src/domain/garage.ts</code>; Änderungen hier gelten nur für die
+        Alle Längen in Metern. Die Garagenmaße stammen aus{' '}
+        <code>src/domain/garage.ts</code>, die Fahrzeugmaße aus dem Katalog in{' '}
+        <code>src/domain/fahrzeuge.ts</code>. Änderungen hier gelten nur für die
         laufende Sitzung.
       </p>
 
@@ -146,6 +176,7 @@ export function Eingaben({
             onChange={(e) => onConfig('GARAGE_HEIGHT', parseFloat(e.target.value) || 0)}
           />
         </div>
+        <Katalogzeile label="Schmalste Stelle der Einfahrt" wert={einfahrtBreite} />
       </div>
 
       <div className="gruppe">
@@ -183,32 +214,59 @@ export function Eingaben({
         <div className="feld">
           <label htmlFor="fahrzeug-auswahl">Modell</label>
           <select id="fahrzeug-auswahl" value={fahrzeugId} onChange={(e) => onFahrzeug(e.target.value)}>
-            {AUSWAHL.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.bezeichnung}
-              </option>
+            {[...gruppen].map(([label, liste]) => (
+              <optgroup label={label} key={label}>
+                {liste.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.bezeichnung}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>
 
-        {fahrzeugFelder.map(([label, key]) => (
-          <div className="feld" key={key}>
-            <label htmlFor={`feld-${key}`}>{label}</label>
-            <input
-              id={`feld-${key}`}
-              type="number"
-              step={0.001}
-              value={config[key]}
-              readOnly={!editierbar}
-              onChange={(e) => onConfig(key, parseFloat(e.target.value) || 0)}
-            />
-          </div>
-        ))}
+        <div className="feld">
+          <label htmlFor="feld-CAR_LENGTH">
+            Fahrzeuglänge
+            <span className="symbol">{fahrzeug.baujahre}</span>
+          </label>
+          <input
+            id="feld-CAR_LENGTH"
+            type="number"
+            step={0.001}
+            value={config.CAR_LENGTH}
+            readOnly={!editierbar}
+            onChange={(e) => onConfig('CAR_LENGTH', parseFloat(e.target.value) || 0)}
+          />
+        </div>
+        <div className="feld">
+          <label htmlFor="feld-CAR_HEIGHT">
+            Fahrzeughöhe
+            <span className="symbol">ohne Dachreling</span>
+          </label>
+          <input
+            id="feld-CAR_HEIGHT"
+            type="number"
+            step={0.001}
+            value={config.CAR_HEIGHT}
+            readOnly={!editierbar}
+            onChange={(e) => onConfig('CAR_HEIGHT', parseFloat(e.target.value) || 0)}
+          />
+        </div>
+
+        <Katalogzeile label="Breite ohne Spiegel" wert={fahrzeug.breiteOhneSpiegel} />
+        <Katalogzeile label="Breite mit Spiegeln" wert={fahrzeug.breiteMitSpiegeln} />
+        <Katalogzeile label="Höhe bei offener Heckklappe" wert={fahrzeug.hoeheHeckOffen} />
+        <Katalogzeile label="Ladelänge" wert={fahrzeug.ladelaenge} />
+        <Katalogzeile label="Innenhöhe Laderaum" wert={fahrzeug.innenhoeheLaderaum} />
 
         <div className="feld">
           <label htmlFor="feld-abstand">
             Abstand zur Rückwand
-            <span className="symbol">{kommaZahl(abstandRueckwand, 2)} von max. {kommaZahl(maxAbstand, 2)} m</span>
+            <span className="symbol">
+              {kommaZahl(abstandRueckwand, 2)} von max. {kommaZahl(maxAbstand, 2)} m
+            </span>
           </label>
           <input
             id="feld-abstand"
@@ -222,27 +280,46 @@ export function Eingaben({
         </div>
 
         <p className="block-hinweis" style={{ marginTop: 'var(--sp-2)' }}>
-          {editierbar
-            ? 'Freie Eingabe — alle Fahrzeugmaße sind veränderbar.'
-            : `Außenmaße ${DATENSTAND_LABEL[fahrzeug.datenstand]}, Seitenprofil ${DATENSTAND_LABEL[fahrzeug.profilDatenstand]}. Für eigene Maße „Individuell" wählen.`}
-          {fahrzeug.breiteMitSpiegeln !== undefined && (
-            <>
-              {' '}
-              Breite {kommaZahl(fahrzeug.breiteOhneSpiegel ?? 0, 3)} m ohne,{' '}
-              {kommaZahl(fahrzeug.breiteMitSpiegeln, 2)} m mit Spiegeln — die schmalste Stelle der
-              Einfahrt misst {kommaZahl(MESSWERTE.schmalsteStelleEinfahrt.wert, 2)} m, es bleiben{' '}
-              {kommaZahl(
-                (MESSWERTE.schmalsteStelleEinfahrt.wert - fahrzeug.breiteMitSpiegeln) * 100,
-                1,
-              )}{' '}
-              cm.
-            </>
-          )}
+          Quellenstufe {fahrzeug.quellenstufe} — {STUFE_LABEL[fahrzeug.quellenstufe]}.
+          {fahrzeug.notiz ? ` ${fahrzeug.notiz}` : ''}
         </p>
       </div>
 
+      <div className="gruppe">
+        <h3 className="gruppe-titel">Seitenprofil</h3>
+        {seitenprofil ? (
+          <>
+            {profilFelder.map(([label, feld]) => (
+              <div className="feld" key={feld}>
+                <label htmlFor={`profil-${feld}`}>{label}</label>
+                <input
+                  id={`profil-${feld}`}
+                  type="number"
+                  step={0.01}
+                  value={seitenprofil[feld]}
+                  readOnly={!editierbar}
+                  onChange={(e) => onProfil(feld, parseFloat(e.target.value) || 0)}
+                />
+              </div>
+            ))}
+            <p className="block-hinweis" style={{ marginTop: 'var(--sp-2)' }}>
+              Quellenstufe {seitenprofil.quellenstufe} — {STUFE_LABEL[seitenprofil.quellenstufe]}.
+              Diese vier Maße stehen in keinem Datenblatt und bestimmen die
+              Kollisionsprüfung unmittelbar.
+            </p>
+          </>
+        ) : (
+          <p className="block-hinweis">
+            Für dieses Fahrzeug ist kein Seitenprofil belegt — es steht in keinem
+            Datenblatt. Die Kollisionsprüfung rechnet deshalb mit einem Quader über
+            die volle Fahrzeughöhe. Das ist die konservative Annahme: Die tatsächliche
+            Front fällt flacher ab, das Tor hat in Wirklichkeit also mehr Luft.
+          </p>
+        )}
+      </div>
+
       <button type="button" className="sekundaer" onClick={onZuruecksetzen}>
-        Messwerte zurücksetzen
+        Alles zurücksetzen
       </button>
     </section>
   );

@@ -38,6 +38,25 @@ Dasselbe gilt für Geometrie: Die Fahrzeugkontur liegt in
 Kollisionsprüfung verwendet. Vorher gab es zwei Fassungen davon — die Ansicht
 zeigte etwas anderes an, als gerechnet wurde.
 
+### Zwei getrennte Fragen, zwei Module
+
+| Frage | Modul | Art |
+| --- | --- | --- |
+| Passt das Fahrzeug überhaupt hinein? | `garagenpruefung.ts` | statisch: Länge, Höhe, Breite |
+| Schließt das Tor danach noch? | `kinematics.ts` + `fahrzeuggeometrie.ts` | dynamisch: Kontur gegen Torbahn |
+
+Die Trennung ist keine Ästhetik. Die erste Frage lässt sich für den ganzen
+Katalog beantworten, die zweite nur dort, wo ein Seitenprofil vorliegt — und das
+liegt nirgends vor ([OFFEN-06](03-offene-fragen.md#offen-06)).
+
+### Fehlende Maße bleiben fehlend
+
+`undefined` wird nicht durch einen plausiblen Wert ersetzt. `pruefeGarage()`
+kennt dafür das Urteil `nicht-pruefbar`, und `fahrzeugKontur()` fällt ohne
+Seitenprofil auf einen Quader über die volle Höhe zurück. Beides zeigt in
+dieselbe Richtung: lieber ein Fahrzeug zu Unrecht ablehnen als eines zu Unrecht
+durchwinken.
+
 ## Ablageort auf dem Entwicklungsrechner
 
 **`%USERPROFILE%\Code\TypeScript\Garagensimulator`**
@@ -89,28 +108,38 @@ bezieht ihre Farben aus denselben Custom Properties wie der Rest der Seite.
 
 ## Veröffentlichung
 
-`.github/workflows/pages.yml` baut bei jedem Push auf `main` und legt das
-Ergebnis im Branch `gh-pages` ab — aber erst nach Typprüfung und Tests. Was
-nicht grün ist, geht nicht online. `.github/workflows/ci.yml` prüft jeden Pull
-Request. Beide Workflows haben einen `concurrency`-Block, damit überholte Läufe
-abbrechen statt sich zu stapeln.
+`.github/workflows/pages.yml` baut bei jedem Push auf `main` und veröffentlicht
+das Ergebnis — aber erst nach Typprüfung und Tests. Was nicht grün ist, geht
+nicht online. `.github/workflows/ci.yml` prüft jeden Pull Request.
 
-**Warum über einen Branch und nicht über `actions/deploy-pages`:** Die Seite
-wird so direkt aus `gh-pages` ausgeliefert und bleibt auch dann erreichbar, wenn
-gerade kein Actions-Runner verfügbar ist. Das ist keine graue Theorie — beim
-Einrichten wurden zwei Läufe nacheinander nach sechs Minuten in der
-Warteschlange abgebrochen, ohne je einen Runner zugeteilt zu bekommen.
+Auslieferungsquelle ist **GitHub Actions**, nicht ein Branch. Der Workflow baut
+in Job `bauen`, lädt das Ergebnis als Pages-Artefakt hoch und veröffentlicht es
+in Job `veroeffentlichen` über `actions/deploy-pages`.
+`actions/configure-pages` mit `enablement: true` stellt die Quelle notfalls
+selbst um, sodass der Gang in die Einstellungen entfällt.
 
-Der Branch lässt sich zur Not von Hand befüllen, ganz ohne Actions:
+### Warum nicht über einen `gh-pages`-Branch
 
-```bash
-npm run build -- --base=/Garagensimulator/
-touch dist/.nojekyll
-# Inhalt von dist/ als Wurzel in den Branch gh-pages legen und pushen
-```
+Das war der erste Anlauf und es war der falsche. Die Begründung damals lautete,
+ein Branch mache die Seite unabhängig vom Actions-Runner. Das stimmt nur für
+eine **bereits veröffentlichte** Seite — die wird statisch ausgeliefert.
 
-Einmalige Einstellung im Repository: *Settings → Pages → Source: Deploy from a
-branch → `gh-pages` / `(root)`*.
+Eine *neue* Veröffentlichung braucht so oder so einen Runner. Beim Weg über den
+Branch startet GitHub dafür einen **eigenen** Workflow
+`pages build and deployment`, den wir nicht kontrollieren. Am 06.08.2026 blieb
+dessen `build`-Job dreimal hintereinander viertelstundenlang mit leerem
+`runner_name` in der Warteschlange und wurde abgebrochen — während unsere
+eigenen Workflows im selben Zeitraum in 25 bis 55 Sekunden durchliefen. Der
+Branch hat die Abhängigkeit vom Runner also nicht beseitigt, sondern in eine
+Warteschlange verschoben, an die wir nicht herankommen.
+
+Alles in einem Workflow heißt: **eine** Warteschlange, und zwar die, die
+nachweislich bedient wird. Der Preis ist, dass es kein von Hand befüllbares
+Artefakt mehr gibt — der Branch `gh-pages` wird nicht mehr gepflegt.
+
+Der `concurrency`-Block heißt bewusst nicht `pages`: Gruppen gelten
+repository-weit, nicht pro Workflow. `cancel-in-progress` steht hier auf
+`false` — ein halb ausgelieferter Stand wäre schlimmer als ein überholter.
 
 ## Datenschutz
 

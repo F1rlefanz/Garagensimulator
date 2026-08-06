@@ -112,7 +112,8 @@ Nicht gemessen, sondern im Code berechnet — nie von Hand nachpflegen.
 | **Größter Öffnungswinkel** | **87,70°** | Anschlag, wenn der Schwenkarm senkrecht über A steht |
 | **Größter Überstand der Torunterkante** | **1,148 m bei 59,4°** | auf 1,141 m Höhe |
 | Größter Weg der Laufrolle nach innen | 2,238 m | passt in die 2,300 m Schienenlänge ✓ |
-| Höhenreserve VW Caddy Maxi | 0,341 m | `h_licht − Fahrzeughöhe` |
+| Höhenreserve VW Caddy Maxi | 0,328 m | `h_licht − Fahrzeughöhe` (2,170 − 1,842) |
+| Reserve bei geöffneter Heckklappe | 0,015 m | `h_licht − h_heckOffen` (2,170 − 2,155), siehe [OFFEN-10](03-offene-fragen.md#offen-10) |
 
 Drei dieser Größen sind betrieblich wichtig:
 
@@ -147,15 +148,43 @@ Alle Werte ab Torschließebene.
 
 ## Fahrzeuge
 
-Gepflegt in [`src/domain/fahrzeuge.ts`](../src/domain/fahrzeuge.ts). Die
-Außenmaße des VW Caddy Maxi (2026) sind über zwei Quellen abgeglichen; das
-Seitenprofil, das die Kollisionsprüfung bestimmt, ist geschätzt — siehe
-[OFFEN-06](03-offene-fragen.md#offen-06).
+Gepflegt in [`src/domain/fahrzeuge.ts`](../src/domain/fahrzeuge.ts): 30
+Katalogeinträge plus die freie Eingabe `Individuell`. Die Maße stammen aus der
+Vergleichsmatrix „Autokauf", Blatt „02 Maße & Garage" (Stand 05.08.2026), und
+wurden maschinell übernommen, nicht abgetippt.
+
+Jedes Fahrzeug trägt eine **Quellenstufe** aus der Systematik der Matrix:
+
+| Stufe | Bedeutung | Belastbarkeit |
+| --- | --- | --- |
+| A | Herstellerdatenblatt, amtliche Statistik | als Fakt zitierbar |
+| B | Fachredaktion mit eigener Messung (ADAC, AUTO BILD) | Fakt mit Quelle |
+| C | Portal- oder Händlerdaten | Marktindikation, keine technische Wahrheit |
+| D | Forum, Einzelerfahrung | nur Hypothese |
+
+Was in der Matrix als „n. v." stand, ist hier `undefined`. Es wurde **nichts**
+geschätzt, um eine Lücke zu füllen; `pruefeGarage()` meldet solche Achsen als
+*nicht prüfbar* statt sie stillschweigend zu bestehen.
+
+Nicht übernommen wurde der Ford Grand Tourneo Connect der 2. Generation — für
+ihn ist weder Länge noch Höhe verifizierbar.
+
+Ebenfalls **nicht** übernommen wurde die Spalte `GARAGEN-URTEIL` der Matrix: Sie
+rechnete mit anderen Garagenmaßen als den nachgemessenen, zwei davon zu
+großzügig. Die Urteile werden in `src/lib/garagenpruefung.ts` neu berechnet,
+siehe [OFFEN-11](03-offene-fragen.md#offen-11).
+
+Das **Seitenprofil**, das die Kollisionsprüfung bestimmt, ist für kein Fahrzeug
+belegt. Ohne Profil rechnet die Prüfung mit einem Quader über die volle Höhe —
+die konservative Annahme, siehe [OFFEN-06](03-offene-fragen.md#offen-06).
 
 ## Was noch fehlt
 
 - **Bodenversatz direkt gemessen** — der eine Wert, der
   [OFFEN-02](03-offene-fragen.md#offen-02) endgültig schließt.
 - Tiefenversatz `x_A` des Festlagers gegenüber der Torebene.
-- Seitenprofil des Fahrzeugs, am Fahrzeug abgenommen.
+- Seitenprofil des Fahrzeugs, am Fahrzeug abgenommen
+  ([OFFEN-06](03-offene-fragen.md#offen-06)).
+- Höhe bei geöffneter Heckklappe, am Fahrzeug gemessen — beim Caddy bleiben
+  rechnerisch nur 15 mm ([OFFEN-10](03-offene-fragen.md#offen-10)).
 - Breite des Torblatts und der Schwenkarme — für das 3D-Modell zwingend.
