@@ -115,8 +115,26 @@ nicht online. `.github/workflows/ci.yml` prüft jeden Pull Request.
 Auslieferungsquelle ist **GitHub Actions**, nicht ein Branch. Der Workflow baut
 in Job `bauen`, lädt das Ergebnis als Pages-Artefakt hoch und veröffentlicht es
 in Job `veroeffentlichen` über `actions/deploy-pages`.
-`actions/configure-pages` mit `enablement: true` stellt die Quelle notfalls
-selbst um, sodass der Gang in die Einstellungen entfällt.
+**Einmalig von Hand zu setzen:** *Settings → Pages → Source →* **GitHub
+Actions**. Diese Einstellung nimmt einem `actions/configure-pages` **nicht** ab.
+Der Schritt legt eine noch nicht vorhandene Pages-Seite an; eine bestehende Seite
+stellt er nicht von Branch auf Actions um. Steht die Quelle noch auf einem
+Branch, läuft er wortlos in 0,3 Sekunden durch — und der Job
+`veroeffentlichen` scheitert danach mit einer Signatur, die leicht in die Irre
+führt:
+
+| Merkmal | Wert |
+| --- | --- |
+| Dauer | 2 Sekunden |
+| `runner_id` | 0, kein Runner zugeteilt |
+| Schritte | keine |
+| Log | HTTP 404, es gibt keines |
+
+Das ist **keine** Fehlfunktion im Job, sondern eine Ablehnung auf
+Deployment-Ebene, bevor überhaupt ein Runner angefordert wird. Wer sie als
+Job-Fehler liest, sucht an der falschen Stelle — beim Einrichten kostete das
+zwei Fehldiagnosen. Der Bau-Job ist in solchen Fällen grün und das Artefakt
+vollständig hochgeladen; es wird nur nicht angenommen.
 
 ### Warum nicht über einen `gh-pages`-Branch
 
