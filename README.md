@@ -135,9 +135,13 @@ geschätzt und bestimmt die Kollisionsprüfung. Die Oberfläche weist darauf hin
 
 ## Veröffentlichung
 
+Die Seite läuft unter **<https://f1rlefanz.github.io/Garagensimulator/>**.
+
 `.github/workflows/pages.yml` baut den aktuellen Stand bei jedem Push auf `main`
-und veröffentlicht ihn über GitHub Pages — aber erst, nachdem Typprüfung und
-Tests durchgelaufen sind. Was nicht grün ist, geht nicht online.
+und legt ihn im Branch `gh-pages` ab — aber erst, nachdem Typprüfung und Tests
+durchgelaufen sind. Was nicht grün ist, geht nicht online. Ausgeliefert wird
+direkt aus dem Branch, damit die Seite auch dann erreichbar bleibt, wenn gerade
+kein Actions-Runner frei ist.
 
 **Es gibt genau eine Implementierung.** Entwicklungsserver, veröffentlichte
 Seite und geteilte Vorschau sind dasselbe Programm, nur anders ausgeliefert;
