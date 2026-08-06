@@ -114,11 +114,25 @@ nicht grün ist, geht nicht online. `.github/workflows/ci.yml` prüft jeden Pull
 Request. Beide Workflows haben einen `concurrency`-Block, damit überholte Läufe
 abbrechen statt sich zu stapeln.
 
-**Warum über einen Branch und nicht über `actions/deploy-pages`:** Die Seite
-wird so direkt aus `gh-pages` ausgeliefert und bleibt auch dann erreichbar, wenn
-gerade kein Actions-Runner verfügbar ist. Das ist keine graue Theorie — beim
-Einrichten wurden zwei Läufe nacheinander nach sechs Minuten in der
-Warteschlange abgebrochen, ohne je einen Runner zugeteilt zu bekommen.
+**Warum über einen Branch und nicht über `actions/deploy-pages`:** Der gebaute
+Stand liegt als fertiges Artefakt im Branch und lässt sich zur Not von Hand
+befüllen, ohne dass unser Workflow läuft. Eine **bereits veröffentlichte** Seite
+bleibt außerdem erreichbar, wenn gerade kein Runner frei ist — ausgeliefert wird
+statisch, ohne Actions.
+
+**Was der Branch dagegen nicht löst:** Eine *neue* Veröffentlichung braucht
+trotzdem einen Runner. GitHub startet dafür einen eigenen Workflow
+`pages build and deployment`, den wir nicht kontrollieren. Beim Einrichten am
+06.08.2026 blieb dessen `build`-Job 15 Minuten mit leerem `runner_name` in der
+Warteschlange und wurde abgebrochen — während unser eigener `Pages`-Workflow im
+selben Zeitraum problemlos Runner bekam. Die Umstellung auf den Branch hat die
+Abhängigkeit vom Runner also nicht beseitigt, sondern nur verschoben.
+
+Wer sie ganz loswerden will, muss den umgekehrten Weg gehen: *Settings → Pages →
+Source: GitHub Actions* und im eigenen Workflow `actions/upload-pages-artifact`
+plus `actions/deploy-pages` verwenden. Dann läuft alles in dem Workflow, der
+nachweislich Runner bekommt — um den Preis, dass es kein von Hand befüllbares
+Artefakt mehr gibt.
 
 Der Branch lässt sich zur Not von Hand befüllen, ganz ohne Actions:
 

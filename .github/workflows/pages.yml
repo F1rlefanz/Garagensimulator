@@ -2,11 +2,15 @@ name: Pages
 
 # Baut bei jedem Push auf main und legt das Ergebnis im Branch `gh-pages` ab.
 #
-# Warum über einen Branch und nicht über actions/deploy-pages: Die Seite wird
-# dann von GitHub direkt aus dem Branch ausgeliefert und bleibt auch dann
-# erreichbar, wenn gerade kein Actions-Runner verfügbar ist. Der Branch lässt
-# sich zur Not von Hand befüllen — `npm run build -- --base=/<repo>/`, Inhalt
-# von `dist/` samt `.nojekyll` in den Branch, fertig.
+# Warum über einen Branch und nicht über actions/deploy-pages: Der gebaute Stand
+# liegt als fertiges Artefakt im Branch und laesst sich zur Not von Hand
+# befuellen — `npm run build -- --base=/<repo>/`, Inhalt von `dist/` samt
+# `.nojekyll` in den Branch, fertig.
+#
+# Achtung: Das macht die Veroeffentlichung NICHT unabhaengig von Actions-Runnern.
+# GitHub startet fuer den Branch einen eigenen Workflow
+# `pages build and deployment`, den wir nicht kontrollieren, und der braucht
+# ebenfalls einen Runner. Details in docs/05-architektur.md.
 on:
   push:
     branches: [main]
