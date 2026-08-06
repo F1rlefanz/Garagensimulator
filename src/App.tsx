@@ -15,8 +15,9 @@ import {
   liegtInnerhalb,
   maximalerParkabstand,
 } from './lib/fahrzeuggeometrie';
-import { fahrzeugNachId, REFERENZ_FAHRZEUG } from './domain/fahrzeuge';
-import { pruefeGeometrie } from './domain/garage';
+import { fahrzeugNachId, REFERENZ_FAHRZEUG, Seitenprofil } from './domain/fahrzeuge';
+import { m, pruefeGeometrie } from './domain/garage';
+import { pruefeGarage, URTEIL_LABEL } from './lib/garagenpruefung';
 import { Befunde } from './ui/Befunde';
 import { Eingaben } from './ui/Eingaben';
 import { Riss } from './ui/Riss';
@@ -32,6 +33,9 @@ function zahl(v: number, stellen = 3): string {
 export default function App() {
   const [config, setConfig] = useState<GarageConfig>(DEFAULT_CONFIG);
   const [fahrzeugId, setFahrzeugId] = useState(REFERENZ_FAHRZEUG.id);
+  const [seitenprofil, setSeitenprofil] = useState<Seitenprofil | undefined>(
+    REFERENZ_FAHRZEUG.seitenprofil,
+  );
   const [winkel, setWinkel] = useState(0);
   const [laeuft, setLaeuft] = useState(false);
   const [abstandRueckwand, setAbstandRueckwand] = useState(0);
@@ -50,8 +54,11 @@ export default function App() {
   const kontur = fahrzeugKontur(config, {
     rueckwaerts,
     abstandRueckwand: Math.min(abstandRueckwand, maxAbstand),
-    scheibenLaenge: fahrzeug.seitenprofil.scheibenLaenge,
+    seitenprofil,
   });
+
+  const einfahrtBreite = m('schmalsteStelleEinfahrt');
+  const garagenbefund = pruefeGarage(fahrzeug, config, einfahrtBreite);
 
   const k = calculateKinematics(Math.min(winkel, maxWinkel), config);
   // Geprüft wird bislang nur die Torunterkante B gegen die Fahrzeugkontur —
@@ -97,15 +104,12 @@ export default function App() {
     setFahrzeugId(id);
     const f = fahrzeugNachId(id);
     if (!f) return;
-    setConfig((vorher) => ({
-      ...vorher,
-      CAR_LENGTH: f.laenge,
-      CAR_HEIGHT: f.hoehe,
-      CAR_HOOD_LENGTH: f.seitenprofil.haubenLaenge,
-      CAR_HOOD_HEIGHT: f.seitenprofil.haubenHoehe,
-      CAR_ROOF_LENGTH: f.seitenprofil.dachLaenge,
-    }));
+    setConfig((vorher) => ({ ...vorher, CAR_LENGTH: f.laenge, CAR_HEIGHT: f.hoehe }));
+    setSeitenprofil(f.seitenprofil);
   };
+
+  const handleProfil = (feld: keyof Omit<Seitenprofil, 'quellenstufe'>, wert: number) =>
+    setSeitenprofil((vorher) => (vorher ? { ...vorher, [feld]: wert } : vorher));
 
   const anhalten = () => {
     setLaeuft(false);
@@ -232,8 +236,25 @@ export default function App() {
             <div className={`kachel-wert ${kollision ? 'schlecht' : 'gut'}`}>
               {kollision ? 'Ja' : 'Nein'}
             </div>
+            <div className="kachel-fussnote">geprüft wird nur die Torunterkante</div>
+          </div>
+          <div className="kachel">
+            <div className="kachel-label">Passt in die Garage</div>
+            <div
+              className={`kachel-wert ${
+                garagenbefund.urteil === 'sicher'
+                  ? 'gut'
+                  : garagenbefund.urteil === 'passt-nicht'
+                    ? 'schlecht'
+                    : ''
+              }`}
+            >
+              {URTEIL_LABEL[garagenbefund.urteil]}
+            </div>
             <div className="kachel-fussnote">
-              geprüft wird nur die Torunterkante
+              {garagenbefund.engsteReserve === undefined
+                ? 'keine Achse belegt'
+                : `engste Achse ${zahl(garagenbefund.engsteReserve * 100, 1)} cm`}
             </div>
           </div>
         </section>
@@ -243,10 +264,13 @@ export default function App() {
             config={config}
             fahrzeug={fahrzeug}
             fahrzeugId={fahrzeugId}
+            seitenprofil={seitenprofil}
             abstandRueckwand={Math.min(abstandRueckwand, maxAbstand)}
             maxAbstand={maxAbstand}
+            einfahrtBreite={einfahrtBreite}
             onConfig={handleConfig}
             onFahrzeug={handleFahrzeug}
+            onProfil={handleProfil}
             onAbstand={setAbstandRueckwand}
             onZuruecksetzen={() => {
               setConfig(DEFAULT_CONFIG);
@@ -256,7 +280,54 @@ export default function App() {
               anhalten();
             }}
           />
-          <Befunde befunde={befunde} />
+          <div>
+            <Befunde befunde={befunde} />
+
+            <h2 className="block-titel" style={{ marginTop: 'var(--sp-5)' }}>
+              Passt es hinein?
+            </h2>
+            <p className="block-hinweis">
+              Statische Prüfung gegen die nachgemessene Garage — unabhängig von der
+              Torbewegung. Die Vergleichsmatrix rechnete mit 5,10 m Länge, 2,19 m
+              Höhe und 2,30 m Breite; hier gelten die tatsächlich gemessenen Werte.
+            </p>
+            {garagenbefund.achsen.map((a) => (
+              <div className={`befund ${a.urteil === 'passt-nicht' ? 'fehler' : a.urteil === 'knapp' ? 'warnung' : 'geloest'}`} key={a.achse}>
+                <div className="befund-kopf">
+                  <span>{a.bezeichnung}</span>
+                  <span>·</span>
+                  <span>{URTEIL_LABEL[a.urteil]}</span>
+                  {a.reserve !== undefined && (
+                    <>
+                      <span>·</span>
+                      <span>{zahl(a.reserve * 100, 1)} cm Reserve</span>
+                    </>
+                  )}
+                </div>
+                <p>
+                  Verfügbar {zahl(a.verfuegbar, 3)} m
+                  {a.benoetigt === undefined
+                    ? ', Fahrzeugmaß nicht belegt'
+                    : `, benötigt ${zahl(a.benoetigt, 3)} m`}
+                  . {a.anmerkung}
+                </p>
+              </div>
+            ))}
+            {garagenbefund.heckklappeOeffenbar !== undefined && (
+              <div className={`befund ${garagenbefund.heckklappeOeffenbar ? 'geloest' : 'fehler'}`}>
+                <div className="befund-kopf">
+                  <span>Heckklappe</span>
+                  <span>·</span>
+                  <span>{garagenbefund.heckklappeOeffenbar ? 'lässt sich öffnen' : 'lässt sich nicht öffnen'}</span>
+                </div>
+                <p>
+                  Bei geöffneter Heckklappe braucht das Fahrzeug{' '}
+                  {zahl(fahrzeug.hoeheHeckOffen ?? 0, 3)} m, verfügbar sind{' '}
+                  {zahl(config.CLEAR_HEIGHT, 3)} m unter der Laufschiene.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         <footer className="fuss">

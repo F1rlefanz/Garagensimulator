@@ -1,29 +1,37 @@
 name: Pages
 
-# Baut bei jedem Push auf main und legt das Ergebnis im Branch `gh-pages` ab.
+# Baut bei jedem Push auf main und veroeffentlicht das Ergebnis auf GitHub Pages.
 #
-# Warum über einen Branch und nicht über actions/deploy-pages: Die Seite wird
-# dann von GitHub direkt aus dem Branch ausgeliefert und bleibt auch dann
-# erreichbar, wenn gerade kein Actions-Runner verfügbar ist. Der Branch lässt
-# sich zur Not von Hand befüllen — `npm run build -- --base=/<repo>/`, Inhalt
-# von `dist/` samt `.nojekyll` in den Branch, fertig.
+# Warum die Veroeffentlichung in diesem Workflow steckt und nicht ueber einen
+# gh-pages-Branch laeuft: Beim Weg ueber den Branch startet GitHub einen eigenen
+# Workflow `pages build and deployment`, den wir nicht kontrollieren. Am
+# 06.08.2026 blieb dessen build-Job wiederholt viertelstundenlang mit leerem
+# runner_name in der Warteschlange, waehrend dieser Workflow im selben Zeitraum
+# in unter einer Minute durchlief. Alles in einem Workflow heisst: eine
+# Warteschlange, die nachweislich bedient wird.
+#
+# Voraussetzung: Settings -> Pages -> Source steht auf "GitHub Actions".
+# `actions/configure-pages` mit `enablement: true` stellt das notfalls selbst um.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Eigener Gruppenname: Nebenlaeufigkeitsgruppen gelten repository-weit, nicht
-# pro Workflow. Hiesse die Gruppe "pages", koennte dieser Workflow GitHubs
-# eigene Auslieferung abbrechen, die denselben Namen verwendet.
+# Eigener Gruppenname statt "pages": Nebenlaeufigkeitsgruppen gelten
+# repository-weit, nicht pro Workflow.
 concurrency:
-  group: seite-bauen
-  cancel-in-progress: true
+  group: seite-veroeffentlichen
+  # Eine laufende Veroeffentlichung nicht abbrechen — ein halb ausgelieferter
+  # Stand waere schlimmer als ein ueberholter.
+  cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  veroeffentlichen:
+  bauen:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -43,19 +51,34 @@ jobs:
       - name: Tests
         run: npm test
 
+      # Stellt die Auslieferungsquelle auf "GitHub Actions" um, falls sie noch
+      # auf einem Branch steht. Spart den Gang in die Einstellungen.
+      - name: Pages einrichten
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       # Project Pages liegen unter /<repo>/, deshalb der Basispfad.
       - name: Build
-        run: |
-          npm run build -- --base=/${{ github.event.repository.name }}/
-          touch dist/.nojekyll
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
 
-      - name: Nach gh-pages veröffentlichen
-        uses: peaceiris/actions-gh-pages@v4
+      - uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          force_orphan: true
-          user_name: Claude
-          user_email: noreply@anthropic.com
-          commit_message: "Gebaute Seite fuer GitHub Pages (${{ github.sha }})"
+          path: ./dist
+
+  veroeffentlichen:
+    needs: bauen
+    # Die Umgebung `github-pages` laesst nur Veroeffentlichungen vom
+    # Standardbranch zu. Ein Lauf auf einem Feature-Branch soll deshalb bauen
+    # und pruefen, aber nicht ausliefern — sonst scheitert er sekundenschnell an
+    # der Schutzregel, ohne je einen Runner zu bekommen, und faerbt den Pull
+    # Request rot, obwohl nichts kaputt ist.
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
