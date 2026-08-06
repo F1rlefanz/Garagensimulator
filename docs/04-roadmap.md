@@ -40,8 +40,12 @@ Nachmessung vom 06.08.2026 eingearbeitet. Siehe
       berühren
 - [ ] Kleinsten Abstand über den gesamten Öffnungsweg ausgeben statt nur
       „Kollision ja/nein" — die Reserve in Zentimetern ist die eigentliche Antwort
-- [ ] Fahrzeughöhe gegen die lichte Durchfahrtshöhe (2,17 m) prüfen — passiert
-      derzeit gar nicht
+- [x] Fahrzeughöhe gegen die lichte Durchfahrtshöhe (2,17 m) prüfen —
+      `src/lib/garagenpruefung.ts` prüft Länge, Höhe und Breite mit eigenem
+      Urteil je Achse
+- [ ] Höhe bei geöffneter Heckklappe für den ganzen Katalog belegen — derzeit
+      nur zwei Fahrzeuge, und beim Caddy bleiben 15 mm
+      ([OFFEN-10](03-offene-fragen.md#offen-10))
 - [ ] Fahrzeug-Seitenprofil aus Stützpunkten statt aus fest verdrahteten
       Polygon-Formeln
 - [ ] Vergleichsansicht vorwärts vs. rückwärts eingeparkt
@@ -60,17 +64,24 @@ Umsetzung von Abschnitt 4 des Handoffs. Datenmodell und Auswahlmenü stehen in
 
 - [x] Auswahlmenü in der UI: `Individuell` plus fester Katalog; Katalogmaße
       gesperrt, nur die freie Eingabe ist editierbar
-- [x] VW Caddy Maxi (2026) mit recherchierten Außenmaßen aufgenommen
-- [ ] Seitenprofil des Caddy am Fahrzeug nachmessen — es bestimmt die
-      Kollisionsprüfung und ist derzeit geschätzt
-- [ ] Weitere Kandidaten je Kategorie: Minivan, Kleinbus, Transporter, Camper
+- [x] Katalog aus der Vergleichsmatrix „Autokauf" befüllt: 30 Fahrzeuge über
+      alle Kategorien, maschinell übernommen statt abgetippt
+- [x] Quellenstufen A–D aus der Systematik der Matrix übernommen und in der
+      Oberfläche angezeigt
+- [x] Ladelänge, Ladebreite zwischen den Radkästen und Innenhöhe des Laderaums
+      aufgenommen — für die Frage, ob darin geschlafen werden kann
+- [x] Urteil je Achse gegen die **nachgemessene** Garage neu gerechnet; die
+      Urteilsspalte der Matrix verworfen ([OFFEN-11](03-offene-fragen.md#offen-11))
+- [ ] Seitenprofil nachmessen — es bestimmt die Kollisionsprüfung und ist für
+      **kein** Fahrzeug belegt ([OFFEN-06](03-offene-fragen.md#offen-06))
 - [ ] Breitenmaße mit angeklappten Spiegeln ergänzen
 - [ ] Mehrere Fahrzeuge gleichzeitig vergleichen
 
-Datendisziplin: Jedes Maß trägt seinen Datenstand, und Außenmaße werden getrennt
-vom Seitenprofil bewertet. Was nicht belegt ist, bleibt leer oder steht auf
-`'geschaetzt'` — ein geschätztes Maß, das wie ein gemessenes aussieht, ist hier
-gefährlicher als eine Lücke.
+Datendisziplin: Jedes Fahrzeug trägt seine Quellenstufe, das Seitenprofil
+zusätzlich eine eigene. Was nicht belegt ist, bleibt `undefined` — ein
+geschätztes Maß, das wie ein gemessenes aussieht, ist hier gefährlicher als eine
+Lücke. Die Prüfung meldet eine unbelegte Achse als *nicht prüfbar*, statt sie zu
+bestehen.
 
 ## Phase 4 — Übergang nach 3D
 

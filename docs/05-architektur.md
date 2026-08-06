@@ -38,6 +38,25 @@ Dasselbe gilt für Geometrie: Die Fahrzeugkontur liegt in
 Kollisionsprüfung verwendet. Vorher gab es zwei Fassungen davon — die Ansicht
 zeigte etwas anderes an, als gerechnet wurde.
 
+### Zwei getrennte Fragen, zwei Module
+
+| Frage | Modul | Art |
+| --- | --- | --- |
+| Passt das Fahrzeug überhaupt hinein? | `garagenpruefung.ts` | statisch: Länge, Höhe, Breite |
+| Schließt das Tor danach noch? | `kinematics.ts` + `fahrzeuggeometrie.ts` | dynamisch: Kontur gegen Torbahn |
+
+Die Trennung ist keine Ästhetik. Die erste Frage lässt sich für den ganzen
+Katalog beantworten, die zweite nur dort, wo ein Seitenprofil vorliegt — und das
+liegt nirgends vor ([OFFEN-06](03-offene-fragen.md#offen-06)).
+
+### Fehlende Maße bleiben fehlend
+
+`undefined` wird nicht durch einen plausiblen Wert ersetzt. `pruefeGarage()`
+kennt dafür das Urteil `nicht-pruefbar`, und `fahrzeugKontur()` fällt ohne
+Seitenprofil auf einen Quader über die volle Höhe zurück. Beides zeigt in
+dieselbe Richtung: lieber ein Fahrzeug zu Unrecht ablehnen als eines zu Unrecht
+durchwinken.
+
 ## Ablageort auf dem Entwicklungsrechner
 
 **`%USERPROFILE%\Code\TypeScript\Garagensimulator`**
