@@ -1,3 +1,4 @@
+import { Seitenprofil } from '../domain/fahrzeuge';
 import { GarageConfig } from './kinematics';
 
 /**
@@ -15,8 +16,13 @@ export interface Parkstellung {
   readonly rueckwaerts: boolean;
   /** Abstand des zum Anschlag zeigenden Endes zur Styropor-Oberfläche. */
   readonly abstandRueckwand: number;
-  /** Waagerechte Erstreckung der Windschutzscheibe. */
-  readonly scheibenLaenge: number;
+  /**
+   * Seitenprofil des Fahrzeugs. Fehlt es — was für fast alle Fahrzeuge gilt,
+   * weil es in keinem Datenblatt steht —, wird mit einem Quader über die volle
+   * Höhe gerechnet. Das ist die konservative Annahme: Ein erfundenes Profil
+   * würde das Tor freier aussehen lassen, als es ist.
+   */
+  readonly seitenprofil?: Seitenprofil;
 }
 
 /** Anschlagfläche hinten: Oberfläche der Dämmung, nicht die Rohbauwand. */
@@ -41,8 +47,20 @@ export function fahrzeugFront(config: GarageConfig, abstandRueckwand: number): n
 export function fahrzeugKontur(config: GarageConfig, stellung: Parkstellung): Punkt[] {
   const x = fahrzeugFront(config, stellung.abstandRueckwand);
   const b = config.FLOOR_OFFSET;
-  const { CAR_LENGTH: L, CAR_HEIGHT: H, CAR_HOOD_LENGTH: hl, CAR_HOOD_HEIGHT: hh, CAR_ROOF_LENGTH: rl } = config;
-  const ws = stellung.scheibenLaenge;
+  const { CAR_LENGTH: L, CAR_HEIGHT: H } = config;
+
+  // Ohne belegtes Seitenprofil: Quader über die volle Höhe.
+  if (!stellung.seitenprofil) {
+    return [
+      [x, b],
+      [x, b + H],
+      [x + L, b + H],
+      [x + L, b],
+    ];
+  }
+
+  const { haubenLaenge: hl, haubenHoehe: hh, dachLaenge: rl, scheibenLaenge: ws } =
+    stellung.seitenprofil;
 
   if (stellung.rueckwaerts) {
     return [

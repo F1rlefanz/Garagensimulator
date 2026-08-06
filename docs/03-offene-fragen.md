@@ -22,7 +22,9 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-07](#offen-07) | Torblatthöhe: Summe ≠ Gesamtmaß, 12 mm | Warnung |
 | [OFFEN-01](#offen-01) | Schwenkarmlänge weicht um 2,5 cm ab | Warnung, akzeptiert |
 | [OFFEN-08](#offen-08) | Tiefenversatz des Festlagers nicht gemessen | offen |
-| [OFFEN-06](#offen-06) | Fahrzeug-Seitenprofil ohne Quelle | offen |
+| [OFFEN-06](#offen-06) | Fahrzeug-Seitenprofil für kein Fahrzeug belegt | offen |
+| [OFFEN-10](#offen-10) | Heckklappenhöhe nur für zwei Fahrzeuge, Variante unsicher | offen |
+| [OFFEN-11](#offen-11) | Vergleichsmatrix rechnete mit anderen Garagenmaßen | erledigt im Code, Matrix veraltet |
 
 ---
 
@@ -144,32 +146,93 @@ Lagerbolzens von der Ebene des geschlossenen Torblatts.
 
 ## OFFEN-06
 
-**Das Fahrzeug-Seitenprofil steht in keinem Datenblatt.**
-Schwere: offen — und der empfindlichste verbliebene Punkt.
+**Das Fahrzeug-Seitenprofil steht in keinem Datenblatt — für kein einziges
+Fahrzeug des Katalogs.** Schwere: offen.
 
-Die Außenmaße des VW Caddy Maxi sind recherchiert und über zwei Quellen
-abgeglichen:
+Die Außenmaße des VW Caddy SB Maxi stammen aus dem Herstellerdatenblatt
+(Quellenstufe A):
 
-| Maß | Wert | Stand |
-| --- | --- | --- |
-| Länge | 4,851 m | recherchiert |
-| Höhe | 1,829 m | recherchiert |
-| Breite ohne Spiegel | 1,855 m | recherchiert |
-| Breite mit Spiegeln | 2,10 m | recherchiert, nur gerundet belegt |
-| Radstand | 2,968 m | recherchiert |
+| Maß | Wert |
+| --- | --- |
+| Länge | 4,863 m |
+| Höhe (ohne Dachreling) | 1,842 m |
+| Breite ohne Spiegel | 1,855 m |
+| Breite mit Spiegeln | 2,10 m — nur gerundet belegt |
 
-**Haubenlänge, Haubenhöhe und Dachlänge dagegen nicht.** Sie stammen aus dem
-Prototyp, ohne Quelle, und bestimmen die Kollisionsprüfung unmittelbar — gerade
-beim Rückwärtseinparken, wo die flach abfallende Front der kritische Bereich
-ist. In der UI sind sie deshalb als geschätzt gekennzeichnet.
+**Haubenlänge, Haubenhöhe, Dachlänge und Scheibenlänge dagegen nicht.** Früher
+standen dafür Zahlen aus dem Prototyp im Code, ohne Quelle. Sie sind entfernt:
+`seitenprofil` ist jetzt optional und bei **allen** Katalogfahrzeugen leer. Fehlt
+es, rechnet `fahrzeugKontur()` mit einem **Quader über die volle Höhe**.
 
-**Nachzumessen am Fahrzeug**, bevor eine Kaufentscheidung darauf gestützt wird:
-Höhe der Haubenvorderkante über der Fahrbahn, waagerechter Abstand von der
-Fahrzeugfront bis zum Fuß der Windschutzscheibe, waagerechte Dachlänge.
+Das ist die konservative Richtung. Ein geschätztes Profil mit flach abfallender
+Front ließe das Tor freier aussehen, als es ist — genau dort, wo es beim
+Rückwärtseinparken kritisch wird. Der Quader kann höchstens eine Kollision
+melden, die in Wahrheit keine ist; er kann keine übersehen.
+`src/domain/fahrzeuge.test.ts` hält fest, dass kein Katalogfahrzeug ein Profil
+trägt — wird eines nachgemessen, schlägt der Test fehl.
+
+**Nachzumessen am Fahrzeug**, bevor eine Kaufentscheidung auf die
+Kollisionsprüfung gestützt wird: Höhe der Haubenvorderkante über der Fahrbahn,
+waagerechter Abstand von der Fahrzeugfront bis zum Fuß der Windschutzscheibe,
+waagerechte Erstreckung der Scheibe, waagerechte Dachlänge.
 
 Zur Breite: Mit ausgeklappten Spiegeln bleiben an der schmalsten Stelle der
 Einfahrt (2,24 m, bestimmt von den Schwenkarmen) rund **14 cm** übrig, also 7 cm
 je Seite. Das ist knapp, aber machbar — angeklappt deutlich entspannter.
+
+---
+
+## OFFEN-10
+
+**Die Höhe bei geöffneter Heckklappe ist nur für zwei Fahrzeuge belegt — und
+dort mit unsicherer Variantenzuordnung.** Schwere: offen.
+
+Dieses Maß fehlte dem Modell bis zur Übernahme der Vergleichsmatrix vollständig.
+Es ist das erste, das beim Caddy wirklich eng wird:
+
+| Fahrzeug | Höhe Heck offen | lichte Höhe | Rest |
+| --- | --- | --- | --- |
+| VW Caddy SB Maxi | 2,155 m | 2,170 m | **15 mm** |
+| Renault Grand Kangoo L2 (neue Gen.) | 2,071 m | 2,170 m | 99 mm |
+
+15 mm liegen **innerhalb der Messunsicherheit** dieses Modells — die Schwelle
+für ein Messrauschen liegt bei ebenfalls 15 mm. `pruefeGarage()` meldet
+`heckklappeOeffenbar: true`, aber daraus lässt sich kein belastbares „passt"
+ableiten. Vor einem Kauf ist am Fahrzeug zu messen, und zwar bei geöffneter
+Klappe im Endanschlag.
+
+Erschwerend: Der Wert für den Caddy stammt aus Blatt „11 Neuwagen 2026" der
+Vergleichsmatrix und ist dort dem *Caddy Life Maxi eHybrid* mit **1.850 mm**
+Fahrzeughöhe zugeordnet, nicht den hier geführten 1.842 mm. Die 8 mm Differenz
+deuten auf eine andere Variante. Der Wert steht deshalb mit dieser Einschränkung
+als `notiz` am Fahrzeug.
+
+Für alle übrigen 28 Katalogfahrzeuge ist das Maß **nicht belegt**. Es wurde
+nichts abgeleitet und nichts geschätzt.
+
+---
+
+## OFFEN-11
+
+**Die Vergleichsmatrix rechnete mit anderen Garagenmaßen als den
+nachgemessenen.** Schwere: im Code erledigt, in der Tabelle veraltet.
+
+Blatt „02 Maße & Garage" der Matrix führte eine Spalte `GARAGEN-URTEIL`. Sie
+beruhte auf Annahmen, die vor der Nachmessung vom 06.08.2026 entstanden sind:
+
+| Größe | Annahme der Matrix | nachgemessen | Differenz |
+| --- | --- | --- | --- |
+| nutzbare Länge | 5.100 mm | 5.220 mm | +120 mm großzügiger |
+| Durchfahrtshöhe | 2.190 mm | 2.170 mm | **−20 mm knapper** |
+| Einfahrtsbreite | 2.300 mm | 2.240 mm | **−60 mm knapper** |
+
+Zwei der drei Achsen sind in Wirklichkeit **enger** als angenommen, besonders
+die Breite. Jedes Urteil aus dieser Spalte ist damit hinfällig.
+
+Deshalb wurde die Spalte **nicht** übernommen. `src/lib/garagenpruefung.ts`
+rechnet die Urteile aus `src/domain/garage.ts` neu — aus derselben Quelle wie
+die Zeichnung. Übernommen wurden aus der Matrix ausschließlich die
+**Fahrzeugmaße** samt ihrer Quellenstufe.
 
 ---
 

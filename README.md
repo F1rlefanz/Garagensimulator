@@ -43,7 +43,8 @@ src/
 │   └── fahrzeuge.ts            Fahrzeugkatalog
 ├── lib/                     Berechnung, rein funktional, ohne React
 │   ├── kinematics.ts           Tor-Kinematik
-│   └── fahrzeuggeometrie.ts    Parkstellung, Kontur, Kollisionsprüfung
+│   ├── fahrzeuggeometrie.ts    Parkstellung, Kontur, Kollisionsprüfung
+│   └── garagenpruefung.ts      passt das Fahrzeug hinein: Länge, Höhe, Breite
 ├── ui/                      Darstellung
 │   ├── Riss.tsx                der Vertikalschnitt
 │   ├── Eingaben.tsx            Messwert- und Fahrzeugfelder
@@ -124,14 +125,29 @@ Test gemeinsam nachzuziehen.
 ## Fahrzeuge
 
 Die Auswahl in der Oberfläche bietet `Individuell` (frei editierbar) und einen
-festen Katalog, dessen Maße gesperrt sind. Gepflegt wird er in
-[`src/domain/fahrzeuge.ts`](src/domain/fahrzeuge.ts).
+Katalog aus **30 Fahrzeugen**, dessen Maße gesperrt sind. Gepflegt wird er in
+[`src/domain/fahrzeuge.ts`](src/domain/fahrzeuge.ts); die Maße stammen aus der
+Vergleichsmatrix „Autokauf" und wurden maschinell übernommen, nicht abgetippt.
 
-Jedes Fahrzeug trägt zwei Datenstände. Beim VW Caddy Maxi (2026) sind die
-Außenmaße recherchiert und über zwei Quellen abgeglichen — Länge 4,851 m, Höhe
-1,829 m, Breite 1,855 m ohne bzw. 2,10 m mit Spiegeln. Das **Seitenprofil**
-dagegen (Haubenlänge, Haubenhöhe, Dachlänge) steht in keinem Datenblatt, ist
-geschätzt und bestimmt die Kollisionsprüfung. Die Oberfläche weist darauf hin.
+Jedes Fahrzeug trägt eine **Quellenstufe** A bis D — von A (Herstellerdatenblatt,
+als Fakt zitierbar) bis D (Forum, nur Hypothese). Sie steht in der Oberfläche am
+Fahrzeug. Was in der Matrix als „n. v." stand, ist hier `undefined`: Es wurde
+nichts geschätzt, um eine Lücke zu füllen. `pruefeGarage()` meldet eine solche
+Achse als *nicht prüfbar*, statt sie stillschweigend zu bestehen.
+
+Das **Seitenprofil** (Haubenlänge, Haubenhöhe, Scheiben- und Dachlänge) steht in
+keinem Datenblatt und ist deshalb für kein Fahrzeug belegt. Ohne Profil rechnet
+die Kollisionsprüfung mit einem **Quader über die volle Höhe** — die
+konservative Richtung: Ein geschätztes Profil ließe das Tor freier aussehen, als
+es ist.
+
+Die Prüfung „passt es hinein" läuft über drei Achsen — nutzbare Tiefe (5,220 m),
+lichte Höhe (2,170 m) und schmalste Stelle der Einfahrt (2,240 m). Ab 15 cm
+Reserve gilt eine Achse als sicher, darunter als knapp; das schlechteste
+Einzelurteil bestimmt das Gesamturteil. Das **engste bekannte Maß** ist nicht
+die Fahrzeughöhe, sondern die Höhe bei geöffneter Heckklappe: Beim Caddy Maxi
+bleiben rechnerisch 15 mm — innerhalb der Messunsicherheit, siehe
+[OFFEN-10](docs/03-offene-fragen.md#offen-10).
 
 ## Veröffentlichung
 

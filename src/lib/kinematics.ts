@@ -37,9 +37,6 @@ export interface GarageConfig {
   GARAGE_HEIGHT: number;
   CAR_LENGTH: number;
   CAR_HEIGHT: number;
-  CAR_HOOD_LENGTH: number;
-  CAR_HOOD_HEIGHT: number;
-  CAR_ROOF_LENGTH: number;
   STYROFOAM_THICKNESS: number;
 }
 
@@ -68,9 +65,6 @@ export const DEFAULT_CONFIG: GarageConfig = {
   GARAGE_HEIGHT: DECKE_UEBER_TOREBENE,
   CAR_LENGTH: REFERENZ_FAHRZEUG.laenge,
   CAR_HEIGHT: REFERENZ_FAHRZEUG.hoehe,
-  CAR_HOOD_LENGTH: REFERENZ_FAHRZEUG.seitenprofil.haubenLaenge,
-  CAR_HOOD_HEIGHT: REFERENZ_FAHRZEUG.seitenprofil.haubenHoehe,
-  CAR_ROOF_LENGTH: REFERENZ_FAHRZEUG.seitenprofil.dachLaenge,
   STYROFOAM_THICKNESS: m('styroporDicke'),
 };
 
