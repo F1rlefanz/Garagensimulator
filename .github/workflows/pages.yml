@@ -1,0 +1,65 @@
+name: Pages
+
+# Veröffentlicht den Build bei jedem Push auf main. Damit ist die Online-Ansicht
+# immer der Stand des Hauptbranches — ohne dass jemand etwas anstoßen muss.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Nur ein Deployment gleichzeitig. Überholte Läufe werden abgebrochen, statt
+# sich in der Warteschlange zu stapeln.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Nicht veröffentlichen, was nicht durchläuft: erst prüfen, dann bauen.
+      - name: Typprüfung
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      # Project Pages liegen unter /<repo>/, deshalb der Basispfad.
+      - name: Build
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
+
+      # enablement schaltet Pages beim ersten Lauf selbst frei — sonst müsste
+      # die Quelle einmal von Hand auf „GitHub Actions" gestellt werden.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

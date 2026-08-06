@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Ein Lauf je Branch. Wird nachgepusht, bricht der überholte Lauf ab, statt in
+# der Warteschlange um dieselben Runner zu konkurrieren.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Typprüfung, Tests und Produktionsbuild — dasselbe wie `npm run check`,
+      # aber als einzelne Schritte, damit im Log sofort sichtbar ist, was hakt.
+      - name: Typprüfung
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build

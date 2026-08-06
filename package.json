@@ -1,0 +1,34 @@
+{
+  "name": "garagensimulator",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Kinematische Simulation eines vorstehenden Garagen-Schwingtors und Prüfung der Einpark-Passgenauigkeit.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite --port=3000 --host=0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run lint && npm run test && npm run build",
+    "build:einzeldatei": "vite build && node scripts/einzeldatei.mjs"
+  },
+  "dependencies": {
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.3",
+    "vitest": "^3.2.4"
+  }
+}
