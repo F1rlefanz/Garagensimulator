@@ -10,8 +10,10 @@ name: Pages
 # in unter einer Minute durchlief. Alles in einem Workflow heisst: eine
 # Warteschlange, die nachweislich bedient wird.
 #
-# Voraussetzung: Settings -> Pages -> Source steht auf "GitHub Actions".
-# `actions/configure-pages` mit `enablement: true` stellt das notfalls selbst um.
+# Voraussetzung, die von Hand zu setzen ist: Settings -> Pages -> Source auf
+# "GitHub Actions". `actions/configure-pages` nimmt das NICHT ab — steht die
+# Quelle noch auf einem Branch, laeuft der Schritt wortlos durch und der Job
+# `veroeffentlichen` scheitert danach in zwei Sekunden, ohne Runner und ohne Log.
 on:
   push:
     branches: [main]
@@ -51,8 +53,10 @@ jobs:
       - name: Tests
         run: npm test
 
-      # Stellt die Auslieferungsquelle auf "GitHub Actions" um, falls sie noch
-      # auf einem Branch steht. Spart den Gang in die Einstellungen.
+      # Legt eine noch nicht eingerichtete Pages-Seite an. Eine BESTEHENDE Seite
+      # stellt der Schritt nicht von Branch auf Actions um — das ist am
+      # 06.08.2026 nachgewiesen worden. Er bleibt trotzdem drin, weil er auf
+      # einem frischen Repository die Einrichtung spart.
       - name: Pages einrichten
         uses: actions/configure-pages@v5
         with:
