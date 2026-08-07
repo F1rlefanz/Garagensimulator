@@ -55,7 +55,8 @@ src/
 └── App.tsx                  Zusammensetzung
 
 scripts/einzeldatei.mjs      Build zu einer eigenständigen HTML-Datei
-docs/                        Handoff, Messwerte, offene Fragen, Roadmap, Architektur
+docs/                        Handoff, Messwerte, offene Fragen, Roadmap,
+                             Architektur, Marktrelevanz
 ```
 
 Messwerte werden **ausschließlich** in `src/domain/` gepflegt. `DEFAULT_CONFIG`
@@ -181,4 +182,5 @@ zweite Wahrheit über die Maße.
 | [`docs/03-offene-fragen.md`](docs/03-offene-fragen.md) | Widersprüche in den Messwerten, was nachzumessen ist |
 | [`docs/04-roadmap.md`](docs/04-roadmap.md) | Weg von 2D nach 3D |
 | [`docs/05-architektur.md`](docs/05-architektur.md) | Aufbau, Technologiewahl, Ablageort |
+| [`docs/06-marktrelevanz.md`](docs/06-marktrelevanz.md) | Ab wann ein Modell veraltet ist — Stichtage statt Faustregeln |
 | [`docs/bilder/`](docs/bilder/) | Schemaskizze und Fotos der Tormechanik |

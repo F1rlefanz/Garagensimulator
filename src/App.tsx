@@ -15,7 +15,14 @@ import {
   liegtInnerhalb,
   maximalerParkabstand,
 } from './lib/fahrzeuggeometrie';
-import { fahrzeugNachId, REFERENZ_FAHRZEUG, Seitenprofil } from './domain/fahrzeuge';
+import {
+  AUSWAHL,
+  fahrzeugNachId,
+  istEditierbar,
+  pruefhoehe,
+  REFERENZ_FAHRZEUG,
+  Seitenprofil,
+} from './domain/fahrzeuge';
 import { m, pruefeGeometrie } from './domain/garage';
 import { pruefeGarage, URTEIL_LABEL } from './lib/garagenpruefung';
 import { Befunde } from './ui/Befunde';
@@ -45,6 +52,8 @@ export default function App() {
   const [zeigeKonstruktion, setZeigeKonstruktion] = useState(true);
   const [rueckwaerts, setRueckwaerts] = useState(true);
   const [panelOffen, setPanelOffen] = useState(false);
+  const [nurPassende, setNurPassende] = useState(false);
+  const [nurNeue, setNurNeue] = useState(false);
 
   const fahrzeug = fahrzeugNachId(fahrzeugId) ?? REFERENZ_FAHRZEUG;
 
@@ -62,6 +71,21 @@ export default function App() {
 
   const einfahrtBreite = m('schmalsteStelleEinfahrt');
   const garagenbefund = pruefeGarage(fahrzeug, config, einfahrtBreite);
+
+  // Gefilterte Auswahlliste. Das gerade gewählte Fahrzeug bleibt immer drin —
+  // sonst stünde die Auswahl leer da, sobald ein Filter es ausschließt.
+  const auswahl = useMemo(
+    () =>
+      AUSWAHL.filter((f) => {
+        if (f.id === fahrzeugId || istEditierbar(f.id)) return true;
+        if (nurNeue && f.marktstatus !== 'neu') return false;
+        if (nurPassende && pruefeGarage(f, config, einfahrtBreite).urteil === 'passt-nicht') {
+          return false;
+        }
+        return true;
+      }),
+    [fahrzeugId, nurNeue, nurPassende, config, einfahrtBreite],
+  );
 
   const k = calculateKinematics(Math.min(winkel, maxWinkel), config);
   // Geprüft wird bislang nur die Torunterkante B gegen die Fahrzeugkontur —
@@ -107,7 +131,11 @@ export default function App() {
     setFahrzeugId(id);
     const f = fahrzeugNachId(id);
     if (!f) return;
-    setConfig((vorher) => ({ ...vorher, CAR_LENGTH: f.laenge, CAR_HEIGHT: f.hoehe }));
+    setConfig((vorher) => ({
+      ...vorher,
+      CAR_LENGTH: f.laenge.wert,
+      CAR_HEIGHT: pruefhoehe(f).wert,
+    }));
     setSeitenprofil(f.seitenprofil);
   };
 
@@ -284,10 +312,15 @@ export default function App() {
                 seitenprofil={seitenprofil}
                 abstandRueckwand={Math.min(abstandRueckwand, maxAbstand)}
                 maxAbstand={maxAbstand}
+                auswahl={auswahl}
+                nurPassende={nurPassende}
+                nurNeue={nurNeue}
                 onConfig={handleConfig}
                 onFahrzeug={handleFahrzeug}
                 onProfil={handleProfil}
                 onAbstand={setAbstandRueckwand}
+                onNurPassende={setNurPassende}
+                onNurNeue={setNurNeue}
               />
             </div>
           </div>

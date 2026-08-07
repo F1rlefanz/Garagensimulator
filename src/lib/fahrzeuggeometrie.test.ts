@@ -39,7 +39,7 @@ describe('Parkgeometrie', () => {
     const front = fahrzeugFront(DEFAULT_CONFIG, 0);
 
     expect(front + DEFAULT_CONFIG.CAR_LENGTH).toBeCloseTo(rueckwandAnschlag(DEFAULT_CONFIG), 6);
-    expect(front).toBeCloseTo(rueckwandAnschlag(DEFAULT_CONFIG) - REFERENZ_FAHRZEUG.laenge, 9);
+    expect(front).toBeCloseTo(rueckwandAnschlag(DEFAULT_CONFIG) - REFERENZ_FAHRZEUG.laenge.wert, 9);
   });
 });
 

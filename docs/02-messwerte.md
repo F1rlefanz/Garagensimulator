@@ -148,12 +148,18 @@ Alle Werte ab Torschließebene.
 
 ## Fahrzeuge
 
-Gepflegt in [`src/domain/fahrzeuge.ts`](../src/domain/fahrzeuge.ts): 30
-Katalogeinträge plus die freie Eingabe `Individuell`. Die Maße stammen aus der
-Vergleichsmatrix „Autokauf", Blatt „02 Maße & Garage" (Stand 05.08.2026), und
-wurden maschinell übernommen, nicht abgetippt.
+Gepflegt in [`src/domain/fahrzeuge.ts`](../src/domain/fahrzeuge.ts): der
+Katalog plus die freie Eingabe `Individuell`. Ursprung war die Vergleichsmatrix
+„Autokauf", Blatt „02 Maße & Garage" (Stand 05.08.2026). Am 06.08.2026 wurde der
+gesamte Katalog gegen Herstellerdatenblätter geprüft; die Befunde stehen als
+[OFFEN-12 bis OFFEN-41](03-offene-fragen.md).
 
-Jedes Fahrzeug trägt eine **Quellenstufe** aus der Systematik der Matrix:
+**Der Beleg steht seither am einzelnen Maß, nicht am Fahrzeug.** Jedes Maß führt
+Wert, Quellenstufe, Quelle und Abrufdatum mit sich. Ein Eintrag kann eine
+herstellerbelegte Länge und eine Heckklappenhöhe aus dem Forum tragen — eine
+gemeinsame Stufe für beide wäre in einem der beiden Fälle gelogen.
+
+Die **Quellenstufe** folgt weiter der Systematik der Matrix:
 
 | Stufe | Bedeutung | Belastbarkeit |
 | --- | --- | --- |
@@ -177,6 +183,16 @@ siehe [OFFEN-11](03-offene-fragen.md#offen-11).
 Das **Seitenprofil**, das die Kollisionsprüfung bestimmt, ist für kein Fahrzeug
 belegt. Ohne Profil rechnet die Prüfung mit einem Quader über die volle Höhe —
 die konservative Annahme, siehe [OFFEN-06](03-offene-fragen.md#offen-06).
+
+Die **Höhe** steht in zwei Feldern: `hoehe` ohne Dachreling und
+`hoeheMitDachreling`, wo die Reling belegt ist. Geprüft wird der größere der
+beiden. Vorher stand teils der eine, teils der andere Wert in derselben Spalte —
+die Recherche vom 06.08.2026 hat diese Verwechslung achtmal gefunden, und sie
+zeigt immer in dieselbe Richtung: Das Tor sieht freier aus, als es ist.
+
+Der **Marktstatus** sagt, ob ein Modell 2026 noch als Kaufoption zählt. Er hängt
+an Abgasnorm und Assistenzpflicht, nicht am Alter — Herleitung in
+[`06-marktrelevanz.md`](06-marktrelevanz.md).
 
 ## Was noch fehlt
 

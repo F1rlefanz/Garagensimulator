@@ -47,6 +47,12 @@ export function Garagenbefund({ befund, fahrzeug, lichteHoehe }: Props) {
                 <span>{zahl(a.reserve * 100, 1)} cm Reserve</span>
               </>
             )}
+            {a.quellenstufe && (
+              <>
+                <span>·</span>
+                <span title={a.quelle}>Quelle {a.quellenstufe}</span>
+              </>
+            )}
           </div>
           <p>
             Verfügbar {zahl(a.verfuegbar, 3)} m
@@ -54,6 +60,7 @@ export function Garagenbefund({ befund, fahrzeug, lichteHoehe }: Props) {
               ? ', Fahrzeugmaß nicht belegt'
               : `, benötigt ${zahl(a.benoetigt, 3)} m`}
             . {a.anmerkung}
+            {a.massBemerkung ? ` ${a.massBemerkung}` : ''}
           </p>
         </div>
       ))}
@@ -69,7 +76,7 @@ export function Garagenbefund({ befund, fahrzeug, lichteHoehe }: Props) {
           </div>
           <p>
             Bei geöffneter Heckklappe braucht das Fahrzeug{' '}
-            {zahl(fahrzeug.hoeheHeckOffen ?? 0, 3)} m, verfügbar sind{' '}
+            {zahl(fahrzeug.hoeheHeckOffen?.wert ?? 0, 3)} m, verfügbar sind{' '}
             {zahl(lichteHoehe, 3)} m unter der Laufschiene.
           </p>
         </div>

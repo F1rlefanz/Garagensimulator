@@ -1,5 +1,5 @@
 import { BODENVERSATZ, DECKE_UEBER_TOREBENE, m, NUTZBARE_TIEFE, ROLLENACHSE_HOEHE } from '../domain/garage';
-import { REFERENZ_FAHRZEUG } from '../domain/fahrzeuge';
+import { pruefhoehe, REFERENZ_FAHRZEUG } from '../domain/fahrzeuge';
 
 export interface GarageConfig {
   X_A: number;
@@ -63,8 +63,9 @@ export const DEFAULT_CONFIG: GarageConfig = {
   DEPTH_G: m('gesamtlaengeGarage'),
   // Decke über der Torschließebene, nicht über dem Garagenboden.
   GARAGE_HEIGHT: DECKE_UEBER_TOREBENE,
-  CAR_LENGTH: REFERENZ_FAHRZEUG.laenge,
-  CAR_HEIGHT: REFERENZ_FAHRZEUG.hoehe,
+  CAR_LENGTH: REFERENZ_FAHRZEUG.laenge.wert,
+  // Mit Dachreling, wo belegt: Das Torblatt fegt ueber das reale Dach.
+  CAR_HEIGHT: pruefhoehe(REFERENZ_FAHRZEUG).wert,
   STYROFOAM_THICKNESS: m('styroporDicke'),
 };
 

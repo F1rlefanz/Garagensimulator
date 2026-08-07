@@ -1,4 +1,4 @@
-import { Fahrzeug } from '../domain/fahrzeuge';
+import { Fahrzeug, Fahrzeugmass, pruefhoehe, Quellenstufe } from '../domain/fahrzeuge';
 import { GarageConfig, nutzbareTiefe } from './kinematics';
 
 /**
@@ -29,6 +29,12 @@ export interface Achsenbefund {
   readonly reserve?: number;
   readonly urteil: Urteil;
   readonly anmerkung?: string;
+  /** Belastbarkeit des Fahrzeugmaßes, auf dem dieses Urteil beruht. */
+  readonly quellenstufe?: Quellenstufe;
+  /** Beleg des Fahrzeugmaßes — damit ein knappes Urteil nachprüfbar bleibt. */
+  readonly quelle?: string;
+  /** Einschränkung, die am Maß selbst vermerkt ist. */
+  readonly massBemerkung?: string;
 }
 
 export interface Garagenbefund {
@@ -65,37 +71,57 @@ export function pruefeGarage(
   // Breite: maßgeblich ist die Breite mit ausgeklappten Spiegeln, weil das
   // Fahrzeug in dieser Stellung durch die Einfahrt fährt.
   const breite = fahrzeug.breiteMitSpiegeln ?? fahrzeug.breiteOhneSpiegel;
+  // Höhe: mit Dachreling, wo sie belegt ist — in der Einfahrt steht das
+  // Fahrzeug, das gebaut wurde, nicht die relingfreie Tabellenzeile.
+  const hoehe = pruefhoehe(fahrzeug);
+  const mitReling = hoehe === fahrzeug.hoeheMitDachreling;
+
+  /** Beleg eines Maßes in den Befund übernehmen. */
+  const beleg = (mass?: Fahrzeugmass) => ({
+    quellenstufe: mass?.quellenstufe,
+    quelle: mass?.quelle,
+    massBemerkung: mass?.bemerkung,
+  });
 
   const achsen: Achsenbefund[] = [
     {
       achse: 'laenge',
       bezeichnung: 'Länge',
       verfuegbar: nutzbareTiefe(config),
-      benoetigt: fahrzeug.laenge,
-      reserve: nutzbareTiefe(config) - fahrzeug.laenge,
-      urteil: bewerte(nutzbareTiefe(config), fahrzeug.laenge),
+      benoetigt: fahrzeug.laenge.wert,
+      reserve: nutzbareTiefe(config) - fahrzeug.laenge.wert,
+      urteil: bewerte(nutzbareTiefe(config), fahrzeug.laenge.wert),
       anmerkung: 'Rohbaulänge abzüglich Federzone und Dämmung. Ohne Anhängerkupplung.',
+      ...beleg(fahrzeug.laenge),
     },
     {
       achse: 'hoehe',
       bezeichnung: 'Höhe',
       verfuegbar: config.CLEAR_HEIGHT,
-      benoetigt: fahrzeug.hoehe,
-      reserve: config.CLEAR_HEIGHT - fahrzeug.hoehe,
-      urteil: bewerte(config.CLEAR_HEIGHT, fahrzeug.hoehe),
-      anmerkung: 'Lichte Höhe unter der Laufschiene. Dachreling erhöht um bis zu 66 mm.',
+      benoetigt: hoehe.wert,
+      reserve: config.CLEAR_HEIGHT - hoehe.wert,
+      urteil: bewerte(config.CLEAR_HEIGHT, hoehe.wert),
+      anmerkung: mitReling
+        ? 'Lichte Höhe unter der Laufschiene. Geprüft mit Dachreling, weil sie belegt ist.'
+        : fahrzeug.hoeheMitDachreling === undefined
+          ? 'Lichte Höhe unter der Laufschiene. Höhe ohne Dachreling — für dieses Fahrzeug ist kein Relingmaß belegt.'
+          : 'Lichte Höhe unter der Laufschiene.',
+      ...beleg(hoehe),
     },
     {
       achse: 'breite',
       bezeichnung: 'Breite',
       verfuegbar: breiteEinfahrt,
-      benoetigt: breite,
-      reserve: breite === undefined ? undefined : breiteEinfahrt - breite,
-      urteil: bewerte(breiteEinfahrt, breite),
+      benoetigt: breite?.wert,
+      reserve: breite === undefined ? undefined : breiteEinfahrt - breite.wert,
+      urteil: bewerte(breiteEinfahrt, breite?.wert),
       anmerkung:
         fahrzeug.breiteMitSpiegeln !== undefined
           ? 'Mit ausgeklappten Spiegeln. Schmalste Stelle wird von den Schwenkarmen bestimmt.'
-          : 'Breite mit Spiegeln nicht belegt — ohne Spiegel geprüft, also zu günstig.',
+          : breite !== undefined
+            ? 'Breite mit Spiegeln nicht belegt — ohne Spiegel geprüft, also zu günstig.'
+            : 'Keine Breitenangabe belegt.',
+      ...beleg(breite),
     },
   ];
 
@@ -114,7 +140,7 @@ export function pruefeGarage(
     heckklappeOeffenbar:
       fahrzeug.hoeheHeckOffen === undefined
         ? undefined
-        : fahrzeug.hoeheHeckOffen <= config.CLEAR_HEIGHT,
+        : fahrzeug.hoeheHeckOffen.wert <= config.CLEAR_HEIGHT,
   };
 }
 

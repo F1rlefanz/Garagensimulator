@@ -2,11 +2,19 @@ import { describe, expect, it } from 'vitest';
 
 import { pruefeGarage, RESERVE_SICHER, URTEIL_LABEL } from './garagenpruefung';
 import { DEFAULT_CONFIG, nutzbareTiefe } from './kinematics';
-import { AUSWAHL, Fahrzeug, REFERENZ_FAHRZEUG } from '../domain/fahrzeuge';
+import { AUSWAHL, Fahrzeug, Fahrzeugmass, REFERENZ_FAHRZEUG } from '../domain/fahrzeuge';
 import { m } from '../domain/garage';
 
 const EINFAHRT = m('schmalsteStelleEinfahrt');
 const pruefe = (f: Fahrzeug) => pruefeGarage(f, DEFAULT_CONFIG, EINFAHRT);
+
+/** Belegtes Testmaß — die Prüfung liest den Beleg mit, also braucht sie einen. */
+const testmass = (wert: number): Fahrzeugmass => ({
+  wert,
+  quellenstufe: 'A',
+  quelle: 'Testfixture',
+  abgerufenAm: '2026-08-06',
+});
 
 /** Ein Fahrzeug, das auf allen Achsen mit Reserve hineinpasst. */
 const WINZIG: Fahrzeug = {
@@ -16,11 +24,11 @@ const WINZIG: Fahrzeug = {
   variante: 'klein',
   baujahre: '—',
   kategorie: 'kombi',
-  laenge: 4,
-  hoehe: 1.5,
-  breiteOhneSpiegel: 1.7,
-  breiteMitSpiegeln: 1.9,
-  quellenstufe: 'A',
+  marktstatus: 'neu',
+  laenge: testmass(4),
+  hoehe: testmass(1.5),
+  breiteOhneSpiegel: testmass(1.7),
+  breiteMitSpiegeln: testmass(1.9),
 };
 
 describe('pruefeGarage', () => {
@@ -42,6 +50,14 @@ describe('pruefeGarage', () => {
     expect(hoehe.verfuegbar).toBeLessThan(DEFAULT_CONFIG.Y_RAIL);
   });
 
+  it('reicht den Beleg des Fahrzeugmaßes in den Befund durch', () => {
+    // Ein knappes Urteil ist nur so belastbar wie die Zahl, auf der es beruht.
+    const [laenge] = pruefe(WINZIG).achsen;
+
+    expect(laenge.quellenstufe).toBe('A');
+    expect(laenge.quelle).toBe('Testfixture');
+  });
+
   it('urteilt „sicher“, wenn überall Reserve bleibt', () => {
     const befund = pruefe(WINZIG);
 
@@ -52,7 +68,7 @@ describe('pruefeGarage', () => {
   it('urteilt „knapp“, sobald eine Achse unter die Reserveschwelle fällt', () => {
     const knapp: Fahrzeug = {
       ...WINZIG,
-      hoehe: DEFAULT_CONFIG.CLEAR_HEIGHT - RESERVE_SICHER / 2,
+      hoehe: testmass(DEFAULT_CONFIG.CLEAR_HEIGHT - RESERVE_SICHER / 2),
     };
     const befund = pruefe(knapp);
 
@@ -61,7 +77,7 @@ describe('pruefeGarage', () => {
   });
 
   it('urteilt „passt nicht“, sobald eine Achse überschritten ist', () => {
-    const zuLang: Fahrzeug = { ...WINZIG, laenge: nutzbareTiefe(DEFAULT_CONFIG) + 0.01 };
+    const zuLang: Fahrzeug = { ...WINZIG, laenge: testmass(nutzbareTiefe(DEFAULT_CONFIG) + 0.01) };
     const befund = pruefe(zuLang);
 
     expect(befund.urteil).toBe('passt-nicht');
@@ -87,21 +103,32 @@ describe('pruefeGarage', () => {
   it('nimmt bei der Breite die ausgeklappten Spiegel', () => {
     const breite = pruefe(WINZIG).achsen.find((a) => a.achse === 'breite')!;
 
-    expect(breite.benoetigt).toBeCloseTo(WINZIG.breiteMitSpiegeln!, 9);
+    expect(breite.benoetigt).toBeCloseTo(WINZIG.breiteMitSpiegeln!.wert, 9);
   });
 
   it('weicht auf die Breite ohne Spiegel aus und weist darauf hin', () => {
     const ohneSpiegelmass: Fahrzeug = { ...WINZIG, breiteMitSpiegeln: undefined };
     const breite = pruefe(ohneSpiegelmass).achsen.find((a) => a.achse === 'breite')!;
 
-    expect(breite.benoetigt).toBeCloseTo(WINZIG.breiteOhneSpiegel!, 9);
+    expect(breite.benoetigt).toBeCloseTo(WINZIG.breiteOhneSpiegel!.wert, 9);
     expect(breite.anmerkung).toMatch(/zu günstig/);
+  });
+
+  it('prüft die Höhe mit Dachreling, wo sie belegt ist', () => {
+    // Die Reling steht bei vielen Fahrzeugen serienmäßig auf dem Dach. Wer
+    // gegen die relingfreie Tabellenzeile prüft, prüft ein Fahrzeug, das so
+    // nicht in der Einfahrt steht.
+    const mitReling: Fahrzeug = { ...WINZIG, hoeheMitDachreling: testmass(1.566) };
+    const hoehe = pruefe(mitReling).achsen.find((a) => a.achse === 'hoehe')!;
+
+    expect(hoehe.benoetigt).toBeCloseTo(1.566, 9);
+    expect(hoehe.anmerkung).toMatch(/Dachreling/);
   });
 
   it('lässt „passt nicht“ jedes andere Urteil überstimmen', () => {
     const gemischt: Fahrzeug = {
       ...WINZIG,
-      laenge: nutzbareTiefe(DEFAULT_CONFIG) + 1,
+      laenge: testmass(nutzbareTiefe(DEFAULT_CONFIG) + 1),
       breiteOhneSpiegel: undefined,
       breiteMitSpiegeln: undefined,
     };
@@ -116,8 +143,14 @@ describe('Heckklappe', () => {
   });
 
   it('meldet die geöffnete Heckklappe gegen die lichte Höhe', () => {
-    const knapp: Fahrzeug = { ...WINZIG, hoeheHeckOffen: DEFAULT_CONFIG.CLEAR_HEIGHT - 0.01 };
-    const zuHoch: Fahrzeug = { ...WINZIG, hoeheHeckOffen: DEFAULT_CONFIG.CLEAR_HEIGHT + 0.01 };
+    const knapp: Fahrzeug = {
+      ...WINZIG,
+      hoeheHeckOffen: testmass(DEFAULT_CONFIG.CLEAR_HEIGHT - 0.01),
+    };
+    const zuHoch: Fahrzeug = {
+      ...WINZIG,
+      hoeheHeckOffen: testmass(DEFAULT_CONFIG.CLEAR_HEIGHT + 0.01),
+    };
 
     expect(pruefe(knapp).heckklappeOeffenbar).toBe(true);
     expect(pruefe(zuHoch).heckklappeOeffenbar).toBe(false);
@@ -134,10 +167,9 @@ describe('Katalog gegen die Garage', () => {
     }
   });
 
-  it('scheitert beim Referenzfahrzeug an der Höhe, nicht an der Länge', () => {
-    // Der Caddy Maxi ist 1,842 m hoch, die lichte Höhe misst 2,17 m — die
-    // Reserve liegt unter 15 cm mehr als komfortabel, aber sie reicht. Eng wird
-    // es woanders: 4,863 m Länge gegen 5,220 m nutzbare Tiefe.
+  it('lässt das Referenzfahrzeug auf Länge und Höhe bestehen', () => {
+    // Eng wird es beim Caddy Maxi nicht auf diesen beiden Achsen, sondern bei
+    // der Heckklappe und der Breite mit ausgeklappten Spiegeln.
     const befund = pruefe(REFERENZ_FAHRZEUG);
     const hoehe = befund.achsen.find((a) => a.achse === 'hoehe')!;
     const laenge = befund.achsen.find((a) => a.achse === 'laenge')!;
@@ -153,7 +185,15 @@ describe('Katalog gegen die Garage', () => {
     const befund = pruefe(REFERENZ_FAHRZEUG);
 
     expect(REFERENZ_FAHRZEUG.hoeheHeckOffen).toBeDefined();
-    expect(DEFAULT_CONFIG.CLEAR_HEIGHT - REFERENZ_FAHRZEUG.hoeheHeckOffen!).toBeLessThan(0.05);
+    expect(DEFAULT_CONFIG.CLEAR_HEIGHT - REFERENZ_FAHRZEUG.hoeheHeckOffen!.wert).toBeLessThan(0.05);
     expect(befund.heckklappeOeffenbar).toBe(true);
+  });
+
+  it('meldet die Heckklappe des Modellstands vor der Modellpflege als überschritten', () => {
+    // Derselbe Wagen, anderer Modellstand: 2,178 m gegen 2,170 m lichte Höhe.
+    // Genau deshalb stehen die beiden als getrennte Einträge im Katalog.
+    const vorher = AUSWAHL.find((f) => f.id === 'vw-caddy-sb-maxi')!;
+
+    expect(pruefe(vorher).heckklappeOeffenbar).toBe(false);
   });
 });
