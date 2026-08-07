@@ -44,7 +44,7 @@ Fahrzeug später gebaut wurde.
 
 | Stufe | Bedeutung | Kriterium |
 | --- | --- | --- |
-| `neu` | 2026 als Neuwagen bestellbar | Baureihe läuft |
+| `neu` | Baureihe läuft 2026 noch | `baujahre` endet auf `+` |
 | `jung-gebraucht` | Baureihe lief bis mindestens 2022 | Junge Fahrzeuge mit Euro 6d am Markt, teils mit GSR2 |
 | `gebraucht` | Produktion zwischen 2016 und 2021 beendet | Euro 6 durchgängig, Assistenz lückenhaft |
 | `veraltet` | Produktion vor 2016 beendet | Euro 5 möglich, keine Assistenzpflicht |
@@ -52,6 +52,11 @@ Fahrzeug später gebaut wurde.
 **`veraltet` heißt nicht „unbrauchbar", sondern „nicht mehr Teil der
 Kaufentscheidung".** Ein solches Fahrzeug kommt nur noch als Preis-Sonderfall in
 Frage, und dafür ist dieses Werkzeug nicht gebaut.
+
+**`neu` heißt nicht „in Deutschland bestellbar".** Der Status kennt nur die
+Baureihe, nicht den Markt. Der Renault Trafic als Personenvariante etwa läuft
+und steht in einer aktuellen Schweizer Preisliste — Renault Deutschland führt
+ihn nicht. Siehe [OFFEN-44](03-offene-fragen.md#offen-44).
 
 ## Was daraus für die Recherche folgt
 
@@ -67,40 +72,80 @@ Frage, und dafür ist dieses Werkzeug nicht gebaut.
 
 ## Welche Fahrzeugklasse diese Garage überhaupt zulässt
 
-Stand der Marktsichtung vom 07.08.2026 über 94 Modellvarianten aus drei
-Segmenten. Das Ergebnis ist eindeutig genug, um es hier festzuhalten:
+Stand 07.08.2026. Die Marktsichtung über 94 Modellvarianten hat die Frage
+aufgeworfen, die anschließende Recherche gegen Herstellerdatenblätter hat sie
+beantwortet. **Die Zahlen unten stehen im Katalog und sind belegt**, nicht
+geschätzt.
 
 **Die Garage begrenzt über die Breite, nicht über die Länge.**
 
 | Achse | Maß | Wie oft sie das Ausschlusskriterium ist |
 | --- | --- | --- |
-| Breite mit Spiegeln | 2,240 m | fast immer |
-| Nutzbare Tiefe | 5,220 m | sechs Fahrzeugtypen |
-| Lichte Höhe | 2,170 m | **kein einziges Fahrzeug** — das höchste gefundene misst 2,02 m |
+| Breite mit Spiegeln | 2,240 m | bei den Kleinbussen fast immer |
+| Nutzbare Tiefe | 5,220 m | bei allen Langversionen |
+| Lichte Höhe | 2,170 m | **kein einziges Fahrzeug** — das höchste im Katalog misst 2,06 m |
 
-- **Hochdachkombis** passen durchweg. Der längste (Mercedes T-Klasse lang,
-  4,922 m) hat 30 cm Reserve, die breitesten (Mercedes- und Renault-Plattform,
-  2,159 m) noch 8 cm. Hier entscheidet nicht die Garage, sondern der Bedarf.
-- **Kleinbusse sind realistisch** — aber nur zwei Familien: **VW ID. Buzz**
-  (2,212 m, beide Radstände) und die **Stellantis-EMP2-Familie in kurz und
-  mittel** (Zafira Life, Traveller, SpaceTourer, Proace Verso, Ulysse; 2,204 m).
-- **Die Mercedes-Gruppe ist der Grenzfall**, an dem sich alles entscheidet:
-  V-Klasse, Vito Tourer und Marco Polo liegen mit 2,244 bis 2,249 m nur **4 bis
-  9 Millimeter** über der Engstelle. Das ist der einzige Fall, in dem ein
-  Nachmessen der Einfahrt über ja oder nein entscheidet — die 2,240 m stammen
-  aus einer Messung mit ein bis zwei Zentimetern Unsicherheit.
-- **Transporter-basierte Busse scheiden aus**: VW T6.1 Caravelle und California
-  (2,297 m), Ford Tourneo Custom und VW Caravelle T7 (2,275 m), Renault Trafic
-  (2,282 m), Nissan Primastar (2,312 m). Bemerkenswert am T6.1: Er hätte mit
-  4,904 m Länge 32 cm Reserve und scheitert **allein an den Spiegeln**.
-- **Der Hyundai Staria** ist der einzige, der primär an der Länge scheitert
-  (5,253 m), und er hat keine kürzere Variante.
-- **Minivans** passen alle mühelos, taugen für den Zweck aber kaum: Bei gleicher
-  Außenlänge bleibt nach Bodenaufbau und Dachkonstruktion deutlich weniger
-  Innenhöhe, und das Heck ist abgeschrägt statt senkrecht. Die Karosserieform,
-  nicht die Länge, ist hier die entscheidende Größe. Das Segment ist zudem
-  praktisch tot — mit dem VW Touran verschwindet 2026 der letzte klassische
-  Kompaktvan eines deutschen Herstellers ohne Nachfolger.
+### Hochdachkombis: passen alle
+
+Der längste (Mercedes T-Klasse lang, 4,922 m) hat 30 cm Reserve, die breitesten
+(Mercedes- und Renault-Plattform, 2,159 m) noch 8 cm. Hier entscheidet nicht die
+Garage, sondern der Bedarf.
+
+### Kleinbusse: genau zwei Familien
+
+Von 44 erfassten Kleinbus-Varianten passen **elf**, und sie verteilen sich auf
+nur zwei Plattformen:
+
+| Fahrzeug | Länge | Breite mit Spiegeln |
+| --- | --- | --- |
+| VW ID. Buzz, kurzer Radstand | 4,712 m | 2,212 m |
+| VW ID. Buzz, langer Radstand | 4,962 m | 2,212 m |
+| Opel Zafira Life S / M | 4,609 / 4,959 m | 2,204 m |
+| Peugeot Traveller Compact / Standard | 4,606 / 4,956 m | 2,204 m |
+| Citroën SpaceTourer XS / M | 4,609 / 4,959 m | 2,204 m |
+| Toyota Proace Verso Compact / Medium | 4,609 / 4,959 m | 2,204 m |
+| Fiat Ulysse L2 | 4,981 m | 2,204 m |
+
+**Alle langen Varianten dieser Familien scheitern**, und zwar an der Tiefe:
+5,308 bis 5,331 m gegen 5,220 m.
+
+### Was an der Breite scheitert
+
+| Fahrzeug | Breite mit Spiegeln | über der Engstelle |
+| --- | --- | --- |
+| Mercedes Vito Tourer | 2,244 m | 4 mm |
+| Mercedes V-Klasse, Marco Polo, EQV, VLE | 2,248–2,249 m | 8–9 mm |
+| VW Multivan T7, California T7 | 2,252 m | 12 mm |
+| Ford Tourneo Custom V710, VW Caravelle T7 | 2,275 m | 35 mm |
+| Ford Tourneo Custom V362 | 2,290 m | 50 mm |
+| VW Caravelle und California T6.1 | 2,297 m | 57 mm |
+| Renault Trafic, Nissan Primastar | 2,312 m | 72 mm |
+
+### Der Grenzfall, der keiner ist: die Mercedes-Gruppe
+
+Die V-Klasse liegt mit **9 Millimetern** über der Engstelle — das klang nach
+Messunsicherheit. Mercedes nennt in derselben Tabelle aber einen zweiten Wert:
+
+- Breite über die Außenspiegel, **ausgeklappt**: 2,249 m → 9 mm zu breit
+- Breite über die Außenspiegel, **angeklappt**: 2,057 m → **18 cm Luft**
+- Schwenkhöhe der Heckklappe: 2,153 m → **1,7 cm** unter der Laufschiene
+
+Damit ist es keine Frage der Messgenauigkeit, sondern eine Bedienfrage: Die
+V-Klasse kompakt (4,895 m) und lang (5,140 m) passen — mit angeklappten
+Spiegeln. Die extralange (5,370 m) scheitert an der Tiefe und bleibt draußen.
+
+Das Urteil im Werkzeug lautet trotzdem „passt nicht", weil es gegen die
+ausgeklappte Breite rechnet. Das ist die konservative Richtung und bleibt so;
+die Bemerkung am Maß nennt beide Zahlen.
+
+### Minivans
+
+Passen alle mühelos, taugen für den Zweck aber kaum: Bei gleicher Außenlänge
+bleibt nach Bodenaufbau und Dachkonstruktion deutlich weniger Innenhöhe, und das
+Heck ist abgeschrägt statt senkrecht. Die Karosserieform, nicht die Länge, ist
+hier die entscheidende Größe. Das Segment ist zudem praktisch tot — mit dem VW
+Touran verschwindet 2026 der letzte klassische Kompaktvan eines deutschen
+Herstellers ohne Nachfolger.
 
 **Ein Hinweis zur Höhe, weil er wiederholt falsch gerechnet wurde:**
 `lichteHoehe` ist in `src/domain/garage.ts` ausdrücklich vom **Garagenboden**
