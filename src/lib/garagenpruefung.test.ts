@@ -50,12 +50,33 @@ describe('pruefeGarage', () => {
     expect(hoehe.verfuegbar).toBeLessThan(DEFAULT_CONFIG.Y_RAIL);
   });
 
-  it('reicht den Beleg des Fahrzeugmaßes in den Befund durch', () => {
+  it('reicht je Achse den Beleg des richtigen Maßes durch', () => {
     // Ein knappes Urteil ist nur so belastbar wie die Zahl, auf der es beruht.
-    const [laenge] = pruefe(WINZIG).achsen;
+    // Jedes Maß bekommt hier eine eigene Stufe, sonst bliebe eine Vertauschung
+    // der drei Achsen unsichtbar.
+    const bunt: Fahrzeug = {
+      ...WINZIG,
+      laenge: { ...testmass(4), quellenstufe: 'A', quelle: 'Laengenbeleg', bemerkung: 'zur Länge' },
+      hoehe: { ...testmass(1.5), quellenstufe: 'C', quelle: 'Hoehenbeleg' },
+      breiteMitSpiegeln: { ...testmass(1.9), quellenstufe: 'D', quelle: 'Breitenbeleg' },
+    };
+    const [laenge, hoehe, breite] = pruefe(bunt).achsen;
 
     expect(laenge.quellenstufe).toBe('A');
-    expect(laenge.quelle).toBe('Testfixture');
+    expect(laenge.quelle).toBe('Laengenbeleg');
+    expect(laenge.massBemerkung).toBe('zur Länge');
+    expect(hoehe.quellenstufe).toBe('C');
+    expect(hoehe.quelle).toBe('Hoehenbeleg');
+    expect(breite.quellenstufe).toBe('D');
+    expect(breite.quelle).toBe('Breitenbeleg');
+  });
+
+  it('sagt es, wenn für ein Fahrzeug gar kein Relingmaß belegt ist', () => {
+    // Der dritte Anmerkungszweig: weder mit Reling geprüft noch stillschweigend
+    // ohne — der Leser soll wissen, dass die Angabe schlicht fehlt.
+    const hoehe = pruefe(WINZIG).achsen.find((a) => a.achse === 'hoehe')!;
+
+    expect(hoehe.anmerkung).toMatch(/kein Relingmaß belegt/);
   });
 
   it('urteilt „sicher“, wenn überall Reserve bleibt', () => {

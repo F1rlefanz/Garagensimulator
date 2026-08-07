@@ -212,11 +212,6 @@ export const MASSFELD_LABEL: Record<Massfeld, string> = {
   innenhoeheLaderaum: 'Innenhöhe Laderaum',
 };
 
-/** Wert eines Maßes in Metern, oder `undefined`, wenn es nicht belegt ist. */
-export function wert(mass?: Fahrzeugmass): number | undefined {
-  return mass?.wert;
-}
-
 /**
  * Die Höhe, gegen die geprüft werden muss.
  *

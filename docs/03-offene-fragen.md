@@ -33,9 +33,9 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-12](#offen-12) | Caddy SB Maxi: 2.178 mm gegen 2.155 mm Heckklappenhöhe | offen |
 | [OFFEN-13](#offen-13) | Caddy SB Maxi: 4.863 m gegen 4.853 m Fahrzeuglänge | Warnung |
 | [OFFEN-14](#offen-14) | Caddy SB: Pkw- und Cargo-Maße im selben Eintrag | offen |
-| [OFFEN-15](#offen-15) | Caddy 2K: Dachreling ohne eigenes Höhenfeld | offen |
+| [OFFEN-15](#offen-15) | Caddy 2K: Dachreling ohne eigenes Höhenfeld | Feld ergänzt, Ausstattungstoleranz offen |
 | [OFFEN-16](#offen-16) | Caddy California: Innenmaße gelten ohne Ausbau | offen |
-| [OFFEN-17](#offen-17) | Grand Kangoo neue Gen.: Pkw- und Rapid-Maße vermischt | offen |
+| [OFFEN-17](#offen-17) | Grand Kangoo neue Gen.: Pkw- und Rapid-Maße vermischt | erledigt, Eintrag aufgeteilt |
 | [OFFEN-18](#offen-18) | Grand Kangoo neue Gen.: 2.140 mm gegen 2.159 mm Spiegelbreite | offen, konservativ entschieden |
 | [OFFEN-19](#offen-19) | Kangoo III L1: Gesamthöhe mit Antenne 29 mm höher | offen |
 | [OFFEN-20](#offen-20) | Kangoo II: Baujahresspanne und Karosserieform | offen |
@@ -55,7 +55,7 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-34](#offen-34) | NV200 Evalia: Nissan nennt keine Innenmaße | offen |
 | [OFFEN-35](#offen-35) | Tourneo Connect 2. Gen.: Facelift im selben Eintrag | offen |
 | [OFFEN-36](#offen-36) | Grand Tourneo Connect 3. Gen.: Ausstattung und Ladelänge | offen |
-| [OFFEN-37](#offen-37) | Dacia Duster: ein Eintrag für zwei Generationen | offen |
+| [OFFEN-37](#offen-37) | Dacia Duster: ein Eintrag für zwei Generationen | erledigt, Eintrag aufgeteilt |
 | [OFFEN-38](#offen-38) | Dacia Jogger: Spiegelbreite und falsch beschriftete Zeile | offen |
 | [OFFEN-39](#offen-39) | Dacia Lodgy: Höhe mit Dachreling nicht beziffert | offen |
 | [OFFEN-40](#offen-40) | Dacia Dokker: Pkw oder Express | offen |
@@ -397,7 +397,8 @@ sind je für sich sauber belegt.
 
 ## OFFEN-15
 
-**Caddy 2K: Der Dachrelingaufschlag hat kein eigenes Feld.** Schwere: offen.
+**Caddy 2K: Der Dachrelingaufschlag hat kein eigenes Feld.** Schwere: Feld
+ergänzt, Ausstattungstoleranz offen.
 
 Die VW-Preisliste MY2016 führt zwei Höhen:
 
@@ -406,14 +407,14 @@ Die VW-Preisliste MY2016 führt zwei Höhen:
 | kurz | 1.822 mm | 1.858 mm |
 | Maxi | 1.831 mm | 1.868 mm |
 
-Der Katalog hat nur ein Höhenfeld und trägt dort den Wert ohne Reling. Ein Caddy
-2K Maxi mit Dachreling ist damit **37 mm höher als eingetragen**. VW selbst
-weist darauf hin, dass Höhenmaße je nach Ausstattung um bis zu ±50 mm
-abweichen können.
+**Erledigt im Code.** Der Katalog führt seit dem 07.08.2026 beide Werte:
+`hoehe` ohne Reling, `hoeheMitDachreling` mit; `pruefhoehe()` prüft gegen den
+größeren der beiden. Beide Caddy-2K-Einträge tragen H3 und H4.
 
-**Zur Klärung nötig:** entweder ein zweites Feld für die Höhe mit Reling oder
-je Relingvariante ein eigener Eintrag. Bei einem konkreten Fahrzeug ist zu
-prüfen, ob eine Reling montiert ist.
+**Offen bleibt die Ausstattungstoleranz.** VW selbst weist darauf hin, dass
+Höhenmaße je nach Ausstattung um bis zu **±50 mm** abweichen können — mehr als
+der Relingaufschlag. Bei einem konkreten Fahrzeug ist deshalb weiterhin am Wagen
+zu prüfen, was tatsächlich auf dem Dach sitzt.
 
 ---
 
@@ -437,7 +438,7 @@ prüfen, nicht gegen den Katalogwert.
 ## OFFEN-17
 
 **Grand Kangoo neue Generation: Der Eintrag mischt Pkw und Kastenwagen.**
-Schwere: offen.
+Schwere: erledigt.
 
 Durch `hoeheHeckOffen` 2,071 m — eine Heckklappe hat nur der Pkw — und die
 renault.de-Maße ist der Eintrag eindeutig als **Pkw** definiert. Eingetragen
@@ -448,9 +449,10 @@ L2. Für den Pkw nennen renault.de und renault.at übereinstimmend 1.815 mm.
 Die Mischung ist auch in sich unstimmig: Mit 1.854 und 2.071 m ergäbe sich ein
 Überstand der offenen Klappe von 217 mm statt der tatsächlichen 256 mm.
 
-**Zur Klärung nötig:** Aufteilung in zwei Einträge — Pkw mit 1,815 / 2,071 m,
-Rapid L2 mit 1,854 m und ohne Heckklappenmaß. Bis dahin sind die drei
-Laderaumfelder und die Höhe nicht belegt.
+**Erledigt.** Der Eintrag ist am 07.08.2026 in `renault-grand-kangoo-l2-pkw`
+(1,815 / 2,071 m) und `renault-grand-kangoo-l2-rapid` (1,854 m, ohne
+Heckklappenmaß) aufgeteilt. Die Laderaumfelder stehen beim Rapid, nicht beim
+Pkw — für den Pkw sind sie weiterhin nicht belegt.
 
 ---
 
@@ -794,7 +796,7 @@ sondern eine echte Differenz zwischen den Schwestermodellen.
 
 ## OFFEN-37
 
-**Dacia Duster: ein Eintrag für zwei Generationen.** Schwere: offen.
+**Dacia Duster: ein Eintrag für zwei Generationen.** Schwere: erledigt.
 
 | Generation | Länge | Breite ohne Spiegel | mit Spiegeln | Höhe mit Reling |
 | --- | --- | --- | --- | --- |
@@ -802,10 +804,11 @@ sondern eine echte Differenz zwischen den Schwestermodellen.
 | II | 4.341 mm | 1.804 mm | 2.052 mm | 1.687 mm |
 
 Generation I ist ohne Spiegel 18 mm **breiter**, mit Spiegeln aber 52 mm
-schmaler. Der Eintrag trägt jetzt eine **Hüllkurve** beider Generationen
-(4,341 / 1,822 / 2,052 / 1,695 m). Das beschreibt kein real existierendes
-Fahrzeug und ist ausschließlich als konservative Prüfgrenze zu lesen. Sauberer
-wäre eine Aufteilung in zwei Einträge.
+schmaler — eine Hüllkurve beider Generationen hätte kein real existierendes
+Fahrzeug beschrieben.
+
+**Erledigt.** Der Eintrag ist am 07.08.2026 in `dacia-duster-gen-i` und
+`dacia-duster-gen-ii` aufgeteilt; jede Generation trägt ihre eigenen Maße.
 
 Die Höhe bei geöffneter Heckklappe ist nur für Generation II belegt (2.020 mm);
 die Gen-I-Preisliste führt das Maß nicht, und Gen I ist mit Reling 8 mm höher.

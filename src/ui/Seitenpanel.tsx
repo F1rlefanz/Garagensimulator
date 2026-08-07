@@ -60,17 +60,39 @@ interface SeitenpanelProps {
 
 export function Seitenpanel({ offen, onSchliessen, children }: SeitenpanelProps) {
   const panel = useRef<HTMLDivElement>(null);
+  /** Das Element, von dem aus geöffnet wurde — dorthin geht der Fokus zurück. */
+  const ausloeser = useRef<HTMLElement | null>(null);
+
+  // Die Schließfunktion hinter einem Ref: Sie kommt als Inline-Funktion herein
+  // und wäre als Abhängigkeit bei jedem Render neu. Während die Toranimation
+  // läuft, sind das rund 60 Renders je Sekunde — der Effekt lief in jedem Frame
+  // und zog den Fokus zurück auf den Container, sodass der Schließen-Knopf per
+  // Tastatur nicht erreichbar war.
+  const schliessen = useRef(onSchliessen);
+  schliessen.current = onSchliessen;
 
   // Esc schließt — sonst ist das Panel auf der Tastatur eine Sackgasse.
   useEffect(() => {
     if (!offen) return;
     const taste = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onSchliessen();
+      if (e.key === 'Escape') schliessen.current();
     };
     document.addEventListener('keydown', taste);
-    panel.current?.focus();
     return () => document.removeEventListener('keydown', taste);
-  }, [offen, onSchliessen]);
+  }, [offen]);
+
+  // Fokus genau einmal je Übergang: beim Öffnen ins Panel, beim Schließen
+  // zurück auf den Auslöser. Ohne die Rückgabe fällt der Fokus auf den Body,
+  // und die Stelle in der Bedienreihenfolge ist verloren.
+  useEffect(() => {
+    if (offen) {
+      ausloeser.current = document.activeElement as HTMLElement | null;
+      panel.current?.focus();
+    } else {
+      ausloeser.current?.focus();
+      ausloeser.current = null;
+    }
+  }, [offen]);
 
   return (
     <>

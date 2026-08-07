@@ -11,6 +11,7 @@ import {
   REFERENZ_FAHRZEUG,
   schwaechsteQuellenstufe,
 } from './fahrzeuge';
+import { m } from './garage';
 
 describe('Fahrzeugauswahl', () => {
   it('stellt die freie Eingabe an den Anfang der Liste', () => {
@@ -110,7 +111,14 @@ describe('Katalogeinträge', () => {
         );
       }
       if (f.hoeheHeckOffen !== undefined) {
-        expect(f.hoeheHeckOffen.wert, `${f.id}: Heckklappe`).toBeGreaterThan(pruefhoehe(f).wert);
+        // Nicht nur groesser als das Dach: Eine geoeffnete Heckklappe ragt
+        // deutlich darueber hinaus. Die blosse Ungleichung liesse den gesamten
+        // entscheidungskritischen Bereich um 2,17 m zu — ein Zifferndreher
+        // 2,180 auf 2,108 bliebe unbemerkt und kippte das Urteil.
+        expect(
+          f.hoeheHeckOffen.wert - pruefhoehe(f).wert,
+          `${f.id}: Heckklappe kaum über dem Dach`,
+        ).toBeGreaterThan(0.15);
       }
       if (f.ladelaenge !== undefined) {
         expect(f.ladelaenge.wert, `${f.id}: Ladelänge`).toBeLessThan(f.laenge.wert);
@@ -164,8 +172,9 @@ describe('Referenzfahrzeug', () => {
   });
 
   it('passt mit ausgeklappten Spiegeln durch die schmalste Stelle der Einfahrt', () => {
-    // Schmalste Stelle 2,24 m, bestimmt von den Schwenkarmen.
-    const rest = 2.24 - REFERENZ_FAHRZEUG.breiteMitSpiegeln!.wert;
+    // Die Einfahrtsbreite kommt aus dem Domänenmodell, nicht als Literal —
+    // sonst behauptet dieser Test nach einer Nachmessung weiter 14 cm Rest.
+    const rest = m('schmalsteStelleEinfahrt') - REFERENZ_FAHRZEUG.breiteMitSpiegeln!.wert;
 
     expect(rest).toBeGreaterThan(0);
     expect(rest).toBeCloseTo(0.14, 2);

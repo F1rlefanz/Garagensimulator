@@ -10,12 +10,18 @@ import { FAHRZEUGE, MARKTSTATUS_LABEL, pruefhoehe, schwaechsteQuellenstufe } fro
  * Für die Sichtprüfung nach einer Katalogänderung — dann lässt sich in einem
  * Blick erkennen, ob ein Fahrzeug plötzlich das Urteil wechselt.
  *
- *     KATALOG_UEBERSICHT=1 npx vitest run src/domain/katalog-uebersicht.test.ts
+ *     npm run uebersicht
  *
- * Standardmäßig still, damit `npm test` lesbar bleibt.
+ * Bei `npm test` bleibt sie still, damit die Testausgabe lesbar bleibt. Die
+ * Unterscheidung hängt an `npm_lifecycle_event` — der Namen des laufenden
+ * npm-Skripts. Eine selbst gesetzte Umgebungsvariable wäre in der PowerShell
+ * anders zu schreiben als in einer POSIX-Shell, und eine Anleitung, die nur in
+ * einer von beiden funktioniert, ist keine.
  */
+const ANGEFORDERT = process.env.npm_lifecycle_event === 'uebersicht';
+
 describe('Katalogübersicht', () => {
-  it.runIf(process.env.KATALOG_UEBERSICHT === '1')('druckt den Stand', () => {
+  it.runIf(ANGEFORDERT)('druckt den Stand', () => {
     const einfahrt = m('schmalsteStelleEinfahrt');
     const zahl = (v?: number) => (v === undefined ? '  —  ' : v.toFixed(3));
 

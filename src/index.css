@@ -419,9 +419,6 @@ button.sekundaer {
 .zone-rechts {
   grid-area: rechts;
 }
-.spalte {
-  display: block;
-}
 
 .block-titel {
   font-size: 21px;

@@ -128,15 +128,31 @@ Test gemeinsam nachzuziehen.
 ## Fahrzeuge
 
 Die Auswahl in der Oberfläche bietet `Individuell` (frei editierbar) und einen
-Katalog aus **30 Fahrzeugen**, dessen Maße gesperrt sind. Gepflegt wird er in
-[`src/domain/fahrzeuge.ts`](src/domain/fahrzeuge.ts); die Maße stammen aus der
-Vergleichsmatrix „Autokauf" und wurden maschinell übernommen, nicht abgetippt.
+Katalog, dessen Maße gesperrt sind. Gepflegt wird er in
+[`src/domain/fahrzeuge.ts`](src/domain/fahrzeuge.ts). Ursprung war die
+Vergleichsmatrix „Autokauf"; am 06.08.2026 wurde der gesamte Katalog gegen
+Herstellerdatenblätter geprüft, die Befunde stehen als OFFEN-12 bis OFFEN-41 in
+[`docs/03-offene-fragen.md`](docs/03-offene-fragen.md).
 
-Jedes Fahrzeug trägt eine **Quellenstufe** A bis D — von A (Herstellerdatenblatt,
-als Fakt zitierbar) bis D (Forum, nur Hypothese). Sie steht in der Oberfläche am
-Fahrzeug. Was in der Matrix als „n. v." stand, ist hier `undefined`: Es wurde
-nichts geschätzt, um eine Lücke zu füllen. `pruefeGarage()` meldet eine solche
-Achse als *nicht prüfbar*, statt sie stillschweigend zu bestehen.
+**Der Beleg steht am einzelnen Maß, nicht am Fahrzeug.** Jedes Maß führt seine
+**Quellenstufe** A bis D — von A (Herstellerdatenblatt, als Fakt zitierbar) bis
+D (Forum, nur Hypothese) —, dazu Quelle und Abrufdatum. In der Oberfläche steht
+die Stufe als Kürzel an der Zeile, der volle Beleg im Tooltip;
+`schwaechsteQuellenstufe()` liefert die ehrliche Gesamtaussage über einen
+Eintrag. Was nicht belegt ist, ist `undefined`: Es wurde nichts geschätzt, um
+eine Lücke zu füllen. `pruefeGarage()` meldet eine solche Achse als *nicht
+prüfbar*, statt sie stillschweigend zu bestehen.
+
+**Die Höhe steht in zwei Feldern.** `hoehe` ist immer die Höhe *ohne*
+Dachreling; wo die Reling serienmäßig ist, steht ihr Maß in
+`hoeheMitDachreling`, und `pruefhoehe()` liefert den größeren der beiden. Vorher
+stand teils der eine, teils der andere Wert in derselben Spalte — die Recherche
+hat diese Verwechslung achtmal gefunden, und sie zeigt immer in dieselbe
+Richtung: Das Tor sieht freier aus, als es ist.
+
+Der **Marktstatus** sagt, ob ein Modell 2026 noch als Kaufoption zählt. Er hängt
+an Abgasnorm- und Assistenzstichtagen, nicht am Alter — Herleitung in
+[`docs/06-marktrelevanz.md`](docs/06-marktrelevanz.md).
 
 Das **Seitenprofil** (Haubenlänge, Haubenhöhe, Scheiben- und Dachlänge) steht in
 keinem Datenblatt und ist deshalb für kein Fahrzeug belegt. Ohne Profil rechnet
@@ -156,8 +172,8 @@ bleiben rechnerisch 15 mm — innerhalb der Messunsicherheit, siehe
 
 Die Seite läuft unter **<https://f1rlefanz.github.io/Garagensimulator/>**.
 
-`.github/workflows/pages.yml` baut den aktuellen Stand bei jedem Push auf `main`
-und veröffentlicht ihn — aber erst, nachdem Typprüfung und Tests durchgelaufen
+`.github/workflows/pages.yml` baut den aktuellen Stand und veröffentlicht ihn —
+aber erst, nachdem Typprüfung und Tests durchgelaufen
 sind. Was nicht grün ist, geht nicht online.
 
 Bauen und Veröffentlichen stecken bewusst in **einem** Workflow. Der Umweg über
