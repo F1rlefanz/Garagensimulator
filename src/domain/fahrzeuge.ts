@@ -3404,6 +3404,2906 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     notiz:
       'Kurze Radstandsvariante (2.716 mm) des Townstar Kombi, fünfsitzig, 775 l Kofferraum; Nissan Deutschland führt die Pkw-Version schlicht als „Townstar Kombi", der Name Evalia stammt aus dem Bestandskatalog. Als Hochdachkombi eingeordnet, nicht als Kleinbus wie die siebensitzige L2. Für diese Garage unkritisch in Länge und Höhe; entscheidend ist die Spiegelbreite von 2,159 m, die nur aus einem Datenportal stammt.',
   },
+
+  /*
+   * ------------------------------------------------------------------------
+   * Kleinbusse und grosse Vans, 07.08.2026.
+   *
+   * Aus einer Recherche mit adversarialer Gegenprüfung: 204 Maße geprüft,
+   * 24 zurückgewiesen. Die entscheidende Achse ist hier die Breite über die
+   * ausgeklappten Spiegel gegen 2,240 m — die lichte Höhe ist bei keinem
+   * einzigen dieser Fahrzeuge das Ausschlusskriterium.
+   *
+   * Nicht enthalten: Hyundai Staria und Kia PV5. Das Paket ist an einem
+   * API-Fehler gescheitert, siehe OFFEN-45.
+   * ------------------------------------------------------------------------
+   */
+  {
+    id: 'mercedes-v-klasse-kompakt',
+    bezeichnung: 'Mercedes-Benz V-Klasse · Kompakt',
+    modell: 'V-Klasse',
+    variante: 'Kompakt',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.895,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen", Zeile "Länge" der Kompakt-Tabelle (V 220 d / V 250 d): ' +
+        '4.895 mm. Deckungsgleich mit der Betriebsanleitung V447 05/2026, Zeile ' +
+        '"Fahrzeuglänge (kompakte Version)".',
+    },
+    hoehe: {
+      wert: 1.901,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen", Zeile "Höhe": 1.901 mm. Die Zeile nennt keine Dachreling; ' +
+        'Mercedes führt auf dieser Seite keinen getrennten Relingwert. Die Betriebsanleitung ' +
+        'V447 05/2026 gibt stattdessen eine Spanne "Fahrzeughöhe 1900 mm–1920 mm" an.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.249,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)" im Tabellenblock "Abmessungen": 2.249 mm — Spiegel ' +
+        'ausgeklappt. Die Betriebsanleitung V447 05/2026 bestätigt den Wert mit ' +
+        '"Fahrzeugbreite über Außenspiegel 2249 mm". Dritter Wert derselben Tabelle: ' +
+        '"Breite (eingeklappte Außenspiegel) 2.057 mm".',
+    },
+    hoeheHeckOffen: {
+      wert: 2.153,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'v-klasse-van-2026-05-v447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung V-Klasse V447 05/2026, Tabelle "Schwenkbereich", Zeile ' +
+        '"Schwenkhöhe der Heckklappe": 2153 mm (gilt laut Mercedes für alle Längen).',
+    },
+    notiz:
+      'Kein Bett ab Werk; die ebene Liegefläche ist bei der Serien-V-Klasse nicht belegt — ' +
+      'Mercedes gibt für sie keine Laderaumlänge an. Wer im Fahrzeug übernachten will, ist ' +
+      'beim Marco Polo auf derselben Basis richtig. Zwischen ausgeklappten (2.249 mm) und ' +
+      'angeklappten Spiegeln (2.057 mm) liegen 192 mm — an einer 2,24 m schmalen Stelle ist ' +
+      'die Spiegelstellung damit der entscheidende Freiheitsgrad.',
+  },
+  {
+    id: 'mercedes-v-klasse-lang',
+    bezeichnung: 'Mercedes-Benz V-Klasse · Lang',
+    modell: 'V-Klasse',
+    variante: 'Lang',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.14,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen" der Lang-Tabelle, Zeile "Länge": 5.140 mm. Gleichlautend ' +
+        'in der Betriebsanleitung V447 05/2026, "Fahrzeuglänge (lange Version)". ' +
+        'Radstand 3.200 mm.',
+    },
+    hoehe: {
+      wert: 1.901,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe": 1.901 mm, für die lange Version identisch zur kompakten. Ohne Angabe ' +
+        'einer Dachreling; die Betriebsanleitung nennt die Spanne 1900–1920 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.249,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)" der Lang-Tabelle: 2.249 mm, Spiegel ausgeklappt — ' +
+        'über alle drei Längen unverändert. Bestätigt durch die Betriebsanleitung V447 ' +
+        '05/2026 ("Fahrzeugbreite über Außenspiegel 2249 mm"). Angeklappt: 2.057 mm.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.153,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'v-klasse-van-2026-05-v447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung V447 05/2026, Zeile "Schwenkhöhe der Heckklappe": 2153 mm, ' +
+        'angegeben unter der Spalte "Alle Modelle".',
+    },
+    notiz:
+      'Die verbreitete Basis für Selbstausbauten und für den Marco Polo. Eine ebene ' +
+      'Liegefläche ist ab Werk nicht belegt — Mercedes veröffentlicht für die V-Klasse keine ' +
+      'Laderaumlänge, nur Kofferraumvolumina. Für die Einfahrt zählt der Unterschied zwischen ' +
+      'ausgeklappten (2.249 mm) und angeklappten Spiegeln (2.057 mm).',
+  },
+  {
+    id: 'mercedes-v-klasse-extralang',
+    bezeichnung: 'Mercedes-Benz V-Klasse · Extralang',
+    modell: 'V-Klasse',
+    variante: 'Extralang',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.37,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen" der Extralang-Tabelle, Zeile "Länge": 5.370 mm. ' +
+        'Betriebsanleitung V447 05/2026: "Fahrzeuglänge (extralange Version) 5370 mm", ' +
+        'Radstand 3.430 mm.',
+    },
+    hoehe: {
+      wert: 1.901,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe": 1.901 mm. Ohne Dachreling-Angabe; die Betriebsanleitung nennt für ' +
+        'alle Längen die Spanne 1900–1920 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.249,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/v-class/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)" der Extralang-Tabelle: 2.249 mm, Spiegel ausgeklappt. ' +
+        'Zweite Bestätigung: Betriebsanleitung V447 05/2026, "Fahrzeugbreite über ' +
+        'Außenspiegel 2249 mm". Angeklappt gibt Mercedes 2.057 mm an.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.153,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'v-klasse-van-2026-05-v447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung V447 05/2026, "Schwenkhöhe der Heckklappe": 2153 mm; ' +
+        '"Schwenkweite der Heckklappe (Aushub)" 1047 mm.',
+    },
+    notiz:
+      'Längste V-Klasse. Zum Übernachten reizvoll, weil hinter der dritten Sitzreihe der ' +
+      'meiste Platz bleibt — eine ebene Liegefläche gibt Mercedes aber nicht an. Spiegel ' +
+      'ausgeklappt 2.249 mm, angeklappt 2.057 mm.',
+  },
+  {
+    id: 'mercedes-vito-tourer-kompakt',
+    bezeichnung: 'Mercedes-Benz Vito Tourer · Kompakt',
+    modell: 'Vito Tourer',
+    variante: 'Kompakt',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.895,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabelle "Alle technischen Daten", Block "Fahrzeugabmessungen", Zeile ' +
+        '"Fahrzeuglänge" bei gewählter Variante Kompakt: 4.895 mm.',
+    },
+    hoehe: {
+      wert: 1.89,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeughöhe": 1.890 mm, ohne Dachreling-Angabe. Achtung Abweichung: die ' +
+        'Betriebsanleitung Vito C447 05/2026 nennt für das "Kombifahrzeug" die Spanne ' +
+        '1900 mm–1920 mm, für den Kastenwagen 1905 mm–1930 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/vans/services/manuals.html/' +
+        'vito-transporter-2026-05-c447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung Vito C447 05/2026, Tabelle "Fahrzeugmaße", Zeile ' +
+        '"Fahrzeugbreite ohne Außenspiegel": 1928 mm. Die Modellseite des Tourer führt ' +
+        'diese Zeile nicht.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.244,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeugbreite" im Block "Fahrzeugabmessungen": 2.244 mm; die direkt darunter ' +
+        'stehende Zeile "Fahrzeugbreite bei angeklappten Spiegeln" nennt 2.060 mm — die ' +
+        '2.244 mm sind also der ausgeklappte Wert. Widerspruch innerhalb Mercedes: die ' +
+        'Betriebsanleitung Vito C447 05/2026 gibt "Fahrzeugbreite über Außenspiegel 2249 mm" ' +
+        'an, 5 mm mehr. Beide Werte liegen über 2,240 m.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.153,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/vans/services/manuals.html/' +
+        'vito-transporter-2026-05-c447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung Vito C447 05/2026, Tabelle "Schwenkbereich", Zeile ' +
+        '"Schwenkhöhe der Heckklappe": 2153 mm. Für Hecktüren statt Heckklappe entfällt ' +
+        'die Schwenkhöhe (Zeile "Schwenkweite der Hecktüren" 849 mm).',
+    },
+    ladelaenge: {
+      wert: 2.408,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Max. Laderaumlänge" im Block "Laderaumabmessungen", Variante Kompakt: ' +
+        '2.408 mm. Der Wert hängt an der jeweils hinterlegten Sitzkonfiguration.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.327,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Laderaumhöhe", Variante Kompakt: 1.327 mm.',
+    },
+    notiz:
+      'Personenvariante mit Fenstern und Sitzbänken, nicht der Kastenwagen. Mit 2,41 m ' +
+      'maximaler Laderaumlänge lässt sich hier grundsätzlich liegen, sofern die Sitze ' +
+      'ausgebaut werden — eine ebene Liegefläche ab Werk gibt Mercedes nicht an. Spiegel ' +
+      'ausgeklappt 2.244 mm, angeklappt 2.060 mm; 184 mm Unterschied.',
+  },
+  {
+    id: 'mercedes-vito-tourer-lang',
+    bezeichnung: 'Mercedes-Benz Vito Tourer · Lang',
+    modell: 'Vito Tourer',
+    variante: 'Lang',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.14,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeuglänge" bei gewählter Variante Lang: 5.140 mm, Radstand 3.200 mm. ' +
+        'Betriebsanleitung Vito C447 05/2026: "Fahrzeuglänge (lange Version) 5140 mm".',
+    },
+    hoehe: {
+      wert: 1.89,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeughöhe": 1.890 mm, ohne Dachreling-Angabe. Die Betriebsanleitung ' +
+        'Vito C447 05/2026 nennt für Kombifahrzeuge abweichend 1900 mm–1920 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/vans/services/manuals.html/' +
+        'vito-transporter-2026-05-c447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung Vito C447 05/2026, Zeile "Fahrzeugbreite ohne Außenspiegel": ' +
+        '1928 mm, angegeben für "Alle Modelle".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.244,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeugbreite": 2.244 mm bei gewählter Variante Lang; Nachbarzeile ' +
+        '"Fahrzeugbreite bei angeklappten Spiegeln" 2.060 mm belegt, dass 2.244 mm der ' +
+        'ausgeklappte Wert ist. Die Betriebsanleitung Vito C447 05/2026 nennt für dieselbe ' +
+        'Baureihe 2249 mm ("Fahrzeugbreite über Außenspiegel") — 5 mm Differenz zwischen ' +
+        'zwei Mercedes-Quellen.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.153,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/vans/services/manuals.html/' +
+        'vito-transporter-2026-05-c447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung Vito C447 05/2026, "Schwenkhöhe der Heckklappe": 2153 mm, ' +
+        'Spalte "Alle Modelle".',
+    },
+    ladelaenge: {
+      wert: 3.678,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Max. Laderaumlänge", Variante Lang: 3.678 mm — der höchste Wert der drei ' +
+        'Längen, weil Mercedes je Variante eine andere Sitzkonfiguration hinterlegt.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.326,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Laderaumhöhe", Variante Lang: 1.326 mm.',
+    },
+    notiz:
+      'Mit 3,68 m maximaler Laderaumlänge und 1,33 m Innenhöhe die praktischste Basis dieser ' +
+      'Reihe zum Übernachten — Liegen längs ist bei ausgebauten Sitzen problemlos möglich, ' +
+      'ein Bett ab Werk gibt es aber nicht. Spiegel ausgeklappt 2.244 mm, angeklappt ' +
+      '2.060 mm.',
+  },
+  {
+    id: 'mercedes-vito-tourer-extralang',
+    bezeichnung: 'Mercedes-Benz Vito Tourer · Extralang',
+    modell: 'Vito Tourer',
+    variante: 'Extralang',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.37,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeuglänge" bei gewählter Variante Extralang: 5.370 mm, Radstand ' +
+        '3.430 mm. Betriebsanleitung Vito C447 05/2026: "Fahrzeuglänge (extralange ' +
+        'Version) 5370 mm".',
+    },
+    hoehe: {
+      wert: 1.89,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeughöhe": 1.890 mm, ohne Dachreling. Betriebsanleitung Vito C447 ' +
+        '05/2026 für Kombifahrzeuge: 1900 mm–1920 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/vans/services/manuals.html/' +
+        'vito-transporter-2026-05-c447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung Vito C447 05/2026, Zeile "Fahrzeugbreite ohne Außenspiegel": ' +
+        '1928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.244,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Fahrzeugbreite": 2.244 mm bei gewählter Variante Extralang, ausgeklappte ' +
+        'Spiegel (Nachbarzeile "Fahrzeugbreite bei angeklappten Spiegeln": 2.060 mm). ' +
+        'Die Betriebsanleitung Vito C447 05/2026 nennt 2249 mm.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.153,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/vans/services/manuals.html/' +
+        'vito-transporter-2026-05-c447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Betriebsanleitung Vito C447 05/2026, "Schwenkhöhe der Heckklappe": 2153 mm.',
+    },
+    ladelaenge: {
+      wert: 2.883,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Max. Laderaumlänge", Variante Extralang: 2.883 mm. Auffällig weniger als ' +
+        'bei der langen Version (3.678 mm) — Mercedes hinterlegt für Extralang offenbar ' +
+        'eine sitzreichere Konfiguration. Wert unverändert übernommen, nicht geglättet.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.297,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/vans/models/vito/tourer/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Laderaumhöhe", Variante Extralang: 1.297 mm.',
+    },
+    notiz:
+      'Längster Vito Tourer. Zum Übernachten trotz der Außenlänge nicht automatisch besser ' +
+      'als die lange Version: Mercedes weist für Extralang nur 2,88 m maximale ' +
+      'Laderaumlänge aus. Spiegel ausgeklappt 2.244 mm, angeklappt 2.060 mm.',
+  },
+  {
+    id: 'mercedes-marco-polo',
+    bezeichnung: 'Mercedes-Benz Marco Polo · Campingausbau',
+    modell: 'Marco Polo',
+    variante: 'Campingausbau auf V-Klasse lang',
+    baujahre: '2024+',
+    kategorie: 'camper',
+    laenge: {
+      wert: 5.14,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/marco-polo/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen", Zeile "Länge" (Motorisierungen 220 d / 250 d / 300 d): ' +
+        '5.140 mm. Der Marco Polo wird nur auf der langen V-Klasse angeboten.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/marco-polo/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe": 1.990 mm. Mercedes benennt in dieser Zeile die Dachstellung nicht ' +
+        'ausdrücklich; der Wert liegt 89 mm über der baugleichen V-Klasse (1.901 mm) und ' +
+        'ist damit die Höhe mit aufgesetztem, geschlossenem Aufstelldach. Die Höhe bei ' +
+        'geöffnetem Aufstelldach ist auf der Herstellerseite nicht belegt und hier ' +
+        'bewusst nicht geschätzt.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/marco-polo/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.249,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/marco-polo/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)" im Tabellenblock "Abmessungen": 2.249 mm, Spiegel ' +
+        'ausgeklappt. Dritter Wert derselben Tabelle: "Breite (eingeklappte Außenspiegel) ' +
+        '2.057 mm" — für eine 2,24 m schmale Einfahrt der relevante Ausweg.',
+    },
+    notiz:
+      'Hier lässt sich ab Werk liegen: das untere Doppelbett misst laut Mercedes ' +
+      '2,03 m × 1,13 m, das Dachbett im Aufstelldach 2,05 m × 1,13 m. Für die Einfahrt ' +
+      'zählen zwei Dinge getrennt — die Bauhöhe mit geschlossenem Dach (1.990 mm) und die ' +
+      'Spiegelstellung (ausgeklappt 2.249 mm, angeklappt 2.057 mm).',
+  },
+  {
+    id: 'mercedes-eqv-lang',
+    bezeichnung: 'Mercedes-Benz EQV · Lang',
+    modell: 'EQV',
+    variante: 'Lang',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.14,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen" der Lang-Tabelle (EQV 250 / EQV 300), Zeile "Länge": ' +
+        '5.140 mm. Betriebsanleitung EQV E447 07/2025: "Fahrzeuglänge (lange Version) ' +
+        '5140 mm".',
+    },
+    hoehe: {
+      wert: 1.933,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die Modellseite nennt in der Zeile "Höhe" 1.910 mm für den EQV 250 und 1.901 mm ' +
+        'für den EQV 300 — die 1.933 mm stehen dort nicht. Sie stammen aus der ' +
+        'Betriebsanleitung EQV E447 07/2025: "Fahrzeughöhe (lange Version) 1923 mm oder ' +
+        '1926 mm oder 1933 mm". Eingetragen ist der höchste von Mercedes ausgewiesene ' +
+        'Wert, die Angaben der Modellseite liegen bis zu 23 mm darunter. Keine ' +
+        'Dachreling-Angabe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.249,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)" der Lang-Tabelle: 2.249 mm, Spiegel ausgeklappt. ' +
+        'Zweite Mercedes-Quelle: Betriebsanleitung EQV E447 07/2025, "Fahrzeugbreite über ' +
+        'Außenspiegel 2249 mm". Angeklappt nennt die Tabelle 2.057 mm.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.222,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'eqv-van-2025-07-e447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung EQV E447 07/2025, Zeile "Schwenkhöhe der Heckklappe (lange ' +
+        'Version)": Mercedes nennt dort ausstattungsabhängig 2210 mm oder 2222 mm. ' +
+        'Übernommen ist der höhere der beiden genannten Werte, nicht ein Mittelwert.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.326,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'eqv-van-2025-07-e447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung EQV E447 07/2025, Tabelle "Fahrzeugmaße", Zeile "Ladehöhe ' +
+        '(lange Version)": 1326 mm. Dieselbe Tabelle führt daneben "Ladehöhe (extralange ' +
+        'Version) 1297 mm" — die Zuordnung zur Längenvariante steht dort also ausdrücklich.',
+    },
+    notiz:
+      'Elektrische V-Klasse. Länge und Breite sind mit der Verbrenner-V-Klasse identisch ' +
+      '(5.140 mm bzw. 2.249 / 1.928 mm), nur die Höhe fällt größer aus — deshalb als ' +
+      'eigener Eintrag geführt. Kein Bett ab Werk, ebene Liegefläche nicht belegt. ' +
+      'Spiegel angeklappt 2.057 mm.',
+  },
+  {
+    id: 'mercedes-eqv-extralang',
+    bezeichnung: 'Mercedes-Benz EQV · Extralang',
+    modell: 'EQV',
+    variante: 'Extralang',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.37,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabellenblock "Abmessungen" der Extralang-Tabelle, Zeile "Länge": 5.370 mm. ' +
+        'Betriebsanleitung EQV E447 07/2025: "Fahrzeuglänge (extralange Version) 5370 mm", ' +
+        'Radstand 3.430 mm.',
+    },
+    hoehe: {
+      wert: 1.931,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die Modellseite nennt in der Zeile "Höhe" 1.911 mm für den EQV 250 und 1.901 mm ' +
+        'für den EQV 300; die 1.931 mm stehen dort nicht. Sie stammen aus der ' +
+        'Betriebsanleitung EQV E447 07/2025: "Fahrzeughöhe (extralange Version) 1920 mm ' +
+        'oder 1923 mm oder 1931 mm". Eingetragen ist der höchste dort genannte Wert. ' +
+        'Ohne Dachreling-Angabe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.928,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.928 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.249,
+      quellenstufe: 'A',
+      quelle: 'https://www.mercedes-benz.de/passengercars/models/van/eqv/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)" der Extralang-Tabelle: 2.249 mm, Spiegel ' +
+        'ausgeklappt; bestätigt durch die Betriebsanleitung EQV E447 07/2025 ' +
+        '("Fahrzeugbreite über Außenspiegel 2249 mm"). Angeklappt: 2.057 mm.',
+    },
+    hoeheHeckOffen: {
+      wert: 2.216,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'eqv-van-2025-07-e447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung EQV E447 07/2025, Zeile "Schwenkhöhe der Heckklappe (extralange ' +
+        'Version)": 2205 mm oder 2210 mm oder 2216 mm, ausstattungsabhängig. Übernommen ist ' +
+        'der höchste genannte Wert.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.297,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/services/manuals.html/' +
+        'eqv-van-2025-07-e447-mbux/fahrzeugdaten/informationen-zu-fahrzeugmaen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Betriebsanleitung EQV E447 07/2025, Tabelle "Fahrzeugmaße", Zeile "Ladehöhe ' +
+        '(extralange Version)": 1297 mm. Für die lange Version nennt dieselbe Tabelle ' +
+        '1326 mm.',
+    },
+    notiz:
+      'Längster EQV. Außenbreite und Länge decken sich exakt mit der extralangen ' +
+      'V-Klasse; abweichend ist allein die Höhe. Ebene Liegefläche nicht belegt. ' +
+      'Spiegel ausgeklappt 2.249 mm, angeklappt 2.057 mm.',
+  },
+  {
+    id: 'mercedes-vle',
+    bezeichnung: 'Mercedes-Benz VLE · 300 elektrisch',
+    modell: 'VLE',
+    variante: '300 elektrisch',
+    baujahre: '2026+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.309,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/models/grand-limousine/vle/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Tabelle "Die technischen Daten des neuen VLE", Spalte "300 elektrisch", Zeile ' +
+        '"Länge": 5.309 mm. Mercedes führt auf der Seite bislang nur diese eine Länge.',
+    },
+    hoehe: {
+      wert: 1.943,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/models/grand-limousine/vle/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Höhe": 1.943 mm, ohne Dachreling-Angabe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.999,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/models/grand-limousine/vle/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)": 1.999 mm — 71 mm mehr als die V-Klasse.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.248,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.mercedes-benz.de/passengercars/models/grand-limousine/vle/overview.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite (mit Spiegeln)": 2.248 mm, Spiegel ausgeklappt — trotz breiterer ' +
+        'Karosserie 1 mm schmaler als die V-Klasse. Dritter Wert derselben Tabelle: ' +
+        '"Breite (eingeklappte Außenspiegel) 2.092 mm", also 35 mm mehr als bei der ' +
+        'V-Klasse.',
+    },
+    notiz:
+      'Der elektrische Nachfolger der V-Klasse, seit März 2026 vorgestellt und bestellbar; ' +
+      'die V-Klasse läuft vorerst parallel weiter. Ebene Liegefläche ist nicht belegt. ' +
+      'Angeklappte Spiegel bringen hier nur auf 2.092 mm herunter, deutlich weniger ' +
+      'Reserve als bei der V-Klasse (2.057 mm).',
+  },
+
+  {
+    id: 'vw-id-buzz-kurz',
+    bezeichnung: 'VW ID. Buzz · kurzer Radstand',
+    modell: 'ID. Buzz',
+    variante: 'kurzer Radstand',
+    baujahre: '2022+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.712,
+      quellenstufe: 'A',
+      quelle: 'https://www.taxi-heute.de/sites/default/files/public/data-news/die-id-buzz-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Preisliste, Seite 20 „Abmessungen", Maszlinie der Seitenansicht. ' +
+        'Mit Anhaengevorrichtung 4,837 m.',
+    },
+    hoehe: {
+      wert: 1.951,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die niederlaendische Preisliste nennt in der Zeile „Hoogte max." 1.927 mm — das ist ' +
+        'die UNTERE Grenze der Herstellerspanne, welche die deutsche Preisliste MY2023 fuer ' +
+        'H3 „Fahrzeughoehe" mit 1.927 bis 1.951 mm je nach Reifengroesse ausweist. ' +
+        'Eingetragen ist deshalb die obere Grenze aus der deutschen Preisliste. ' +
+        'Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.985,
+      quellenstufe: 'A',
+      quelle: 'https://www.taxi-heute.de/sites/default/files/public/data-news/die-id-buzz-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innere Maszlinie der Frontansicht auf Seite 20 „Abmessungen".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.212,
+      quellenstufe: 'A',
+      quelle: 'https://www.taxi-heute.de/sites/default/files/public/data-news/die-id-buzz-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Preisliste „Der neue ID. Buzz", Modelljahr 2023, Seite 20 „Abmessungen": In der ' +
+        'Frontansicht stehen zwei Maszlinien uebereinander — innen 1985 ueber die Karosserie, ' +
+        'auszen 2212 ueber die ausgeklappten Auszenspiegel. Das PDF ist die VW-Preisliste ' +
+        'selbst, gespiegelt auf einem Fachportal.',
+    },
+    ladelaenge: {
+      wert: 2.232,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Gepaeckraumlaenge bei umgeklappter zweiter Sitzreihe. Deckungsgleich mit der ' +
+        'deutschen Preisliste MY2023.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.204,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Breedte tussen de wielkasten"; deutsche Preisliste nennt dasselbe Masz.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.18,
+      quellenstufe: 'A',
+      quelle: 'https://www.taxi-heute.de/sites/default/files/public/data-news/die-id-buzz-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'VW-Masz H4 „Ladehoehe (5-Sitzer)".',
+    },
+    notiz:
+      'Bei umgeklappter zweiter Sitzreihe entsteht eine 2,232 m lange Ladeflaeche bei 1,18 m ' +
+      'Ladehoehe und 1,204 m Breite zwischen den Radkaesten — zum Liegen lang genug. Ein ' +
+      'ebenes Liegemasz nennt VW nicht; ein Camper-Modul gibt es nur als Zubehoer. Die ' +
+      'Auszenspiegel sind je nach Ausstattung elektrisch anklappbar.',
+  },
+  {
+    id: 'vw-id-buzz-lang',
+    bezeichnung: 'VW ID. Buzz · langer Radstand',
+    modell: 'ID. Buzz',
+    variante: 'langer Radstand (LWB)',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.962,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Lengte min./max." Spalte „Pro lange wielbasis": 4.962 / 5.087 mm (der groessere ' +
+        'Wert mit Anhaengevorrichtung). Bestaetigt durch die VW-Baumaszzeichnung ' +
+        '„BAUMASSE ID-BUZZ PEOPLE LWB".',
+    },
+    hoehe: {
+      wert: 1.924,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Hoogte max.". Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.985,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.212,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'id-buzz/1generation/335808/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog „VW ID. Buzz lang Pro", Zeile „Breite (inkl. Auszenspiegel)". Der ' +
+        'Autokatalog uebernimmt Herstellerangaben, misst nicht selbst — daher C. Der Wert ist ' +
+        'identisch mit dem fuer den kurzen Radstand aus der VW-Preisliste belegten; eine ' +
+        'VW-eigene Quelle fuer die Langversion wurde nicht gefunden.',
+    },
+    ladelaenge: {
+      wert: 2.482,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Gepaeckraumlaenge bei umgeklappter zweiter Sitzreihe.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.204,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/' +
+        'prijslijsten-en-brochures/id-buzz/Prijslijst-ID-Buzz.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    notiz:
+      'Der lange Radstand streckt den Wagen um 250 mm und die ebene Flaeche hinter der ' +
+      'ersten Sitzreihe auf 2,482 m — das ist unter den hier erfassten VW-Bussen die laengste ' +
+      'belegte Ladeflaeche unterhalb von 5 m Auszenlaenge. Sechs- und Siebensitzer moeglich.',
+  },
+  {
+    id: 'vw-multivan-t7-kurzer-ueberhang',
+    bezeichnung: 'VW Multivan T7 · kurzer Ueberhang',
+    modell: 'Multivan T7',
+    variante: 'kurzer Ueberhang',
+    baujahre: '2021+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.973,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Abmessungsblatt „Multivan, Business, Life, Style, Edition und Energetic, jeweils ' +
+        'mit kurzem/langem Ueberhang": Maszlinie 4973/5173. Mit Anhaengevorrichtung 5,076 m.',
+    },
+    hoehe: {
+      wert: 1.909,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die zitierte VW-Seite nennt 1.909 mm; „1907" kommt dort im Rohtext nur in ' +
+        'Bild-Hashes vor. Die 1.907 mm stammen aus ADAC/Preisliste (Masz H3). Eingetragen ' +
+        'ist der belegte und zugleich konservativere VW-Wert. Mit tiefergelegtem Fahrwerk ' +
+        '1.887 mm. Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.941,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innere Maszlinie der Frontansicht im VW-Abmessungsblatt.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.252,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die zitierte VW-Seite fuehrt 2252 NICHT — der eingebettete VW-Datensatz nennt nur ' +
+        'die Karosseriebreite. Belegt ist der Wert ueber den ADAC-Autokatalog („T7 Multivan ' +
+        '2.0 TDI SCR Life DSG", Laenge 4973, sowie T7 California), Zeile „Breite (inkl. ' +
+        'Auszenspiegel)": 2252 mm. Portal statt Hersteller, deshalb Stufe C.',
+    },
+    ladelaenge: {
+      wert: 2.425,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Masz L1 „Lade-/Gepaeckraumbodenlaenge hinter der 1. Sitzreihe". Auf der ' +
+        'zitierten VW-Seite steht 2425 nicht; belegt ist der Wert nur ueber die Wiedergabe ' +
+        'der VW-Preislisten-Masztabelle durch Dritte (L1 2.425 kurz / 2.625 lang, L2 ' +
+        '1.316/1.516, L3 461/661) — keine Herstellerquelle, deshalb Stufe C.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.207,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Masz B2 „Breite zwischen den Radhaeusern"; maximale Breite B1 1,665 m. Auf der ' +
+        'zitierten VW-Seite steht 1207 nicht — bestaetigt nur ueber die Wiedergabe der ' +
+        'VW-Preisliste durch Dritte, deshalb Stufe C.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.312,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Masz H4 „Ladehoehe". Auf der zitierten VW-Seite steht 1312 nicht; bestaetigt ' +
+        'nur ueber die Wiedergabe der VW-Preisliste durch Dritte, deshalb Stufe C.',
+    },
+    notiz:
+      'Hinter der ersten Sitzreihe stehen 2,425 m ebener Boden bei 1,312 m Innenhoehe zur ' +
+      'Verfuegung — mit Abstand genug zum Liegen, aber nur wenn die einzeln herausnehmbaren ' +
+      'Sitze der zweiten und dritten Reihe ausgebaut sind. Der T7 hat nur einen Radstand ' +
+      '(3.124 mm); kurz und lang unterscheiden sich allein im hinteren Ueberhang.',
+  },
+  {
+    id: 'vw-multivan-t7-langer-ueberhang',
+    bezeichnung: 'VW Multivan T7 · langer Ueberhang',
+    modell: 'Multivan T7',
+    variante: 'langer Ueberhang',
+    baujahre: '2021+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.173,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Abmessungsblatt, Maszlinie „4973/5173*" mit Fusznote „Werte gelten bei langem ' +
+        'Ueberhang". Mit Anhaengevorrichtung 5,276 m. ADAC nennt denselben Wert.',
+    },
+    hoehe: {
+      wert: 1.909,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Wie beim kurzen Ueberhang: die zitierte VW-Seite nennt 1.909 mm, nicht 1.907 mm — ' +
+        'letztere stammen aus ADAC/Preisliste (Masz H3). Mit tiefergelegtem Fahrwerk ' +
+        '1.887 mm. Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.941,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.252,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Wie beim kurzen Ueberhang: 2252 steht nicht auf der zitierten VW-Seite. Gedeckt ist ' +
+        'der Wert durch den ADAC-Autokatalog („T7 Multivan lang 2.0 TDI SCR DSG"), Zeile ' +
+        '„Breite (inkl. Auszenspiegel)" — Portal statt Hersteller, deshalb Stufe C. Die ' +
+        'Aussage „scheitert an den Spiegeln" bleibt davon unberuehrt.',
+    },
+    ladelaenge: {
+      wert: 2.625,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Masz L1 hinter der 1. Sitzreihe bei langem Ueberhang. Hinter der 2. Reihe ' +
+        '1,516 m, hinter der 3. Reihe 0,661 m. 2625 steht nicht auf der zitierten VW-Seite; ' +
+        'belegt nur ueber eine Preislisten-Wiedergabe Dritter, deshalb Stufe C.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.207,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        '1207 steht nicht auf der zitierten VW-Seite; belegt nur ueber die Wiedergabe der ' +
+        'VW-Preisliste durch Dritte, deshalb Stufe C.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.312,
+      quellenstufe: 'C',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/multivan/multivan/technische-daten/multivan',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Masz H4 „Ladehoehe". 1312 steht nicht auf der zitierten VW-Seite; belegt nur ' +
+        'ueber die Wiedergabe der VW-Preisliste durch Dritte, deshalb Stufe C.',
+    },
+    notiz:
+      '2,625 m ebener Boden hinter der ersten Sitzreihe bei 1,312 m Innenhoehe — der ' +
+      'groeszte Liegeraum in dieser Gruppe. Die 200 mm Mehrlaenge gegenueber dem kurzen ' +
+      'Ueberhang stehen komplett hinter der letzten Sitzreihe zur Verfuegung.',
+  },
+  {
+    id: 'vw-california-t7-beach-camper',
+    bezeichnung: 'VW California T7 · Beach Camper (Aufstelldach)',
+    modell: 'California (T7, Multivan California)',
+    variante: 'Beach Camper',
+    baujahre: '2024+',
+    kategorie: 'camper',
+    laenge: {
+      wert: 5.173,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vw-nutzfahrzeuge.at/california/california/technische-daten/multivan-california',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Der T7-California gibt es nur auf dem langen Ueberhang des Multivan; ADAC nennt ' +
+        'fuer „T7 California 2.0 TDI SCR Beach Camper DSG" denselben Wert.',
+    },
+    hoehe: {
+      wert: 1.972,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vw-nutzfahrzeuge.at/california/california/technische-daten/multivan-california',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Gilt fuer das GESCHLOSSENE Aufstelldach, ohne Dachreling. Dieselbe VW-Seite fuehrt ' +
+        'daneben 1.909 mm — das ist die Variante ohne Aufstelldach (Beach Tour). Fuer das ' +
+        'aufgestellte Dach nennt VW kein Masz.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.941,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.vw-nutzfahrzeuge.at/california/california/technische-daten/multivan-california',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.252,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'transporter/t7/340900/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog „T7 California 2.0 TDI SCR Beach Camper DSG", Zeile „Breite (inkl. ' +
+        'Auszenspiegel)". VW selbst nennt fuer den California nur die Karosseriebreite. Der ' +
+        'Wert ist identisch mit dem beim Multivan T7 aus VW-Quelle belegten.',
+    },
+    notiz:
+      'Aufstelldach mit oberer Liegeflaeche, unten wird die Sitzbank zum Bett. Konkrete ' +
+      'Bettmasze nennt VW auf den ausgewerteten Seiten nicht und werden hier deshalb nicht ' +
+      'gefuehrt. Der Beach Camper hat keinen Kuechenblock, dadurch bleibt der Innenraum ' +
+      'freier als bei Coast und Ocean.',
+  },
+  {
+    id: 'vw-caravelle-6-1-kurz',
+    bezeichnung: 'VW Caravelle 6.1 · kurzer Radstand',
+    modell: 'Caravelle 6.1 (T6.1)',
+    variante: 'kurzer Radstand',
+    baujahre: '2019-2025',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Maszblatt „Caravelle 6.1 Trendline, Trendline EcoProfi und Comfortline, mit ' +
+        'kurzem Radstand/mit langem Radstand", Maszlinie „4904/5304*". Mit ' +
+        'Anhaengevorrichtung 5,006 m.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maszlinie „1990/1970**/1990*"; die Fusznote ** weist 1.970 mm dem Comfortline mit ' +
+        'kurzem Radstand zu. Ohne Dachreling. Bei verstaerkter Federung/Schlechtwegefahrwerk ' +
+        'laut VW ca. +20 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.297,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Frontansicht des VW-Maszblatts, zwei Maszlinien uebereinander: 1904 ueber die ' +
+        'Karosserie, 2297 ueber die ausgeklappten Auszenspiegel. Gilt fuer kurzen und langen ' +
+        'Radstand gleichermaszen (kein Sternchen-Vorbehalt).',
+    },
+    notiz:
+      'Reiner Personentransporter ohne Campingausbau. Die Sitzbaenke der zweiten und ' +
+      'dritten Reihe lassen sich zu einer Liegeflaeche umlegen; ein Liegemasz gibt VW im ' +
+      'Maszblatt nicht an. Mit 4,904 m ist der T6.1 die kuerzeste Karosserie in dieser ' +
+      'Gruppe, traegt aber die breitesten Spiegel.',
+  },
+  {
+    id: 'vw-caravelle-6-1-lang',
+    bezeichnung: 'VW Caravelle 6.1 · langer Radstand',
+    modell: 'Caravelle 6.1 (T6.1)',
+    variante: 'langer Radstand',
+    baujahre: '2019-2025',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.304,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maszlinie „4904/5304*", Fusznote „* Werte gelten fuer langen Radstand". Radstand ' +
+        '3.400 statt 3.000 mm. Mit Anhaengevorrichtung 5,406 m.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maszlinie „1990/1970**/1990*" — der mit * markierte Wert fuer den langen Radstand ' +
+        'ist 1.990 mm. Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.297,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/caravelle/Caravelle-6-1-Trendline-Comfortline-Eco.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Frontansicht, aeuszere Maszlinie ueber die ausgeklappten Auszenspiegel. Der Wert ' +
+        'traegt kein Sternchen und gilt damit fuer beide Radstaende.',
+    },
+    notiz:
+      'Die 400 mm Mehrlaenge gegenueber dem kurzen Radstand stecken im Radstand und ' +
+      'verlaengern den Raum hinter der letzten Sitzreihe. Zum Liegen umlegbare Baenke, ohne ' +
+      'Campingausbau und ohne von VW genanntes Liegemasz.',
+  },
+  {
+    id: 'vw-california-6-1-coast-ocean',
+    bezeichnung: 'VW California 6.1 · Coast/Ocean (Aufstelldach)',
+    modell: 'California 6.1 (T6.1)',
+    variante: 'Coast / Ocean',
+    baujahre: '2019-2025',
+    kategorie: 'camper',
+    laenge: {
+      wert: 4.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Coast-Ocean-Edition.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Maszblatt „California 6.1 Coast, Coast Edition, Ocean und Ocean Edition". Mit ' +
+        'Anhaengevorrichtung 5,006 m.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Coast-Ocean-Edition.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Wert gilt fuer das GESCHLOSSENE Aufstelldach — Coast und Ocean haben das ' +
+        'Aufstelldach serienmaeszig. Ohne Dachreling. Ein Masz fuer das aufgestellte Dach ' +
+        'nennt VW im Maszblatt nicht.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Coast-Ocean-Edition.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.297,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Coast-Ocean-Edition.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Frontansicht des VW-Maszblatts: 1904 ueber die Karosserie, 2297 ueber die ' +
+        'ausgeklappten Auszenspiegel — identisch mit Caravelle 6.1 und California 6.1 Beach.',
+    },
+    notiz:
+      'Vollwertiger Campingbus: zwei Schlafplaetze im Aufstelldach, zwei auf der zum Bett ' +
+      'umgeklappten Rueckbank, dazu Kueche und Schrank (Ocean zusaetzlich mit ' +
+      'Standheizung/Markise). Bettmasze nennt das VW-Maszblatt nicht; die angegebene Hoehe ' +
+      'ist die des geschlossenen Dachs, also das Masz fuer die Einfahrt.',
+  },
+  {
+    id: 'vw-california-6-1-beach',
+    bezeichnung: 'VW California 6.1 · Beach',
+    modell: 'California 6.1 (T6.1)',
+    variante: 'Beach Tour / Beach Camper',
+    baujahre: '2019-2025',
+    kategorie: 'camper',
+    laenge: {
+      wert: 4.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Beach.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Maszblatt „California 6.1 Beach Tour, Beach Tour Edition, Beach Camper und Beach ' +
+        'Camper Edition". Mit Anhaengevorrichtung 5,006 m.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Beach.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Das Maszblatt fuehrt fuer alle vier Beach-Varianten eine Hoehe von 1.990 mm — also ' +
+        'auch fuer den Beach Camper mit geschlossenem Aufstelldach. Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.904,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Beach.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.297,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.volkswagen-nutzfahrzeuge.de/idhub/content/dam/onehub_nfz/importers/de/' +
+        'download/technische-zeichnungen/california/California-6-1-Beach.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Frontansicht des VW-Maszblatts, aeuszere Maszlinie ueber die ausgeklappten ' +
+        'Auszenspiegel.',
+    },
+    notiz:
+      'Camper ohne Kuechenblock: der Beach Camper hat das Aufstelldach mit oberem Bett, der ' +
+      'Beach Tour ist die Variante ohne Aufstelldach. Unten entsteht das Bett aus der ' +
+      'umgeklappten Dreier-Sitzbank. Ohne Kueche bleibt mehr freie Flaeche als bei ' +
+      'Coast/Ocean; Liegemasze nennt VW im Maszblatt nicht.',
+  },
+  {
+    id: 'vw-caravelle-t7-kurz',
+    bezeichnung: 'VW Caravelle T7 · kurzer Radstand',
+    modell: 'Caravelle (T7, Ford-Basis)',
+    variante: 'kurzer Radstand',
+    baujahre: '2025+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.05,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/caravelle/varianten/technische-daten/caravelle-edition',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Angabe fuer den Caravelle Life mit kurzem Radstand (3.100 mm). ADAC nennt fuer ' +
+        '„T7 Caravelle kurz 2.0 TDI Edition Automatik" denselben Wert.',
+    },
+    hoehe: {
+      wert: 1.994,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/caravelle/varianten/technische-daten/caravelle-edition',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Angabe „Hoehe (ohne Dachreling)". Der ADAC-Autokatalog fuehrt fuer dieselbe ' +
+        'Baureihe 1.980 mm — 14 mm Unterschied, hier bewusst der hoehere VW-Wert.',
+    },
+    breiteOhneSpiegel: {
+      wert: 2.032,
+      quellenstufe: 'A',
+      quelle: 'https://www.vw-nutzfahrzeuge.at/caravelle/varianten/technische-daten/caravelle-edition',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'VW-Angabe „Breite (ohne Auszenspiegel)". Entspricht der Karosseriebreite des Ford ' +
+        'Transit Custom, mit dem sich der Caravelle T7 die Fertigung teilt.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.275,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'transporter/t7/338138/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, Zeile „Breite (inkl. Auszenspiegel)". VW selbst veroeffentlicht ' +
+        'fuer den Caravelle T7 nur die Karosseriebreite — trotz gezielter Suche in ' +
+        'VW-Preislisten, Maszblaettern und den Aufbauhersteller-Zeichnungen des ' +
+        'CustomizedSolution-Portals wurde keine VW-Zeile mit Spiegelbreite gefunden.',
+    },
+    notiz:
+      'Personentransporter ohne Campingausbau, Nachfolger des Caravelle 6.1, aber technisch ' +
+      'ein anderes Fahrzeug: gemeinsame Fertigung mit dem Ford Transit Custom und dessen ' +
+      'deutlich breitere Karosserie (2,032 statt 1,904 m). Liegemasze nennt VW nicht.',
+  },
+  {
+    id: 'vw-caravelle-t7-lang',
+    bezeichnung: 'VW Caravelle T7 · langer Radstand',
+    modell: 'Caravelle (T7, Ford-Basis)',
+    variante: 'langer Radstand',
+    baujahre: '2025+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.45,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'transporter/t7/338140/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog „T7 Caravelle lang 2.0 TDI Edition", Radstand 3.500 mm. Eine ' +
+        'VW-Seite mit den Maszen der Langversion wurde nicht gefunden.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'transporter/t7/338140/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Der ADAC-Autokatalog nennt 1.980 mm — das ist eine Rundung nach unten. VW selbst ' +
+        'fuehrt die Langversion mit 1.990 mm (Frontantrieb) bzw. 1.989 mm (4MOTION); ' +
+        'eingetragen ist der VW-Wert 1,990 m als die konservative Richtung. Die zitierte ' +
+        'ADAC-Seite gibt diese Zahl nicht her.',
+    },
+    breiteOhneSpiegel: {
+      wert: 2.032,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'transporter/t7/338140/',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.275,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw-nutzfahrzeuge/' +
+        'transporter/t7/338140/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, Zeile „Breite (inkl. Auszenspiegel)"; identisch mit dem kurzen ' +
+        'Radstand. Keine VW-Quelle gefunden.',
+    },
+    notiz:
+      'Langversion des Ford-basierten Caravelle. Personentransporter ohne Campingausbau; ' +
+      'zum Liegen umlegbare Baenke, ohne von VW genanntes Liegemasz.',
+  },
+
+  {
+    id: 'opel-zafira-life-s',
+    bezeichnung: 'Opel Zafira Life · S',
+    modell: 'Zafira Life',
+    variante: 'S',
+    baujahre: '2019-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.609,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Opel Preisliste Mai 2022 (Schweizer Ausgabe, Händler-Spiegelung), Tabelle "Technische ' +
+        'Daten": 4606-4609 mm je Ausführung. Eingetragen ist der obere Rand des Bereichs.',
+    },
+    hoehe: {
+      wert: 1.950,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe ohne erhöhter Zuladung": 1892-1950 mm. Eingetragen ist der obere Rand. ' +
+        'Die Quelle macht zur Dachreling keine Angabe.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite mit ein-/ausgeklappten Spiegeln in mm": 2010/2204. Der zweite ' +
+        'Wert gilt ausgeklappt. Mit angeklappten Spiegeln 2,010 m.',
+    },
+    ladelaenge: {
+      wert: 2.811,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innenlänge mit umgeklapptem Beifahrersitz; setzt ausgebaute Sitzreihen voraus.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.334,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 2,811 m Innenlänge bei umgeklapptem Beifahrersitz — eine ebene ' +
+      'Liegefläche weist das Datenblatt nicht aus. Einfahrt: Spiegelbreite 2,204 m, also 36 mm ' +
+      'weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'opel-zafira-life-m',
+    bezeichnung: 'Opel Zafira Life · M',
+    modell: 'Zafira Life',
+    variante: 'M',
+    baujahre: '2019-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.959,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Opel Preisliste Mai 2022: 4956-4959 mm. Eingetragen ist der obere Rand. Nach der ' +
+        'Modellpflege 2024 führt Stellantis für dieselbe Länge 4981 mm (bei Opel dann als ' +
+        '"Zafira Standard") — das steht nicht in der hier zitierten Liste von 2022, sondern ' +
+        'in der Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.940,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe ohne erhöhter Zuladung": 1881-1940 mm. Eingetragen ist der obere Rand. ' +
+        'Die Quelle macht zur Dachreling keine Angabe.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite mit ein-/ausgeklappten Spiegeln in mm": 2010/2204. Mit ' +
+        'angeklappten Spiegeln 2,010 m.',
+    },
+    ladelaenge: {
+      wert: 3.161,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innenlänge mit umgeklapptem Beifahrersitz; setzt ausgebaute Sitzreihen voraus.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.337,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,161 m Innenlänge bei umgeklapptem Beifahrersitz — reichlich, ' +
+      'eine ebene Liegefläche ist aber nicht ausgewiesen. Einfahrt: Spiegelbreite 2,204 m, also ' +
+      '36 mm weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'opel-zafira-life-l',
+    bezeichnung: 'Opel Zafira Life · L',
+    modell: 'Zafira Life',
+    variante: 'L',
+    baujahre: '2019-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.309,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Opel Preisliste Mai 2022: 5306-5309 mm. Eingetragen ist der obere Rand. Nach der ' +
+        'Modellpflege 2024 führt Stellantis 5331 mm — nicht belegt durch die hier zitierte ' +
+        'Liste von 2022, sondern durch die Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 ' +
+        '(siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.948,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe ohne erhöhter Zuladung": 1877-1948 mm. Eingetragen ist der obere Rand. ' +
+        'Die Quelle macht zur Dachreling keine Angabe.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite mit ein-/ausgeklappten Spiegeln in mm": 2010/2204. Mit ' +
+        'angeklappten Spiegeln 2,010 m.',
+    },
+    ladelaenge: {
+      wert: 3.511,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innenlänge mit umgeklapptem Beifahrersitz; setzt ausgebaute Sitzreihen voraus.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.339,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-franzen.ch/media/files/2022.08._Zafira-Life-Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,511 m Innenlänge bei umgeklapptem Beifahrersitz. Einfahrt: ' +
+      'Spiegelbreite 2,204 m, also 36 mm weniger als die schmalste Stelle von 2,240 m. Die ' +
+      'Außenlänge von 5,309 m liegt über der nutzbaren Tiefe von 5,220 m.',
+  },
+  {
+    id: 'peugeot-traveller-compact',
+    bezeichnung: 'Peugeot Traveller · Compact (L1)',
+    modell: 'Traveller',
+    variante: 'Compact (L1)',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.606,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Peugeot Preisliste (österreichische Ausgabe, Händler-Spiegelung), Tabelle ' +
+        '"Abmessungen", Spalte Kompakt L1. Die Fußzeile lautet nur "Preisliste Dezember", ' +
+        'das Jahr ist im Dokument nicht ausgewiesen. Peugeot führt 4606 mm, wo Toyota für ' +
+        'dasselbe Fahrzeug 4609 mm nennt.',
+    },
+    hoehe: {
+      wert: 1.905,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe. Für die ' +
+        'Kompakt-Variante weist die Liste keinen Wert mit erhöhter Nutzlast aus — die ' +
+        'Zeile "Höhe mit erhöhter Nutzlast" ist nur in den Spalten L2 und L3 gefüllt.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (mit Außenspiegel)", Spiegel ausgeklappt.',
+    },
+    ladelaenge: {
+      wert: 2.811,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Max. Innenlänge bei umgeklapptem Beifahrersitz; Sitzreihen ausgebaut.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.334,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 2,811 m Innenlänge bei umgeklapptem Beifahrersitz — eine ebene ' +
+      'Liegefläche weist das Datenblatt nicht aus. Einfahrt: Spiegelbreite 2,204 m, also 36 mm ' +
+      'weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'peugeot-traveller-standard',
+    bezeichnung: 'Peugeot Traveller · Standard (L2)',
+    modell: 'Traveller',
+    variante: 'Standard (L2)',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.956,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Peugeot Preisliste, Spalte Standard L2; die Fußzeile lautet nur "Preisliste ' +
+        'Dezember", das Jahr ist im Dokument nicht ausgewiesen. Nach der Modellpflege 2024 ' +
+        'führt Stellantis für dieselbe Längenvariante 4981 mm — belegt nicht hier, sondern ' +
+        'in der Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.890,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe. Mit erhöhter Nutzlast ' +
+        'nennt Peugeot in der Spalte L2 1930 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (mit Außenspiegel)", Spiegel ausgeklappt.',
+    },
+    ladelaenge: {
+      wert: 3.161,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Max. Innenlänge bei umgeklapptem Beifahrersitz; Sitzreihen ausgebaut.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.337,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,161 m Innenlänge bei umgeklapptem Beifahrersitz — reichlich, ' +
+      'eine ebene Liegefläche ist aber nicht ausgewiesen. Einfahrt: Spiegelbreite 2,204 m, also ' +
+      '36 mm weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'peugeot-traveller-long',
+    bezeichnung: 'Peugeot Traveller · Long (L3)',
+    modell: 'Traveller',
+    variante: 'Long (L3)',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.308,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Peugeot Preisliste, Spalte Lang L3; die Fußzeile lautet nur "Preisliste Dezember", ' +
+        'das Jahr ist im Dokument nicht ausgewiesen. Nach der Modellpflege 2024 führt ' +
+        'Stellantis für dieselbe Längenvariante 5331 mm — belegt nicht hier, sondern in der ' +
+        'Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.890,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe. Mit erhöhter Nutzlast ' +
+        'nennt Peugeot in der Spalte L3 1940 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (ohne Außenspiegel)".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite (mit Außenspiegel)", Spiegel ausgeklappt.',
+    },
+    ladelaenge: {
+      wert: 3.511,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Max. Innenlänge bei umgeklapptem Beifahrersitz; Sitzreihen ausgebaut.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.339,
+      quellenstufe: 'A',
+      quelle: 'https://www.auto-guenther.at/fileadmin/media/download/Preislisten/' +
+        'Peugeot_Traveller_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,511 m Innenlänge bei umgeklapptem Beifahrersitz. Einfahrt: ' +
+      'Spiegelbreite 2,204 m, also 36 mm weniger als die schmalste Stelle von 2,240 m. Die ' +
+      'Außenlänge von 5,308 m liegt über der nutzbaren Tiefe von 5,220 m.',
+  },
+  {
+    id: 'citroen-spacetourer-xs',
+    bezeichnung: 'Citroën SpaceTourer · XS',
+    modell: 'SpaceTourer',
+    variante: 'XS',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.609,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste der Citroën Deutschland GmbH, Stand 01.04.2021 (Händler-Spiegelung), ' +
+        'Maßskizze: 4.609 (XS) / 4.959 (M) / 5.309 (XL). Die österreichische Ausgabe vom ' +
+        'März 2020 führt für M 4956 mm — dieselbe Marke, andere Ausgabe.',
+    },
+    hoehe: {
+      wert: 1.950,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maßskizze nennt nur einen gemeinsamen Bereich für alle drei Längen: 1.877 min. / ' +
+        '1.950 max. Eingetragen ist der obere Rand. Die Quelle macht zur Dachreling keine ' +
+        'Angabe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Maßskizze, Karosseriebreite.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Maßskizze, Breite über die ausgeklappten Außenspiegel.',
+    },
+    ladelaenge: {
+      wert: 2.811,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innenlänge mit umgeklapptem Beifahrersitz; Sitzreihen ausgebaut.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.334,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 2,811 m Innenlänge bei umgeklapptem Beifahrersitz — eine ebene ' +
+      'Liegefläche weist das Datenblatt nicht aus. Einfahrt: Spiegelbreite 2,204 m, also 36 mm ' +
+      'weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'citroen-spacetourer-m',
+    bezeichnung: 'Citroën SpaceTourer · M',
+    modell: 'SpaceTourer',
+    variante: 'M',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.959,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Citroën Deutschland GmbH, Stand 01.04.2021, Maßskizze. Die österreichische ' +
+        'Ausgabe vom März 2020 nennt 4956 mm. Nach der Modellpflege 2024 führt Stellantis ' +
+        '4981 mm — belegt nicht durch die hier zitierte Liste von 2021, sondern durch die ' +
+        'Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.950,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maßskizze nennt nur einen gemeinsamen Bereich für alle drei Längen: 1.877 min. / ' +
+        '1.950 max. Eingetragen ist der obere Rand. Die österreichische Ausgabe führt für M ' +
+        'einen Einzelwert von 1890 mm. Die Quelle macht zur Dachreling keine Angabe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Maßskizze, Karosseriebreite.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Maßskizze, Breite über die ausgeklappten Außenspiegel.',
+    },
+    ladelaenge: {
+      wert: 3.161,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innenlänge mit umgeklapptem Beifahrersitz; Sitzreihen ausgebaut.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.337,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,161 m Innenlänge bei umgeklapptem Beifahrersitz — reichlich, ' +
+      'eine ebene Liegefläche ist aber nicht ausgewiesen. Einfahrt: Spiegelbreite 2,204 m, also ' +
+      '36 mm weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'citroen-spacetourer-xl',
+    bezeichnung: 'Citroën SpaceTourer · XL',
+    modell: 'SpaceTourer',
+    variante: 'XL',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.309,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Citroën Deutschland GmbH, Stand 01.04.2021, Maßskizze. Die österreichische ' +
+        'Ausgabe vom März 2020 nennt 5308 mm. Nach der Modellpflege 2024 führt Stellantis ' +
+        '5331 mm — belegt nicht durch die hier zitierte Liste von 2021, sondern durch die ' +
+        'Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.950,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maßskizze nennt nur einen gemeinsamen Bereich für alle drei Längen: 1.877 min. / ' +
+        '1.950 max. Eingetragen ist der obere Rand. Die Quelle macht zur Dachreling keine ' +
+        'Angabe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Maßskizze, Karosseriebreite.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Maßskizze, Breite über die ausgeklappten Außenspiegel.',
+    },
+    ladelaenge: {
+      wert: 3.511,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Innenlänge mit umgeklapptem Beifahrersitz; Sitzreihen ausgebaut.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.339,
+      quellenstufe: 'A',
+      quelle: 'https://www.automobile-rosenkranz.de/dokumente/' +
+        'citroen-spacetourer-preise-und-daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Innenhöhe maximal".',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,511 m Innenlänge bei umgeklapptem Beifahrersitz. Einfahrt: ' +
+      'Spiegelbreite 2,204 m, also 36 mm weniger als die schmalste Stelle von 2,240 m. Die ' +
+      'Außenlänge von 5,309 m liegt über der nutzbaren Tiefe von 5,220 m.',
+  },
+  {
+    id: 'toyota-proace-verso-compact',
+    bezeichnung: 'Toyota Proace Verso · Compact (L0)',
+    modell: 'Proace Verso',
+    variante: 'Compact (L0)',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.609,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Toyota Broschüre (österreichische Ausgabe), Tabelle "Außenabmessungen", Spalte ' +
+        'Compact (L0). Toyota führt 4609 mm, wo Peugeot für dasselbe Fahrzeug 4606 mm nennt.',
+    },
+    hoehe: {
+      wert: 1.910,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe. Mit erhöhtem ' +
+        'Gesamtgewicht nennt Toyota 1950 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite ohne Spiegel".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite mit Spiegel" (ausgeklappt). Die Broschüre führt daneben "Breite mit ' +
+        'Spiegel eingeklappt": 2010 mm.',
+    },
+    ladelaenge: {
+      wert: 2.811,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Abschnitt "Innenraumabmessungen (Bus)", maximale Länge bei umgeklapptem ' +
+        'Beifahrersitz. Nicht die größeren Laderaumwerte des Kastenwagens Proace.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Bus-Werte, nicht die des Kastenwagens (dort 1258 mm).',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.335,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Bus-Werte, nicht die des Kastenwagens (dort 1397 mm).',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 2,811 m Innenlänge bei umgeklapptem Beifahrersitz — eine ebene ' +
+      'Liegefläche weist das Datenblatt nicht aus. Einfahrt: Spiegelbreite 2,204 m, also 36 mm ' +
+      'weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'toyota-proace-verso-medium',
+    bezeichnung: 'Toyota Proace Verso · Medium (L1)',
+    modell: 'Proace Verso',
+    variante: 'Medium (L1)',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.959,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Toyota Broschüre, Spalte Medium (L1). Peugeot und Citroën (AT) führen für dasselbe ' +
+        'Fahrzeug 4956 mm. Nach der Modellpflege 2024 sind es 4981 mm — belegt nicht durch ' +
+        'die hier zitierte Broschüre, sondern durch die Fiat-Preisliste Ulysse Serie 3, ' +
+        'Stand 01/2026 (siehe Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.910,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe" nennt für Medium zwei Werte, 1899/1910 mm; eingetragen ist der obere. ' +
+        'Die Quelle macht zur Dachreling keine Angabe. Mit erhöhtem Gesamtgewicht nennt ' +
+        'Toyota 1940 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite ohne Spiegel".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite mit Spiegel" (ausgeklappt). Daneben "Breite mit Spiegel eingeklappt": ' +
+        '2010 mm.',
+    },
+    ladelaenge: {
+      wert: 3.161,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Abschnitt "Innenraumabmessungen (Bus)", maximale Länge bei umgeklapptem ' +
+        'Beifahrersitz. Nicht die Laderaumwerte des Kastenwagens Proace.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Bus-Werte, nicht die des Kastenwagens (dort 1258 mm).',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.335,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Bus-Werte, nicht die des Kastenwagens (dort 1397 mm).',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,161 m Innenlänge bei umgeklapptem Beifahrersitz — reichlich, ' +
+      'eine ebene Liegefläche ist aber nicht ausgewiesen. Einfahrt: Spiegelbreite 2,204 m, also ' +
+      '36 mm weniger als die schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'toyota-proace-verso-long',
+    bezeichnung: 'Toyota Proace Verso · Long (L2)',
+    modell: 'Proace Verso',
+    variante: 'Long (L2)',
+    baujahre: '2016-2024',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.309,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Toyota Broschüre, Spalte Lang (L2). Peugeot und Citroën (AT) führen 5308 mm. Nach ' +
+        'der Modellpflege 2024 sind es 5331 mm — belegt nicht durch die hier zitierte ' +
+        'Broschüre, sondern durch die Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (siehe ' +
+        'Eintrag Fiat Ulysse).',
+    },
+    hoehe: {
+      wert: 1.899,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe. Mit erhöhtem ' +
+        'Gesamtgewicht nennt Toyota 1940 mm.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.920,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Breite ohne Spiegel".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite mit Spiegel" (ausgeklappt). Daneben "Breite mit Spiegel eingeklappt": ' +
+        '2010 mm.',
+    },
+    ladelaenge: {
+      wert: 3.511,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Abschnitt "Innenraumabmessungen (Bus)", maximale Länge bei umgeklapptem ' +
+        'Beifahrersitz. Nicht die Laderaumwerte des Kastenwagens Proace.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.228,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Bus-Werte, nicht die des Kastenwagens (dort 1258 mm).',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.335,
+      quellenstufe: 'A',
+      quelle: 'https://localform.toyota.at/pdf/brochures/proace_verso.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Bus-Werte, nicht die des Kastenwagens (dort 1397 mm).',
+    },
+    notiz:
+      'Liegen in Fahrtrichtung: 3,511 m Innenlänge bei umgeklapptem Beifahrersitz. Einfahrt: ' +
+      'Spiegelbreite 2,204 m, also 36 mm weniger als die schmalste Stelle von 2,240 m. Die ' +
+      'Außenlänge von 5,309 m liegt über der nutzbaren Tiefe von 5,220 m.',
+  },
+  {
+    id: 'fiat-ulysse-l2',
+    bezeichnung: 'Fiat Ulysse · L2',
+    modell: 'Ulysse',
+    variante: 'L2',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.981,
+      quellenstufe: 'A',
+      quelle: 'https://www.weller-automobile.de/wp-content/uploads/' +
+        '2508_Preisliste_Fiat_Ulysse_Serie_3.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Deutsche Fiat-Preisliste Ulysse Serie 3, Stand 01/2026 (Händler-Spiegelung), Tabelle ' +
+        '"Abmessungen": 4.981 (L2) / 5.331 (L3). Das ist der Stand nach der Modellpflege 2024; ' +
+        'davor führte Stellantis für dieselbe Variante rund 4956-4959 mm.',
+    },
+    hoehe: {
+      wert: 1.910,
+      quellenstufe: 'A',
+      quelle: 'https://www.weller-automobile.de/wp-content/uploads/' +
+        '2508_Preisliste_Fiat_Ulysse_Serie_3.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.weller-automobile.de/wp-content/uploads/' +
+        '2508_Preisliste_Fiat_Ulysse_Serie_3.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite mit ausgeklappten Außenspiegel". Daneben "Breite mit eingeklappten ' +
+        'Außenspiegel": 2.010 mm. Eine Karosseriebreite ohne Spiegel nennt die Liste nicht.',
+    },
+    notiz:
+      'Die Fiat-Preisliste führt keine Innenraummaße, deshalb ist zur Liegelänge aus dieser ' +
+      'Quelle nichts belegt. Einfahrt: Spiegelbreite 2,204 m, also 36 mm weniger als die ' +
+      'schmalste Stelle von 2,240 m.',
+  },
+  {
+    id: 'fiat-ulysse-l3',
+    bezeichnung: 'Fiat Ulysse · L3',
+    modell: 'Ulysse',
+    variante: 'L3',
+    baujahre: '2024+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.331,
+      quellenstufe: 'A',
+      quelle: 'https://www.weller-automobile.de/wp-content/uploads/' +
+        '2508_Preisliste_Fiat_Ulysse_Serie_3.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Deutsche Fiat-Preisliste Ulysse Serie 3, Stand 01/2026, Tabelle "Abmessungen". Stand ' +
+        'nach der Modellpflege 2024; davor rund 5306-5309 mm.',
+    },
+    hoehe: {
+      wert: 1.910,
+      quellenstufe: 'A',
+      quelle: 'https://www.weller-automobile.de/wp-content/uploads/' +
+        '2508_Preisliste_Fiat_Ulysse_Serie_3.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Höhe". Die Quelle macht zur Dachreling keine Angabe.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.204,
+      quellenstufe: 'A',
+      quelle: 'https://www.weller-automobile.de/wp-content/uploads/' +
+        '2508_Preisliste_Fiat_Ulysse_Serie_3.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite mit ausgeklappten Außenspiegel". Daneben "Breite mit eingeklappten ' +
+        'Außenspiegel": 2.010 mm. Eine Karosseriebreite ohne Spiegel nennt die Liste nicht.',
+    },
+    notiz:
+      'Die Fiat-Preisliste führt keine Innenraummaße, deshalb ist zur Liegelänge aus dieser ' +
+      'Quelle nichts belegt. Einfahrt: Spiegelbreite 2,204 m, also 36 mm weniger als die ' +
+      'schmalste Stelle von 2,240 m. Die Außenlänge von 5,331 m liegt über der nutzbaren ' +
+      'Tiefe von 5,220 m.',
+  },
+
+  {
+    id: 'ford-tourneo-custom-v710-l1',
+    bezeichnung: 'Ford Tourneo Custom · V710 L1',
+    modell: 'Tourneo Custom',
+    variante: 'V710 L1 (kurzer Radstand 3100 mm)',
+    baujahre: '2023+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.05,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Fahrzeuggesamtlänge 5050“ der offiziellen Ford-Abmessungstabelle.',
+    },
+    hoehe: {
+      wert: 2.04,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford nennt eine Spanne „Fahrzeughöhe 1959-2040“ (Dachhöhe durchgehend H1, Spanne aus ' +
+        'Bereifung und Beladung, nicht aus Dachvarianten). Hier der konservative obere Wert. ' +
+        'Ford weist Dachreling nicht getrennt aus; eine relingfreie Einzelangabe fehlt.',
+    },
+    breiteOhneSpiegel: {
+      wert: 2.032,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Ohne Türgriffe nennt Ford zusätzlich 1999 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.275,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Breite mit Außenspiegeln 2275“. Mit angeklappten Außenspiegeln nennt Ford in ' +
+        'derselben Tabelle 2148 mm; die Spiegel sind serienmäßig elektrisch anklappbar.',
+    },
+    ladelaenge: {
+      wert: 2.622,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Länge Fahrgastraum (hinter der 1. Sitzreihe - am Boden) 2622“. Hinter der ' +
+        '2. Sitzreihe nennt Ford 1280-1790 mm.',
+    },
+    notiz:
+      'Zum Übernachten: hinter der ersten Sitzreihe stehen am Boden 2,622 m zur Verfügung, eine ' +
+      'ebene Liegefläche in Fahrzeuglängsrichtung ist damit auch für große Personen möglich. Ford ' +
+      'belegt keine ebene Liegefläche als Maß, das Fahrzeug ist kein Campingausbau. Die ' +
+      'Außenspiegel lassen sich serienmäßig elektrisch auf 2,148 m Gesamtbreite anklappen — das ' +
+      'wäre bei diesem Fahrzeug eine tägliche Handlung beim Ein- und Ausfahren.',
+  },
+  {
+    id: 'ford-tourneo-custom-v710-l2',
+    bezeichnung: 'Ford Tourneo Custom · V710 L2',
+    modell: 'Tourneo Custom',
+    variante: 'V710 L2 (langer Radstand 3500 mm)',
+    baujahre: '2023+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.45,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Fahrzeuggesamtlänge 5450“ der offiziellen Ford-Abmessungstabelle.',
+    },
+    hoehe: {
+      wert: 2.031,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford nennt eine Spanne „Fahrzeughöhe 1963-2031“ (Dachhöhe durchgehend H1). Hier der ' +
+        'konservative obere Wert. Dachreling wird von Ford nicht getrennt ausgewiesen, eine ' +
+        'relingfreie Einzelangabe fehlt.',
+    },
+    breiteOhneSpiegel: {
+      wert: 2.032,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Ohne Türgriffe nennt Ford zusätzlich 1999 mm. Identisch zu L1.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.275,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Breite mit Außenspiegeln 2275“, identisch zu L1. Mit angeklappten Außenspiegeln ' +
+        'nennt Ford 2148 mm.',
+    },
+    ladelaenge: {
+      wert: 3.022,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.ford.de/content/dam/guxeu/de/documents/price-list/cars/tourneo-custom/PL-240430-PROKPL_Der_Ford_Tourneo_Custom_Bus_gultig_ab_30-04-2024-Abmessungen.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Länge Fahrgastraum (hinter der 1. Sitzreihe - am Boden) 3022“. Hinter der ' +
+        '2. Sitzreihe nennt Ford 1680-2190 mm.',
+    },
+    notiz:
+      'Zum Übernachten die interessantere der beiden Längen: 3,022 m ebener Boden hinter der ' +
+      'ersten Sitzreihe, hinter der zweiten Sitzreihe je nach Sitzposition bis 2,190 m — also ' +
+      'ausreichend Liegelänge, ohne die zweite Sitzreihe ausbauen zu müssen. Die Außenspiegel ' +
+      'sind serienmäßig elektrisch anklappbar (dann 2,148 m Gesamtbreite).',
+  },
+  {
+    id: 'ford-tourneo-custom-v362-l1',
+    bezeichnung: 'Ford Tourneo Custom · V362 L1',
+    modell: 'Tourneo Custom',
+    variante: 'V362 L1 (kurzer Radstand 2933 mm), Normaldach',
+    baujahre: '2018-2023',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.972,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/CG3764deDEU-201911-20191203150840.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Betriebsanleitung, Abschnitt „Fahrzeugabmessungen“, Zeile „4.972 Gesamtlänge“ ' +
+        '(kurzer Radstand). Deckungsgleich mit der Portalangabe 4972 mm.',
+    },
+    hoehe: {
+      wert: 1.984,
+      quellenstufe: 'C',
+      quelle: 'https://de.automobiledimension.com/modell/ford/tourneo-custom-l1',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Normaldach. Ford selbst nennt in der Betriebsanleitung nur die Spanne „1.959-2.382 ' +
+        'Gesamthöhe ohne Antenne“, die Normaldach und das damals lieferbare Hochdach ' +
+        'zusammenfasst und daher als Einzelwert unbrauchbar ist. Der hier gesetzte Wert ist die ' +
+        'Portalangabe für das Normaldach und liegt innerhalb der Ford-Spanne. Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.986,
+      quellenstufe: 'C',
+      quelle: 'https://de.automobiledimension.com/modell/ford/tourneo-custom-l1',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Die Ford-Betriebsanleitung führt nur die Breite mit Außenspiegeln.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.29,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/CG3764deDEU-201911-20191203150840.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Betriebsanleitung, Zeile „2.290 Gesamtbreite mit Außenspiegeln“. WIDERSPRUCH: ' +
+        'Datenportale nennen für dieselbe Baureihe 2272 mm (automobiledimension, ADAC), also ' +
+        '18 mm weniger. Hier steht bewusst die Herstellerangabe, weil sie die konservativere ' +
+        'ist; beide Werte liegen über der Engstelle. Breite mit ANGEKLAPPTEN Spiegeln ist für ' +
+        'diese Baureihe in keiner der gefundenen Quellen beziffert — die Spiegel sind laut ' +
+        'Preisliste ab Werk automatisch anklappbar, das Maß nennt Ford aber erst ab V710.',
+    },
+    notiz:
+      'Vorgängerbaureihe des V710, gebaut bis 2023, nur noch gebraucht zu haben. Zum ' +
+      'Übernachten: Ford beziffert für diese Baureihe in den ausgewerteten Unterlagen keine ' +
+      'Fahrgastraum- oder Liegelänge, deshalb steht hier kein Maß — die Karosserie ist rund ' +
+      '8 cm kürzer als beim V710 L1. Die Spiegelbreite ist bei dieser Baureihe nach ' +
+      'Herstellerangabe größer als beim Nachfolger, nicht kleiner.',
+  },
+  {
+    id: 'ford-tourneo-custom-v362-l2',
+    bezeichnung: 'Ford Tourneo Custom · V362 L2',
+    modell: 'Tourneo Custom',
+    variante: 'V362 L2 (langer Radstand 3300 mm), Normaldach',
+    baujahre: '2018-2023',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.339,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/CG3764deDEU-201911-20191203150840.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Betriebsanleitung, Abschnitt „Fahrzeugabmessungen“, Zeile „5.339 Gesamtlänge“ ' +
+        '(langer Radstand). Deckungsgleich mit der Portalangabe 5339 mm.',
+    },
+    hoehe: {
+      wert: 1.977,
+      quellenstufe: 'C',
+      quelle: 'https://de.automobiledimension.com/modell/ford/tourneo-custom-l2',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Normaldach. Ford nennt in der Betriebsanleitung nur die Spanne „1.968-2.373 ' +
+        'Gesamthöhe ohne Antenne“, die Normaldach und Hochdach zusammenfasst. Der hier ' +
+        'gesetzte Portalwert für das Normaldach liegt innerhalb dieser Spanne. Ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.986,
+      quellenstufe: 'C',
+      quelle: 'https://de.automobiledimension.com/modell/ford/tourneo-custom-l2',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Identisch zu L1; die Ford-Betriebsanleitung führt nur die Breite mit Spiegeln.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.29,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/CG3764deDEU-201911-20191203150840.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Betriebsanleitung, Zeile „2.290 Gesamtbreite mit Außenspiegeln“ (identisch für ' +
+        'kurzen und langen Radstand). WIDERSPRUCH: Datenportale nennen 2272 mm. Beide Werte ' +
+        'liegen über der Engstelle. Ein Maß mit angeklappten Spiegeln ist für diese Baureihe ' +
+        'nicht belegt.',
+    },
+    notiz:
+      'Vorgängerbaureihe des V710, gebaut bis 2023, nur noch gebraucht zu haben. Zum ' +
+      'Übernachten: keine Fahrgastraum- oder Liegelänge in den ausgewerteten Ford-Unterlagen ' +
+      'beziffert, deshalb steht hier kein Maß. Der Radstand ist mit 3300 mm 200 mm kürzer als ' +
+      'beim V710 L2, der Innenraum entsprechend knapper.',
+  },
+  {
+    id: 'ford-nugget-v362-l1-aufstelldach',
+    bezeichnung: 'Ford Nugget · V362 L1 Aufstelldach',
+    modell: 'Nugget',
+    variante: 'V362 L1 (Radstand 2933 mm), Aufstelldach',
+    baujahre: '2022-2023',
+    kategorie: 'camper',
+    laenge: {
+      wert: 4.972,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/nugget/3generation-facelift/324330/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Deckungsgleich mit der Ford-Betriebsanleitung für den Tourneo Custom V362 L1 ' +
+        '(4.972 mm) und mit auto-wiki.org; der Westfalia-Ausbau verändert die Länge nicht.',
+    },
+    hoehe: {
+      wert: 2.06,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/nugget/3generation-facelift/324330/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'AUFSTELLDACH IM GESCHLOSSENEN ZUSTAND. Das Aufstelldach ist die höhenbestimmende ' +
+        'Baugruppe und liegt rund 8 cm über dem Normaldach der Personenvariante. Von promobil ' +
+        '(„Ford Nugget AD: 497,0/199/206 cm“) und auto-wiki.org unabhängig bestätigt. Ohne ' +
+        'Dachreling. Aufgestellt ist die Höhe deutlich größer und nirgends beziffert.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.986,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/nugget/3generation-facelift/324330/',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.272,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/nugget/3generation-facelift/324330/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Portalwert. Ford selbst nennt für die baugleiche Basis (Tourneo Custom V362) in der ' +
+        'Betriebsanleitung 2290 mm — 18 mm mehr. Kein Herstellerdatenblatt für den Nugget ' +
+        'gefunden, das die Spiegelbreite ausweist. Breite mit angeklappten Spiegeln nicht belegt.',
+    },
+    notiz:
+      'Campingausbau von Westfalia auf Transit Custom V362, hier mit AUFSTELLDACH (nicht ' +
+      'Hochdach). Zum Übernachten ausgelegt: Dachbett im Aufstelldach plus eine aus der ' +
+      'Rücksitzbank umbaubare untere Liegefläche. Die konkreten Bettmaße stehen in der aktuellen ' +
+      'Ford-Preisliste nur für die Nachfolgebaureihe V710 und werden hier bewusst nicht ' +
+      'übernommen. Bauzeitraum laut ADAC 03/2022 bis 07/2023 für die dort gelistete ' +
+      'Motorvariante; der Nugget auf V362 wurde insgesamt länger gebaut.',
+  },
+
+  /**
+   * Renault Trafic Passenger — Renault Deutschland führt den Trafic nur noch als Kastenwagen und
+   * Doppelkabine; die Personenvariante steht dort nicht mehr im Programm. Die Maße stammen deshalb
+   * aus der Schweizer Preisliste Nr. 19.0 (ab Mai 2026), einem Herstellerdokument.
+   * Die Spiegelbreite von 2.312 mm ist der größte publizierte Wert und damit die konservative
+   * Annahme; dieselben 1.956 / 2.312 mm führt auch die Preisliste des baugleichen Nissan
+   * Primastar.
+   */
+  {
+    id: 'renault-trafic-passenger-l1',
+    bezeichnung: 'Renault Trafic Passenger · L1',
+    modell: 'Renault Trafic Passenger',
+    variante: 'L1',
+    baujahre: '2021–2026 (Schweiz)',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.08,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Nr. 19.0 (ab Mai 2026), Spalte PASSENGER. Probe: Radstand 3.098 + Überhang vorn 1.014 + Überhang hinten 968 = 5.080 mm.',
+    },
+    hoehe: {
+      wert: 1.973,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Höhe bei Leergewicht". Renault weist für den Passenger keine Dachrelingvariante und keinen zweiten Höhenwert aus, der Wert ist also relingfrei zu lesen.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.956,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Breite ohne / mit Rückspiegel", erster Wert.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.312,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Breite ohne / mit Rückspiegel", zweiter Wert, Spiegel ausgeklappt. Ein Maß mit angeklappten Spiegeln veröffentlicht Renault nicht, obwohl die Spiegel elektrisch einklappbar sind.',
+    },
+    ladelaenge: {
+      wert: 2.537,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ladelänge am Boden in der Werksversion mit 2–3 Sitzen. Mit 5–6 Sitzen und umgeklappter zweiter Reihe 2.066 mm, mit 5–6 Sitzen 1.650 mm, mit 8–9 Sitzen und umgeklappter dritter Reihe 1.152 mm, mit 8–9 Sitzen nur 736 mm.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.23,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Mass zwischen den Radhäusern".',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.3,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Dachhöhe innen". Nissan gibt für das baugleiche Primastar-Kombi 1.369 mm an — beide Häuser messen offenbar unterschiedlich, siehe OFFEN-Hinweis in den Anmerkungen.',
+    },
+    notiz:
+      'Renault Deutschland führt den Trafic nur noch als Kastenwagen und Doppelkabine; die ' +
+      'Personenvariante steht dort nicht im Programm, der Beleg stammt aus der Schweizer ' +
+      'Preisliste. Zum Übernachten die interessantere der beiden Längen nur bedingt: Eine ' +
+      'ebene Fläche von 2.537 mm bei 1.300 mm Innenhöhe entsteht erst in der Werksversion ' +
+      'mit 2–3 Sitzen; wer neun Sitze behält, hat hinter der dritten Reihe nur 736 mm. ' +
+      'Breitestes Teil des Fahrzeugs sind die ausgeklappten Spiegel mit 2.312 mm gegenüber ' +
+      '1.956 mm Karosserie — der Unterschied von 356 mm entscheidet an einer engen ' +
+      'Einfahrt, nicht die Karosseriebreite.',
+  },
+  /**
+   * Renault Grand Trafic Passenger — identische Baureihe, 400 mm mehr Radstand. Breite und
+   * Spiegelbreite sind unverändert; nur Länge, Ladelänge und die Höhe (1 mm) unterscheiden sich.
+   */
+  {
+    id: 'renault-trafic-passenger-l2',
+    bezeichnung: 'Renault Grand Trafic Passenger · L2',
+    modell: 'Renault Grand Trafic Passenger',
+    variante: 'L2',
+    baujahre: '2021–2026 (Schweiz)',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.48,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Nr. 19.0 (ab Mai 2026), Spalte GRAND PASSENGER. Probe: Radstand 3.498 + Überhang vorn 1.014 + Überhang hinten 968 = 5.480 mm.',
+    },
+    hoehe: {
+      wert: 1.974,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Höhe bei Leergewicht"; 1 mm über der kurzen Version. Keine Dachrelingvariante ausgewiesen.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.956,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Breite ohne / mit Rückspiegel", erster Wert.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.312,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Breite ohne / mit Rückspiegel", zweiter Wert, Spiegel ausgeklappt. Für die lange Version identisch mit der kurzen. Kein Maß mit angeklappten Spiegeln veröffentlicht.',
+    },
+    ladelaenge: {
+      wert: 2.937,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ladelänge am Boden in der Werksversion mit 2–3 Sitzen. Mit 5–6 Sitzen und umgeklappter zweiter Reihe 2.466 mm, mit 5–6 Sitzen 2.050 mm, mit 8–9 Sitzen und umgeklappter dritter Reihe 1.552 mm, mit 8–9 Sitzen 1.136 mm.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.23,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Mass zwischen den Radhäusern", gegenüber der kurzen Version unverändert.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.3,
+      quellenstufe: 'A',
+      quelle:
+        'https://cdn.group.renault.com/ren/ch/renault-new-cars/pricelists/Renault_Neuer_Trafic_Passenger_Spaceclass_PL_d.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Dachhöhe innen", gegenüber der kurzen Version unverändert.',
+    },
+    notiz:
+      'Renault Deutschland führt den Trafic nur noch als Kastenwagen und Doppelkabine; die ' +
+      'Personenvariante steht dort nicht im Programm, der Beleg stammt aus der Schweizer ' +
+      'Preisliste. Die längste hier belegte Liegefläche im Segment: 2.937 mm eben am Boden ' +
+      'in der 2–3-sitzigen Werksversion, 2.466 mm noch mit fünf bis sechs Sitzen und ' +
+      'umgeklappter zweiter Reihe — beides reicht bequem zum Ausstrecken, bei 1.300 mm ' +
+      'Innenhöhe allerdings nur zum Liegen, nicht zum Stehen. Breitestes Teil bleiben die ' +
+      'ausgeklappten Spiegel mit 2.312 mm. Die 400 mm Mehrlänge gegenüber L1 gehen ' +
+      'vollständig in den Radstand.',
+  },
+  /**
+   * Nissan Primastar Kombi — baugleich mit dem Renault Trafic Passenger (beide aus Sandouville),
+   * die Maße sind aber getrennt belegt: Nissans eigene Preisliste vom 09.07.2026 hat für den Kombi
+   * eine eigene Abmessungstabelle, die sich in Innenhöhe und Radkastenmaß von Renaults Angaben
+   * unterscheidet. Nicht aus dem Kastenwagen-Prospekt übernehmen — der führt eine eigene Tabelle.
+   */
+  {
+    id: 'nissan-primastar-kombi-l1h1',
+    bezeichnung: 'Nissan Primastar Kombi · L1H1',
+    modell: 'Nissan Primastar Kombi',
+    variante: 'L1H1',
+    baujahre: '2022+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.08,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Primastar Kombi, Stand 09.07.2026, Abmessungstabelle Spalte L1H1, Zeile „Fahrzeuglänge".',
+    },
+    hoehe: {
+      wert: 2.02,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Nissan gibt für den Kombi keine einzelne Höhe an, sondern die Spanne 1.935–2.020 mm; hier steht bewusst der obere Rand, weil für eine Einfahrtsfrage die ungünstige Annahme die richtige ist. Die Maßzeichnung derselben Preisliste zeigt 1.971 mm. H1-Dach, ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.956,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Fahrzeugbreite / ohne Außenspiegel".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.312,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Fahrzeugbreite / mit Außenspiegel", Spiegel ausgeklappt; auch in der Maßzeichnung der Preisliste eingetragen. Ein Wert mit angeklappten Spiegeln wird nicht veröffentlicht.',
+    },
+    ladelaenge: {
+      wert: 1.679,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Laderaumlänge am Boden des 6-Sitzers (N1). Der 9-Sitzer kommt hinter der dritten Reihe auf nur 736 mm. Eine 2–3-sitzige Werksversion bietet Nissan für den Kombi nicht an.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.268,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Laderaumbreite / zwischen Radkästen"; maximale Laderaumbreite 1.662 mm. Renault nennt für den baugleichen Trafic Passenger 1.230 mm.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.369,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Laderaumhöhe". Renault gibt für den baugleichen Trafic Passenger 1.300 mm „Dachhöhe innen" an — 69 mm Unterschied, vermutlich anderer Bezugspunkt.',
+    },
+    notiz:
+      'Zum Übernachten die schwächere der beiden Primastar-Längen: Selbst als 6-Sitzer bleiben hinter der zweiten Reihe nur 1.679 mm ebene Länge, zum Ausstrecken zu wenig; als 9-Sitzer sind es 736 mm. Innenhöhe 1.369 mm, also Liegen statt Stehen. Für die Einfahrt zählt allein die Breite über die ausgeklappten Spiegel — 2.312 mm gegenüber 1.956 mm Karosserie.',
+  },
+  /**
+   * Nissan Primastar Kombi L2H1 — 400 mm längerer Radstand, sonst identisch. Breite, Höhe,
+   * Innenhöhe und Radkastenmaß sind laut Nissan unverändert; nur Länge und Laderaumlänge wachsen.
+   */
+  {
+    id: 'nissan-primastar-kombi-l2h1',
+    bezeichnung: 'Nissan Primastar Kombi · L2H1',
+    modell: 'Nissan Primastar Kombi',
+    variante: 'L2H1',
+    baujahre: '2022+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.48,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Primastar Kombi, Stand 09.07.2026, Abmessungstabelle Spalte L2H1, Zeile „Fahrzeuglänge"; Radstand 3.498 mm.',
+    },
+    hoehe: {
+      wert: 2.02,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Nissan nennt auch für L2H1 die Spanne 1.935–2.020 mm; hier steht der obere Rand als konservative Annahme. Maßzeichnung 1.971 mm. H1-Dach, ohne Dachreling.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.956,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Fahrzeugbreite / ohne Außenspiegel", gegenüber L1H1 unverändert.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.312,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Fahrzeugbreite / mit Außenspiegel", Spiegel ausgeklappt, für L2H1 eigens ausgewiesen und identisch mit L1H1. Kein Wert mit angeklappten Spiegeln veröffentlicht.',
+    },
+    ladelaenge: {
+      wert: 2.079,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Laderaumlänge am Boden des 6-Sitzers (N1); der 9-Sitzer kommt hinter der dritten Reihe auf 1.136 mm.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.268,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Laderaumbreite / zwischen Radkästen"; maximale Laderaumbreite 1.662 mm.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.369,
+      quellenstufe: 'A',
+      quelle:
+        'https://www-europe.nissan-cdn.net/content/dam/Nissan/de/Pricelists_and_Brochures/Primastar-Kombi/primastar-kombi-preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile „Laderaumhöhe", gegenüber L1H1 unverändert.',
+    },
+    notiz:
+      'Von den vier hier belegten Varianten die einzige Primastar-Version, in der sich liegen lässt: 2.079 mm ebene Länge am Boden als 6-Sitzer, bei 1.369 mm Innenhöhe. Als 9-Sitzer bleiben 1.136 mm. Breitestes Teil sind die ausgeklappten Spiegel mit 2.312 mm gegenüber 1.956 mm Karosserie — die 400 mm Mehrlänge gegenüber L1H1 stecken vollständig im Radstand.',
+  },
 ];
 
 /** Auswahlliste für die Oberfläche: freie Eingabe zuerst, dann der Katalog. */

@@ -63,6 +63,7 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-42](#offen-42) | Toyota Proace City Verso: Quelle nicht belastbar | offen |
 | [OFFEN-43](#offen-43) | Ford Tourneo Connect: Preisliste nicht abrufbar | offen |
 | [OFFEN-44](#offen-44) | marktstatus meint die Baureihe, nicht den deutschen Markt | Beschriftung korrigiert, Feld offen |
+| [OFFEN-45](#offen-45) | Hyundai Staria und Kia PV5 nicht recherchiert | offen |
 
 ---
 
@@ -981,6 +982,33 @@ wird, weiß der Katalog weiterhin nicht. Ein eigenes Feld dafür müsste je Eint
 belegt werden und kostet dauerhaft Pflege — solange die Marktverfügbarkeit nicht
 über ein Urteil entscheidet, ist der Aufwand nicht gerechtfertigt. Wo sie im
 Einzelfall zählt, steht sie in der `notiz`.
+
+---
+
+## OFFEN-45
+
+**Hyundai Staria und Kia PV5 fehlen im Katalog.** Schwere: offen.
+
+Beide waren Teil der Kleinbus-Recherche vom 07.08.2026 und fehlen, weil das
+Arbeitspaket an einem Serverfehler abgebrochen ist — kein inhaltlicher Befund,
+sondern ein Ausfall.
+
+Was die vorangegangene Marktsichtung über sie sagt, ohne Herstellerbeleg:
+
+| Fahrzeug | Länge | Breite mit Spiegeln | Bewertung |
+| --- | --- | --- | --- |
+| Hyundai Staria | 5,253 m | nicht belegt | überschreitet die nutzbare Tiefe um 33 mm |
+| Kia PV5 Passenger | 4,695 m | **nicht belegt** | Länge und Höhe unkritisch |
+
+Der **Staria** wäre der einzige Kandidat des gesamten Katalogs, der primär an
+der Länge scheitert, und er hat keine kürzere Variante. Der **PV5** ist der
+interessanteste Fund der Marktsichtung: Nutzfahrzeugplattform, flacher Boden,
+1,899 m hoch, 4,695 m lang — und ausgerechnet bei ihm fehlt die eine Zahl, die
+bei dieser Garage entscheidet.
+
+**Zur Klärung nötig:** Spiegelbreite beider Fahrzeuge aus einer Hersteller-
+quelle, beim PV5 zusätzlich die Frage, ob es mehrere Längen- oder Dachvarianten
+gibt.
 
 ---
 
