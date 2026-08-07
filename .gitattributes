@@ -1,0 +1,12 @@
+# Zeilenenden im Repository einheitlich LF.
+#
+# Ohne diese Datei richtet sich das Ergebnis danach, womit eine Datei zuletzt
+# geschrieben wurde: Windows-Werkzeuge erzeugen CRLF, und mit
+# core.autocrlf=false landet das unverändert im Commit. Am 07.08.2026 hatte
+# das Repository dadurch gemischte Zeilenenden — 20 Dateien CRLF, der Rest LF.
+
+* text=auto eol=lf
+
+# Binärdateien nicht anfassen.
+*.png binary
+*.ttf binary
