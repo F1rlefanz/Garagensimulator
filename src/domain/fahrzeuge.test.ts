@@ -7,6 +7,7 @@ import {
   fahrzeugNachId,
   INDIVIDUELL_ID,
   istEditierbar,
+  marktstatus,
   pruefhoehe,
   REFERENZ_FAHRZEUG,
   schwaechsteQuellenstufe,
@@ -154,6 +155,46 @@ describe('Katalogeinträge', () => {
         f.hoeheMitDachreling.wert,
       );
     }
+  });
+});
+
+describe('Marktstatus', () => {
+  const mitBaujahren = (baujahre: string) => marktstatus({ ...FAHRZEUGE[0], baujahre });
+
+  it('leitet den Status aus der Baujahresangabe ab', () => {
+    // Die Stichtage stehen in docs/06-marktrelevanz.md und hängen an Abgasnorm
+    // und Assistenzpflicht, nicht am Alter.
+    expect(mitBaujahren('2020+')).toBe('neu');
+    expect(mitBaujahren('2026')).toBe('neu');
+    expect(mitBaujahren('2013–2025')).toBe('jung-gebraucht');
+    expect(mitBaujahren('2012–2022')).toBe('jung-gebraucht');
+    expect(mitBaujahren('2003–2020')).toBe('gebraucht');
+    expect(mitBaujahren('2008–2016')).toBe('gebraucht');
+    expect(mitBaujahren('2005–2012')).toBe('veraltet');
+  });
+
+  it('beschreibt die jüngsten Fahrzeuge einer Baureihe, nicht die ältesten', () => {
+    // Ein Caddy 2K von 2004 und einer von 2019 sind dasselbe Modell und zwei
+    // völlig verschiedene Kaufentscheidungen. Der Status meint den jüngeren.
+    expect(mitBaujahren('2003–2020')).toBe('gebraucht');
+  });
+
+  it('vergibt für jeden Katalogeintrag einen Status', () => {
+    for (const f of AUSWAHL) {
+      expect(
+        ['neu', 'jung-gebraucht', 'gebraucht', 'veraltet'],
+        `${f.id}: baujahre „${f.baujahre}"`,
+      ).toContain(marktstatus(f));
+    }
+  });
+
+  it('führt keinen veralteten Eintrag im Katalog', () => {
+    // docs/06-marktrelevanz.md: Baureihen, deren Produktion vor 2016 endete,
+    // werden nicht neu aufgenommen. Schlägt das an, ist entweder ein zu altes
+    // Fahrzeug hereingerutscht oder eine Baujahresangabe falsch geschrieben.
+    const veraltet = FAHRZEUGE.filter((f) => marktstatus(f) === 'veraltet');
+
+    expect(veraltet.map((f) => `${f.id} (${f.baujahre})`)).toEqual([]);
   });
 });
 
