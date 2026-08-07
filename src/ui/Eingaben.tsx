@@ -376,7 +376,7 @@ export function EingabenFahrzeug({
           </label>
           <label>
             <input type="checkbox" checked={nurNeue} onChange={(e) => onNurNeue(e.target.checked)} />
-            Nur 2026 neu bestellbare
+            Nur laufende Baureihen
           </label>
         </div>
         <p className="block-hinweis quellenzeile">

@@ -62,6 +62,7 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-41](#offen-41) | Kangoo II: Herkunft der Bestandswerte 1.258 mm | korrigiert, Nachprüfung offen |
 | [OFFEN-42](#offen-42) | Toyota Proace City Verso: Quelle nicht belastbar | offen |
 | [OFFEN-43](#offen-43) | Ford Tourneo Connect: Preisliste nicht abrufbar | offen |
+| [OFFEN-44](#offen-44) | marktstatus meint die Baureihe, nicht den deutschen Markt | Beschriftung korrigiert, Feld offen |
 
 ---
 
@@ -945,6 +946,41 @@ Derselbe Beleg fehlt beim bereits geführten Eintrag
 **Zur Klärung nötig:** eine abrufbare Ford-Deutschland-Preisliste oder
 Pressemappe zur 3. Generation. Dann steigen beide Einträge auf Stufe A, und die
 Längen sind um 15 mm nach oben zu korrigieren.
+
+---
+
+## OFFEN-44
+
+**`marktstatus()` sagt „wird gebaut", nicht „in Deutschland bestellbar".**
+Schwere: Beschriftung korrigiert, Feld offen.
+
+Die Funktion leitet den Status allein aus `baujahre` ab: Endet die Angabe auf
+`+`, gilt das Modell als `neu` — und die Oberfläche schreibt „neu bestellbar"
+daran. Das unterschlägt den Markt.
+
+Aufgefallen ist es bei der **Renault Trafic Personenvariante**. Sie wird
+gebaut und steht in einer aktuellen Schweizer Preisliste; Renault Deutschland
+führt unter Nutzfahrzeuge dagegen nur Kastenwagen und Doppelkabine. Mit
+`'2021+'` hätte der Eintrag „neu bestellbar" getragen, obwohl man ihn hier nicht
+kaufen kann. Behelfsweise steht dort jetzt `'2021–2026 (Schweiz)'`, und die
+`notiz` sagt es im ersten Satz — das ist eine Notlösung, keine Modellierung.
+
+Dieselbe Frage stellt sich bei jedem Import und bei jedem Modell, dessen
+deutsche Bestellfrist vor dem Produktionsende endet. Der Mercedes Citan und die
+T-Klasse laufen im zweiten Quartal 2026 aus; der VW Touran hatte seine
+Bestellfrist am 13.03.2026, gebaut wurde bis Ende April.
+
+**Teilweise erledigt.** Die zweite der beiden möglichen Lösungen ist umgesetzt:
+`marktstatus` bewertet ausdrücklich die **Baureihe**, nicht die Bestellbarkeit,
+und die Beschriftung behauptet das nicht mehr — aus „neu bestellbar" wurde
+„laufende Baureihe", aus dem Filter „Nur 2026 neu bestellbare" wurde „Nur
+laufende Baureihen".
+
+**Offen bleibt** die eigentliche Frage: Ob ein Modell in Deutschland angeboten
+wird, weiß der Katalog weiterhin nicht. Ein eigenes Feld dafür müsste je Eintrag
+belegt werden und kostet dauerhaft Pflege — solange die Marktverfügbarkeit nicht
+über ein Urteil entscheidet, ist der Aufwand nicht gerechtfertigt. Wo sie im
+Einzelfall zählt, steht sie in der `notiz`.
 
 ---
 

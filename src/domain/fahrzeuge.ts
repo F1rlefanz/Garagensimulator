@@ -86,7 +86,8 @@ export interface Fahrzeugmass {
  * frühes Baujahr kauft, muss die Stichtage gegen das konkrete Fahrzeug prüfen.
  */
 export type Marktstatus =
-  /** 2026 als Neuwagen bestellbar. */
+  /** Baureihe läuft 2026 noch. Ob sie in Deutschland angeboten wird, sagt das
+   *  nicht — siehe OFFEN-44. */
   | 'neu'
   /** Baureihe lief bis mindestens 2022 — junge Gebrauchte mit Euro 6d am Markt. */
   | 'jung-gebraucht'
@@ -95,8 +96,13 @@ export type Marktstatus =
   /** Produktion vor 2016 beendet. Euro 5 möglich — nicht mehr Teil der Kaufentscheidung. */
   | 'veraltet';
 
+/**
+ * Die Beschriftungen sagen bewusst nichts über die **Bestellbarkeit**: Der
+ * Status kennt nur die Baureihe, nicht den deutschen Markt. Ein Modell kann
+ * laufen und hier trotzdem nicht angeboten werden — siehe OFFEN-44.
+ */
 export const MARKTSTATUS_LABEL: Record<Marktstatus, string> = {
-  neu: 'neu bestellbar',
+  neu: 'laufende Baureihe',
   'jung-gebraucht': 'junger Gebrauchter',
   gebraucht: 'Gebrauchtmarkt',
   veraltet: 'veraltet',
