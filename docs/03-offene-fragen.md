@@ -60,6 +60,8 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-39](#offen-39) | Dacia Lodgy: Höhe mit Dachreling nicht beziffert | offen |
 | [OFFEN-40](#offen-40) | Dacia Dokker: Pkw oder Express | offen |
 | [OFFEN-41](#offen-41) | Kangoo II: Herkunft der Bestandswerte 1.258 mm | korrigiert, Nachprüfung offen |
+| [OFFEN-42](#offen-42) | Toyota Proace City Verso: Quelle nicht belastbar | offen |
+| [OFFEN-43](#offen-43) | Ford Tourneo Connect: Preisliste nicht abrufbar | offen |
 
 ---
 
@@ -884,6 +886,65 @@ Die Korrektur ist erfolgt. **Zur Klärung nötig:** beim nächsten Durchgang dur
 `src/domain/fahrzeuge.ts` prüfen, ob weitere Werte aus derselben kontaminierten
 Quelle stammen. Ein Wert, der bei mehreren Einträgen exakt gleich ist, obwohl
 die Fahrzeuge sich unterscheiden, ist das verlässlichste Anzeichen dafür.
+
+---
+
+## OFFEN-42
+
+**Toyota Proace City Verso: Zahlen gelesen, Quelle nicht belastbar.** Schwere: offen.
+
+Der Proace City Verso steckt im Katalog nur als Teil zweier Sammeleinträge
+(`berlingo-rifter-combo-life-proace-city-k9-m-l1` und die XL-Variante). Die
+Recherche vom 07.08.2026 sollte klären, ob er eigene Maße hat, und lieferte
+vollständige Werte — die Gegenprüfung hat sie geschlossen zurückgewiesen:
+
+| Befund | Bedeutung |
+| --- | --- |
+| Die als „Toyota Deutschland, Preisliste 09/2022" ausgewiesene Quelle ist eine Liste der **TOYOTA Austria GmbH**, 1100 Wien | falsche Zuschreibung, keine abrufbare URL |
+| Die Höhen 1.837 / 1.843 mm schließen die **Dachreling** ein | verletzt den Feldvertrag von `hoehe` |
+| Die Preisliste führt „Höhe mit / ohne Dachreling: 1.880 / 1.812" | das Paar wäre der eigentlich brauchbare Beleg |
+| `baujahre: '2018+'` | 2018 ist das Plattformjahr der Stellantis-Geschwister; der Toyota existiert erst seit 2020 |
+
+Die Zahlen selbst hat die Gegenprüfung im Dokument nachgelesen und bestätigt.
+Das Problem ist nicht der Wert, sondern dass sich niemand darauf berufen kann:
+ohne URL, mit falsch benanntem Herausgeber und in der entscheidenden Zeile im
+falschen Feld.
+
+**Zur Klärung nötig:** die deutsche Toyota-Preisliste zum Proace City Verso mit
+abrufbarem Link, oder eine belastbare Bestätigung, dass die österreichische für
+Deutschland gilt. Bis dahin bleibt der Proace City Teil der Sammeleinträge.
+Nebenfrage, ebenfalls offen: ob Toyota ihn 2026 in Deutschland noch anbietet.
+
+---
+
+## OFFEN-43
+
+**Ford Tourneo Connect: Die maßgebliche Preisliste ist nicht abrufbar.**
+Schwere: offen.
+
+Für den Tourneo Connect der 3. Generation nennt die Recherche eine Ford-
+Preisliste mit der Bestellnummer A-DE22197157DE. Sie war weder öffentlich
+erreichbar noch über einen Händlerspiegel auffindbar; die Gegenprüfung konnte
+kein einziges Maß daraus bestätigen. Betroffen sind zwei Einträge:
+
+| Maß | Preisliste (unbelegt) | übernommen | Differenz |
+| --- | --- | --- | --- |
+| Länge, kurzer Radstand | 4.515 mm (ACTIVE) | 4.500 mm | 15 mm |
+| Höhe | 1.835 mm (ACTIVE) | 1.833 mm | 2 mm |
+
+Übernommen ist jeweils der **belegbare** Wert eines Datenportals mit
+Quellenstufe C, nicht der ungünstigere aus der Preisliste. Das ist die einzige
+Stelle im Katalog, an der ein Portalwert einen Herstellerwert verdrängt — mit
+Absicht: Eine Zahl, die niemand nachschlagen kann, ist kein Beleg. Ladelänge und
+Laderaumhöhe sind ganz entfallen, weil ihre einzigen Fundwerte vom VW Caddy
+beziehungsweise aus dem Eintrag der zweiten Generation stammten.
+
+Derselbe Beleg fehlt beim bereits geführten Eintrag
+`ford-grand-tourneo-connect-3-gen-caddy-basis` (siehe OFFEN-36).
+
+**Zur Klärung nötig:** eine abrufbare Ford-Deutschland-Preisliste oder
+Pressemappe zur 3. Generation. Dann steigen beide Einträge auf Stufe A, und die
+Längen sind um 15 mm nach oben zu korrigieren.
 
 ---
 

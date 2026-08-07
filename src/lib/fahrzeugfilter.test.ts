@@ -21,7 +21,6 @@ const BASIS: Fahrzeug = {
   variante: 'basis',
   baujahre: '2022+',
   kategorie: 'kombi',
-  marktstatus: 'neu',
   laenge: testmass(4),
   hoehe: testmass(1.5),
   breiteOhneSpiegel: testmass(1.7),
@@ -59,14 +58,16 @@ describe('Fahrzeugfilter', () => {
   });
 
   it('blendet nach Marktstatus aus', () => {
-    const alt: Fahrzeug = { ...BASIS, id: 'test-alt', marktstatus: 'gebraucht' };
+    // Der Marktstatus wird aus baujahre abgeleitet: Produktionsende 2018 ist
+    // „Gebrauchtmarkt", nicht „neu bestellbar".
+    const alt: Fahrzeug = { ...BASIS, id: 'test-alt', baujahre: '2010–2018' };
 
     expect(sichtbar(alt, { nurPassende: false, nurNeue: true })).toBe(false);
     expect(sichtbar(BASIS, { nurPassende: false, nurNeue: true })).toBe(true);
   });
 
   it('hält das gewählte Fahrzeug und die freie Eingabe immer sichtbar', () => {
-    const alt: Fahrzeug = { ...BASIS, id: 'test-alt', marktstatus: 'veraltet' };
+    const alt: Fahrzeug = { ...BASIS, id: 'test-alt', baujahre: '2005–2012' };
     const scharf = { nurPassende: true, nurNeue: true };
 
     expect(bleibtSichtbar(alt, scharf, 'test-alt', DEFAULT_CONFIG, EINFAHRT)).toBe(true);

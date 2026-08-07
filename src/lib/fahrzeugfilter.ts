@@ -1,4 +1,4 @@
-import { Fahrzeug, istEditierbar } from '../domain/fahrzeuge';
+import { Fahrzeug, istEditierbar, marktstatus } from '../domain/fahrzeuge';
 import { GarageConfig } from './kinematics';
 import { pruefeGarage } from './garagenpruefung';
 
@@ -40,7 +40,7 @@ export function bleibtSichtbar(
   breiteEinfahrt: number,
 ): boolean {
   if (fahrzeug.id === gewaehlteId || istEditierbar(fahrzeug.id)) return true;
-  if (filter.nurNeue && fahrzeug.marktstatus !== 'neu') return false;
+  if (filter.nurNeue && marktstatus(fahrzeug) !== 'neu') return false;
   if (filter.nurPassende) {
     return pruefeGarage(fahrzeug, config, breiteEinfahrt).urteil !== 'passt-nicht';
   }

@@ -24,7 +24,6 @@ const WINZIG: Fahrzeug = {
   variante: 'klein',
   baujahre: '—',
   kategorie: 'kombi',
-  marktstatus: 'neu',
   laenge: testmass(4),
   hoehe: testmass(1.5),
   breiteOhneSpiegel: testmass(1.7),

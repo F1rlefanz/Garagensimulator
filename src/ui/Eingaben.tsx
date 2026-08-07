@@ -7,6 +7,7 @@ import {
   istEditierbar,
   KATEGORIE_LABEL,
   MARKTSTATUS_LABEL,
+  marktstatus,
   Massfeld,
   MASSFELD_LABEL,
   MASSFELDER,
@@ -353,7 +354,7 @@ export function EingabenFahrzeug({
                 {liste.map((f) => (
                   <option key={f.id} value={f.id}>
                     {f.bezeichnung}
-                    {f.marktstatus === 'neu' ? '' : ` · ${MARKTSTATUS_LABEL[f.marktstatus]}`}
+                    {marktstatus(f) === 'neu' ? '' : ` · ${MARKTSTATUS_LABEL[marktstatus(f)]}`}
                   </option>
                 ))}
               </optgroup>

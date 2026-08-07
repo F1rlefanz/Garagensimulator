@@ -102,6 +102,24 @@ export const MARKTSTATUS_LABEL: Record<Marktstatus, string> = {
   veraltet: 'veraltet',
 };
 
+/**
+ * Marktstatus aus der Baujahresangabe.
+ *
+ * Abgeleitet und nicht am Eintrag gepflegt: Sonst müsste beim Ändern von
+ * `baujahre` jemand daran denken, den Status nachzuziehen — und täte es
+ * irgendwann nicht. Eine laufende Baureihe endet auf `+`.
+ */
+export function marktstatus(f: Fahrzeug): Marktstatus {
+  if (/\+\s*$/.test(f.baujahre)) return 'neu';
+  const jahre = f.baujahre.match(/\d{4}/g);
+  if (!jahre) return 'gebraucht';
+  const ende = Number(jahre[jahre.length - 1]);
+  if (ende >= 2026) return 'neu';
+  if (ende >= 2022) return 'jung-gebraucht';
+  if (ende >= 2016) return 'gebraucht';
+  return 'veraltet';
+}
+
 export type Fahrzeugkategorie =
   | 'hochdachkombi'
   | 'minivan'
@@ -149,8 +167,6 @@ export interface Fahrzeug {
   readonly variante: string;
   readonly baujahre: string;
   readonly kategorie: Fahrzeugkategorie;
-  /** Wie weit dieses Modell 2026 noch als Kaufoption zählt. */
-  readonly marktstatus: Marktstatus;
 
   /** Gesamtlänge inkl. Stoßfänger, ohne Anhängerkupplung. */
   readonly laenge: Fahrzeugmass;
@@ -268,7 +284,6 @@ export const INDIVIDUELL: Fahrzeug = {
   variante: 'freie Eingabe',
   baujahre: '—',
   kategorie: 'hochdachkombi',
-  marktstatus: 'neu',
   laenge: { wert: 4.853, ...FREIE_EINGABE },
   hoehe: { wert: 1.8, ...FREIE_EINGABE },
   breiteOhneSpiegel: { wert: 1.855, ...FREIE_EINGABE },
@@ -310,7 +325,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'kurz',
     baujahre: '2003–2020',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.408,
       quellenstufe: 'A',
@@ -380,7 +394,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Maxi',
     baujahre: '2004–2020',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.878,
       quellenstufe: 'A',
@@ -460,7 +473,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'kurz',
     baujahre: '2020+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.5,
       quellenstufe: 'A',
@@ -566,7 +578,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Maxi',
     baujahre: '2020–2025',
     kategorie: 'hochdachkombi',
-    marktstatus: 'jung-gebraucht',
     laenge: {
       wert: 4.863,
       quellenstufe: 'A',
@@ -684,7 +695,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Maxi (Modellpflege 2026)',
     baujahre: '2026',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.851,
       quellenstufe: 'A',
@@ -801,7 +811,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Werksausbau',
     baujahre: '2020+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.863,
       quellenstufe: 'A',
@@ -902,7 +911,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Rapid L1 (Kastenwagen)',
     baujahre: '2007–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.282,
       quellenstufe: 'A',
@@ -981,7 +989,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Maxi (L2, Kastenwagen)',
     baujahre: '2007–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.666,
       quellenstufe: 'A',
@@ -1056,7 +1063,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'PKW-Langversion',
     baujahre: '2013–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.688,
       quellenstufe: 'A',
@@ -1146,7 +1152,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'L1',
     baujahre: '2021+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.486,
       quellenstufe: 'C',
@@ -1216,7 +1221,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'L2 Pkw (neue Gen.)',
     baujahre: '2021+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.91,
       quellenstufe: 'C',
@@ -1282,7 +1286,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Rapid L2 (Kastenwagen, neue Gen.)',
     baujahre: '2021+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.91,
       quellenstufe: 'C',
@@ -1363,7 +1366,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'B9 M (L1)',
     baujahre: '2008–2018',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.38,
       quellenstufe: 'C',
@@ -1413,7 +1415,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'B9 XL (L2)',
     baujahre: '2008–2018',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.63,
       quellenstufe: 'C',
@@ -1453,7 +1454,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'K9 M (L1)',
     baujahre: '2018+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.403,
       quellenstufe: 'C',
@@ -1533,7 +1533,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'K9 XL (L2)',
     baujahre: '2018+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.753,
       quellenstufe: 'C',
@@ -1616,7 +1615,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Doblo-Basis Standard',
     baujahre: '2012–2018',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.39,
       quellenstufe: 'A',
@@ -1683,7 +1681,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Doblo-Basis L2',
     baujahre: '2012–2018',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.74,
       quellenstufe: 'A',
@@ -1756,7 +1753,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: '152/263 Standard',
     baujahre: '2010–2022',
     kategorie: 'hochdachkombi',
-    marktstatus: 'jung-gebraucht',
     laenge: {
       wert: 4.406,
       quellenstufe: 'A',
@@ -1836,7 +1832,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: '152/263 L2',
     baujahre: '2010–2022',
     kategorie: 'hochdachkombi',
-    marktstatus: 'jung-gebraucht',
     laenge: {
       wert: 4.756,
       quellenstufe: 'A',
@@ -1924,7 +1919,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'lang (L2)',
     baujahre: '2012–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.321,
       quellenstufe: 'A',
@@ -1998,7 +1992,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'extralang (L3)',
     baujahre: '2012–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.705,
       quellenstufe: 'A',
@@ -2073,7 +2066,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'L1',
     baujahre: '2021+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.498,
       quellenstufe: 'A',
@@ -2135,7 +2127,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'L2',
     baujahre: '2021+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.922,
       quellenstufe: 'A',
@@ -2204,7 +2195,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'PKW',
     baujahre: '2009–2019',
     kategorie: 'kleinbus',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.4,
       quellenstufe: 'C',
@@ -2258,7 +2248,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'neu',
     baujahre: '2022+',
     kategorie: 'kleinbus',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.911,
       quellenstufe: 'A',
@@ -2319,7 +2308,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: '2. Gen.',
     baujahre: '2013–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.418,
       quellenstufe: 'C',
@@ -2393,7 +2381,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: '3. Gen. (Caddy-Basis)',
     baujahre: '2022+',
     kategorie: 'hochdachkombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.868,
       quellenstufe: 'A',
@@ -2449,7 +2436,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Standard',
     baujahre: '2012–2021',
     kategorie: 'hochdachkombi',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.363,
       quellenstufe: 'C',
@@ -2520,7 +2506,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Standard',
     baujahre: '2012–2021',
     kategorie: 'minivan',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.498,
       quellenstufe: 'C',
@@ -2590,7 +2575,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Generation I',
     baujahre: '2010–2017',
     kategorie: 'gelaendewagen',
-    marktstatus: 'gebraucht',
     laenge: {
       wert: 4.315,
       quellenstufe: 'A',
@@ -2655,7 +2639,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: 'Generation II',
     baujahre: '2018–2023',
     kategorie: 'gelaendewagen',
-    marktstatus: 'jung-gebraucht',
     laenge: {
       wert: 4.341,
       quellenstufe: 'A',
@@ -2739,7 +2722,6 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     variante: '+ Sleep Pack',
     baujahre: '2022+',
     kategorie: 'kombi',
-    marktstatus: 'neu',
     laenge: {
       wert: 4.547,
       quellenstufe: 'B',
@@ -2790,6 +2772,631 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     },
     notiz:
       'Plan B: Die Liegefläche des Sleep Packs misst 190 × 130 cm und ist damit rund 5 cm zu kurz — das ist die Matratze, nicht die Ladelänge des Fahrzeugs (1,942 m). Zu Laderaumbreite und -höhe nennt Dacia nur Durchladehöhe 836 mm und Ladekante 661 mm, beides passt in keines der Felder.',
+  },
+
+  /*
+   * ------------------------------------------------------------------------
+   * Ergänzungen vom 07.08.2026 — Lücken im Segment Hochdachkombi.
+   *
+   * Aus einer Recherche mit adversarialer Gegenprüfung, die 34 von 97
+   * Behauptungen gekippt hat. Nicht aufgenommen wurden dabei:
+   * - Mercedes EQT: kein belegter Unterschied in einem Außenmaß gegenüber der
+   *   T-Klasse. Ein eigener Eintrag ohne eigenes Maß wäre eine Verdopplung.
+   * - Toyota Proace City Verso: Die als „Toyota Deutschland" ausgewiesene
+   *   Preisliste ist eine österreichische ohne abrufbare URL, und die Höhen
+   *   schlossen die Dachreling ein. Die Zahlen sind gelesen, aber nicht
+   *   belastbar zugeordnet — siehe OFFEN-42.
+   * ------------------------------------------------------------------------
+   */
+  /**
+   * Fiat Doblò der K9-Generation, kurze Version (Länge 1).
+   *
+   * In Deutschland gibt es die personenbefördernde Version ausschließlich als "Doblò Kombi" von
+   * Fiat Professional: verglast, fünf Sitze, laut Preisliste aber Fahrzeugklasse N1 — also kein
+   * M1-Pkw. Ein Doblò mit sieben Sitzen ist für Deutschland nicht belegt.
+   *
+   * Alle Maße stammen aus derselben offiziellen Preisliste (FCA Germany GmbH, Stand 27.01.2025),
+   * Spalte "DOBLÒ KOMBI LÄNGE 1". Kastenwagen-Maße (4.403 mm lang, Höhe mit Worksite-Paket bis
+   * 1.860 mm) sind bewusst nicht eingeflossen, ebenso wenig Werte von Berlingo/Rifter/Combo Life.
+   */
+  {
+    id: 'fiat-doblo-k9-kurz',
+    bezeichnung: 'Fiat Doblò · Kombi Länge 1 (K9)',
+    modell: 'Doblò',
+    variante: 'Kombi Länge 1 (L1), fünf Sitze',
+    baujahre: '2022+',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.406,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Offizielle Fiat-Preisliste "Doblò Kombi", Stand 27.01.2025, Zeile "Länge [mm]". Der ' +
+        'Kastenwagen misst 4.403 mm — dieser Wert gilt nur für den verglasten Kombi.',
+    },
+    hoehe: {
+      wert: 1.812,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die Preisliste nennt eine Spanne von 1.775 bis 1.812 mm (je nach Ausstattung und ' +
+        'Beladung); hier steht der obere, konservative Wert. Die Zeile ist nicht als "mit ' +
+        'Dachträger" gekennzeichnet — im Gegensatz zur E-Doblò-Preisliste, die ausdrücklich ' +
+        '"Höhe (mit Dachträger) 1.844 mm" ausweist. Ein eigener Relingwert für den Kombi fehlt.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.848,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.107,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite ohne / mit eingeklappten / mit Außenspiegel": 1.848 / 1.921 / 2.107 mm. ' +
+        'Hier steht der Wert mit ausgeklappten Spiegeln; angeklappt sind es 1.921 mm.',
+    },
+    ladelaenge: {
+      wert: 1.0,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Laderaumlänge maximal hinter Sitzreihe 2, also bei aufgestellter Rückbank.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.195,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.2,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Höhe maximal", laut Fußnote abzüglich 50 mm für Dachstreben.',
+    },
+    notiz:
+      'Fahrzeugklasse N1 laut Preisliste, Vertrieb über Fiat Professional — kein M1-Pkw im ' +
+      'engeren Sinn, aber die verglaste Personenversion mit fünf Sitzen, nicht der Kastenwagen. ' +
+      'Die Preisliste liegt als offizielles FCA-Germany-Dokument vor, ist hier aber über einen ' +
+      'Händlerserver abgerufen, weil fiat.de den Direktabruf mit HTTP 403 abweist. Höhe mit ' +
+      'geöffneter Heckklappe ist nirgends belegt und fehlt deshalb.',
+  },
+  /**
+   * Fiat Doblò der K9-Generation, lange Version (Länge 2, andernorts Maxi/XL).
+   *
+   * Ebenfalls nur als "Doblò Kombi" von Fiat Professional belegt, Fahrzeugklasse N1, fünf Sitze.
+   * Die im Auftrag vermutete Siebensitzer-Konfiguration ist für Deutschland NICHT belegt — weder
+   * in der Preisliste noch in der Stellantis-Pressemitteilung zum Marktstart.
+   *
+   * Maße wieder ausschließlich aus der Spalte "DOBLÒ KOMBI LÄNGE 2" derselben Preisliste.
+   */
+  {
+    id: 'fiat-doblo-k9-lang',
+    bezeichnung: 'Fiat Doblò · Kombi Länge 2 (K9)',
+    modell: 'Doblò',
+    variante: 'Kombi Länge 2 (L2), fünf Sitze',
+    baujahre: '2022+',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.756,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Offizielle Fiat-Preisliste "Doblò Kombi", Stand 27.01.2025. Der Kastenwagen L2 misst ' +
+        '4.753 mm; die 3 mm Unterschied gehören zum Kombi-Heck und wurden nicht vermengt.',
+    },
+    hoehe: {
+      wert: 1.818,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die Preisliste nennt für Länge 2 eine Spanne von 1.787 bis 1.818 mm; hier steht der ' +
+        'obere, konservative Wert. Kein Hinweis auf Dachträger oder Reling in dieser Zeile; ein ' +
+        'belegter Relingwert für den Kombi existiert nicht.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.848,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.107,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile "Breite ohne / mit eingeklappten / mit Außenspiegel": 1.848 / 1.921 / 2.107 mm, ' +
+        'für Länge 1 und Länge 2 identisch. Hier der Wert mit ausgeklappten Spiegeln.',
+    },
+    ladelaenge: {
+      wert: 1.35,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Laderaumlänge maximal hinter Sitzreihe 2, also bei aufgestellter Rückbank.',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.195,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.2,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.abz-nutzfahrzeuge.de/fileadmin/inhalte/Modelle_Fiat/Doblo_NEU_Kombi/Doblo_Kombi_2025_Preisliste.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Zeile "Höhe maximal", laut Fußnote abzüglich 50 mm für Dachstreben.',
+    },
+    notiz:
+      'Fahrzeugklasse N1 laut Preisliste, Vertrieb über Fiat Professional. Sieben Sitze sind für ' +
+      'Deutschland nicht belegt; die Preisliste führt für beide Längen fünf Sitze. Mit 4,756 m ' +
+      'passt die lange Version rechnerisch in die 5,220 m tiefe Garage, die knappe Achse bleibt ' +
+      'die Breite mit ausgeklappten Spiegeln (2,107 m gegen 2,240 m).',
+  },
+
+  /*
+   * Mercedes T-Klasse W420 — die Pkw-Variante des Citan W420. Der Vergleich Maß für Maß:
+   *
+   * (a) Die Marktübersicht meldet, die T-Klasse habe mit 4.498 mm NICHT dieselbe Länge wie der
+   *     Citan L1. Das ist widerlegt: `mercedes-citan-w420-l1` steht im Katalog mit exakt
+   *     4,498 m. Länge (4.498 / 4.922 mm), Breite ohne Spiegel (1.859 mm), Breite mit Spiegeln
+   *     (2.159 mm) und Radstand (2.716 / 3.100 mm) sind bei Citan und T-Klasse identisch — es
+   *     ist dieselbe Karosserie in denselben zwei Längen.
+   *
+   * (b) Die einzige Zahl, die auseinandergeht, ist die Höhe — und sie geht zwischen den Quellen
+   *     auseinander, nicht zwischen den Karosserien (OFFEN-30). Für die Pkw-Variante nennen
+   *     ADAC-Autokatalog und ultimatespecs unabhängig 1.811 mm, die Wikipedia die Spanne
+   *     1.811 … 1.832 mm. Die Broschürenwerte 1.910 / 1.916 mm, mit denen der Katalog den Citan
+   *     führt, tauchen in keiner Pkw-Quelle auf. OFFEN-30 ist für die T-Klasse damit entschärft,
+   *     aber nicht aufgelöst: Kein Mercedes-Dokument war erreichbar, deshalb steht hinter jedem
+   *     Maß Stufe C und nicht A.
+   *
+   * (c) Produktionsende belegt: Der ADAC führt für alle vier Einträge „Baureihenende Mai 2026",
+   *     die Wikipedia datiert die Ankündigung auf April 2025 („zweites Quartal 2026"). Die
+   *     Baujahre enden deshalb auf 2026 und tragen kein „+".
+   *
+   * Kein Innenmaß ist eingetragen: Ladelänge, Ladebreite und Laderaumhöhe der Citan-Einträge
+   * stammen aus der Kastenwagen-Broschüre und gelten für den verglasten Pkw nicht.
+   */
+  {
+    id: 'mercedes-t-klasse-l1',
+    bezeichnung: 'Mercedes T-Klasse W420 · L1',
+    modell: 'Mercedes T-Klasse W420',
+    variante: 'L1',
+    baujahre: '2022–2026',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.498,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/344759/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Millimetergenau der Wert des Citan W420 L1 — die Marktübersicht irrt, wenn sie hier ' +
+        'einen Unterschied meldet. auto-data.net und die Wikipedia nennen dieselben 4.498 mm.',
+    },
+    hoehe: {
+      wert: 1.811,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/344759/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Spannweite der Quellen: 1.811 mm (ADAC-Autokatalog und ultimatespecs übereinstimmend), ' +
+        '1.811 … 1.832 mm (Wikipedia), 1.852 mm (auto-data.net, Einzelmeinung und zugleich der ' +
+        'Citan-Broschürenwert 08/2023 für L2). Die 1.910 mm, mit denen der Katalog den Citan L1 ' +
+        'führt, nennt keine Pkw-Quelle (OFFEN-30). Ein Wert mit Dachreling ist nirgends beziffert.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.859,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/344759/',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Identisch mit dem Citan W420; auto-data.net und ultimatespecs bestätigen.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.159,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/344759/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Spiegel ausgeklappt (+300 mm gegenüber 1.859 mm), identisch mit dem Citan W420. Bei ' +
+        '2,240 m schmalster Einfahrt bleiben 81 mm — die Breite ist hier die knappe Achse, ' +
+        'nicht die umstrittene Höhe.',
+    },
+    notiz:
+      'Pkw-Variante des Citan W420 mit kurzem Radstand (2.716 mm), fünf Sitze. Alle Außenmaße ' +
+      'sind mit dem Citan L1 identisch; belegt abweichend ist nur die Höhe, und die ist ein ' +
+      'Quellenstreit (OFFEN-30). Innenmaße fehlen bewusst — die Citan-Werte stammen vom ' +
+      'Kastenwagen. Produktion im Mai 2026 ausgelaufen.',
+  },
+  {
+    id: 'mercedes-t-klasse-l2',
+    bezeichnung: 'Mercedes T-Klasse W420 · L2 (langer Radstand)',
+    modell: 'Mercedes T-Klasse W420',
+    variante: 'L2 (langer Radstand)',
+    baujahre: '2023–2026',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.922,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/330831/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Millimetergenau der Wert des Citan W420 L2; auto-data.net bestätigt. Übersteigt die ' +
+        'nutzbare Garagentiefe von 5,220 m nicht, lässt aber nur 30 cm Rest.',
+    },
+    hoehe: {
+      wert: 1.811,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/330831/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Der ADAC nennt für die lange T-Klasse dieselbe Höhe wie für die kurze; auto-data.net ' +
+        'ebenso (1.811 mm), die Wikipedia die Spanne 1.811 … 1.832 mm für beide Längen. Der ' +
+        'Citan L2 steht im Katalog mit 1.916 mm aus der Kastenwagen-Broschüre — kein Pkw-Beleg ' +
+        'stützt diesen Wert (OFFEN-30). Ein Wert mit Dachreling ist nirgends beziffert.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.859,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/330831/',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Der lange Radstand ändert die Breite nicht; identisch mit L1 und mit dem Citan.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.159,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/mercedes-benz/t-klasse/420/330831/',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Spiegel ausgeklappt, identisch mit L1 und mit dem Citan W420.',
+    },
+    notiz:
+      'Langer Radstand 3.100 mm, ab November 2023. Optional dritte Sitzreihe mit zwei ' +
+      'Einzelsitzen, damit bis zu sieben Plätze; die ADAC-Datenzeile führt fünf Sitze als ' +
+      'Basis. Länge und Breite sind mit dem Citan W420 L2 identisch, Innenmaße fehlen bewusst. ' +
+      'Produktion im Mai 2026 ausgelaufen.',
+  },
+
+  /*
+   * Tourneo Connect 3. Generation mit kurzem Radstand (L1) — die Lücke neben dem bereits
+   * geführten Grand. Technisch ein VW Caddy SB, aber nicht maßgleich: Ford nennt 4.501 mm
+   * (TITANIUM) bzw. 4.515 mm (ACTIVE), VW für den Caddy SB kurz 4.500 mm; die Ladelänge weicht
+   * mit 1.886 gegen 1.913 mm deutlicher ab. Breite (1.855 / 2.100 mm) und Höhe (1.833 mm) sind
+   * dagegen deckungsgleich. Wie beim Grand sind Länge und Höhe eine Frage der Ausstattungslinie,
+   * nicht der Dachreling (OFFEN-36); aufgenommen ist jeweils der ACTIVE als ungünstigerer Fall.
+   */
+  {
+    id: 'ford-tourneo-connect-3-gen-kurz',
+    bezeichnung: 'Ford Tourneo Connect · 3. Gen. (kurz)',
+    modell: 'Ford Tourneo Connect',
+    variante: '3. Gen. (kurz)',
+    baujahre: '2022+',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.5,
+      quellenstufe: 'C',
+      quelle: 'automobiledimension.com, Ford Tourneo Connect (2022), Abmessungen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Die Ford-Preisliste mit der Bestellnummer A-DE22197157DE nennt 4.515 mm (ACTIVE) und ' +
+        '4.501 mm (TITANIUM), ist aber nicht öffentlich abrufbar — die Gegenprüfung konnte die ' +
+        'Zahlen nicht bestätigen und fand stattdessen 4.500 mm bei einem Datenportal. Bis eine ' +
+        'abrufbare Ford-Quelle vorliegt, steht der belegbare Wert hier, nicht der günstigere.',
+    },
+    hoehe: {
+      wert: 1.833,
+      quellenstufe: 'C',
+      quelle: 'automobiledimension.com, Ford Tourneo Connect (2022), Abmessungen',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ob eine Dachreling enthalten ist, weist keine der geprüften Quellen aus. Die ' +
+        'Ford-Preisliste nennt für die Ausstattung ACTIVE 1.835 mm, für TITANIUM 1.833 mm — ' +
+        'ein Ausstattungsunterschied, keine Relingfrage (OFFEN-36).',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.855,
+      quellenstufe: 'C',
+      quelle: 'automobiledimension.com, Ford Tourneo Connect (2022), Abmessungen',
+      abgerufenAm: '2026-08-07',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.1,
+      quellenstufe: 'C',
+      quelle: 'automobiledimension.com, Ford Tourneo Connect (2022), Abmessungen',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Ausdrücklich als Breite mit ausgeklappten Spiegeln ausgewiesen.',
+    },
+    notiz:
+      'Schwestermodell des VW Caddy SB mit kurzem Radstand. Ladelänge und Laderaumhöhe sind ' +
+      'bewusst nicht eingetragen: Die einzigen gefundenen Zahlen stammten vom Caddy ' +
+      'beziehungsweise aus dem Eintrag der zweiten Generation und waren für dieses Fahrzeug ' +
+      'durch nichts belegt. Zum Schlafen zu kurz.',
+  },
+  /*
+   * Ford Grand Tourneo Connect 2. Generation — die Langversion zum bereits geführten kurzen
+   * Radstand derselben Baureihe. Länge, Spiegelbreite und Höhe stammen aus der Ford-Pressemappe
+   * und sind unabhängig durch den ADAC-Autotest von 2014 bestätigt (4.818 / 2.140 / 1.840 mm).
+   * Die Pressemappe führt zwei Spalten, 5-Sitzer und 7-Sitzer; wo sie sich unterscheiden, ist
+   * der größere Wert aufgenommen. Wie beim kurzen Radstand deckt der Eintrag Vorfacelift und
+   * Facelift ab 2018 ab, dessen Maße abweichen (OFFEN-35).
+   */
+  {
+    id: 'ford-grand-tourneo-connect-2-gen',
+    bezeichnung: 'Ford Grand Tourneo Connect · 2. Gen.',
+    modell: 'Ford Grand Tourneo Connect',
+    variante: '2. Gen.',
+    baujahre: '2013–2021',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.818,
+      quellenstufe: 'A',
+      quelle:
+        'https://cache.pressmailing.net/content/f785728d-5401-4e0e-aa29-029e8e705f03/Ford%20Tourneo%20Grand%20Tourneo%20Connect-Technische%20Daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Pressemappe, Zeile „Fahrzeuglänge", für 5-Sitzer und 7-Sitzer gleich. Der ADAC-Autotest des 1.6 TDCi Titanium nennt denselben Wert. Für das Facelift ab 2018 liegt kein eigener Wert vor (OFFEN-35).',
+    },
+    hoehe: {
+      wert: 1.845,
+      quellenstufe: 'A',
+      quelle:
+        'https://cache.pressmailing.net/content/f785728d-5401-4e0e-aa29-029e8e705f03/Ford%20Tourneo%20Grand%20Tourneo%20Connect-Technische%20Daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Pressemappe, Zeile „Fahrzeughöhe": 5-Sitzer 1.845 mm, 7-Sitzer 1.840 mm; aufgenommen ist der größere Wert. Ob eine Dachreling enthalten ist, sagt Ford nicht — der ADAC weist für den getesteten Titanium „Dachreling: Serie" aus und misst 1.840 mm, was zum 7-Sitzer-Wert passt. Ein ausdrücklich relingfreier Wert ist für diese Baureihe nirgends belegt (OFFEN-35).',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.137,
+      quellenstufe: 'A',
+      quelle:
+        'https://cache.pressmailing.net/content/f785728d-5401-4e0e-aa29-029e8e705f03/Ford%20Tourneo%20Grand%20Tourneo%20Connect-Technische%20Daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Pressemappe, Zeile „Fahrzeugbreite mit Außenspiegel", also ausgeklappt; identisch mit dem kurzen Radstand. Der ADAC nennt gerundet 2.140 mm. Eine Karosseriebreite ohne Spiegel führt die Pressemappe nicht, sie bleibt deshalb offen.',
+    },
+    ladelaenge: {
+      wert: 2.179,
+      quellenstufe: 'A',
+      quelle:
+        'https://cache.pressmailing.net/content/f785728d-5401-4e0e-aa29-029e8e705f03/Ford%20Tourneo%20Grand%20Tourneo%20Connect-Technische%20Daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Pressemappe, 2-sitzige Konfiguration — dieselbe Messdefinition wie beim kurzen Radstand (1.800 mm). In 5-sitziger Konfiguration nennt Ford 1.305 mm (5-Sitzer) bzw. 1.264 mm (7-Sitzer).',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.149,
+      quellenstufe: 'A',
+      quelle:
+        'https://cache.pressmailing.net/content/f785728d-5401-4e0e-aa29-029e8e705f03/Ford%20Tourneo%20Grand%20Tourneo%20Connect-Technische%20Daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Pressemappe, für 5-Sitzer und 7-Sitzer gleich. Der kurze Radstand kommt in derselben Tabelle auf 1.192 mm; die Differenz steht so bei Ford und ist hier nicht geglättet.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.234,
+      quellenstufe: 'A',
+      quelle:
+        'https://cache.pressmailing.net/content/f785728d-5401-4e0e-aa29-029e8e705f03/Ford%20Tourneo%20Grand%20Tourneo%20Connect-Technische%20Daten.pdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ford-Pressemappe, Zeile „Lade-Innenhöhe maximal", 5-Sitzer; für den 7-Sitzer nennt dieselbe Zeile 1.072 mm. Warum die Innenhöhe von der Sitzzahl abhängt, erklärt Ford nicht — der Wert ist deshalb schwächer abgesichert als Länge, Breite und Höhe, die alle drei unabhängig vom ADAC bestätigt sind.',
+    },
+    notiz:
+      'Langversion des Tourneo Connect der 2. Generation, mit dritter Sitzreihe gegen Aufpreis. Ein Eintrag für zwei Bauzustände: Das Facelift ab 2018 wuchs auch beim kurzen Radstand in allen drei Achsen, für die Langversion liegen dazu keine eigenen Maße vor (OFFEN-35). Passt in die Garage, aber mit nur rund 40 cm Längenreserve.',
+  },
+  /*
+   * Ford Tourneo Courier 2. Generation — der kleinste echte Hochdachkombi am Markt, bisher
+   * gar nicht im Katalog. ADAC-Autokatalog führt zwei getrennte Maßsätze: TITANIUM
+   * 1.800/1.817 mm, ACTIVE 1.813/1.836 mm. Aufgenommen ist wie beim Tourneo Connect jeweils
+   * der größere Wert; die Ausstattungslinie ACTIVE steht höher auf dem Fahrwerk. Ein eigener
+   * Eintrag für den E-Tourneo Courier entfällt: Bei ihm unterscheidet sich kein Außenmaß,
+   * nur der Kofferraum ist größer.
+   */
+  {
+    id: 'ford-tourneo-courier-2-gen',
+    bezeichnung: 'Ford Tourneo Courier · 2. Gen.',
+    modell: 'Ford Tourneo Courier',
+    variante: '2. Gen.',
+    baujahre: '2023+',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.337,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/tourneo-courier/2generation/328914/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog (Datenblattdaten, keine eigene Messung), Version 1.0 EcoBoost Titanium. Für ACTIVE und für die Automatikversion nennt derselbe Katalog dieselbe Länge; automobiledimension.com bestätigt 4.337 mm. Ford selbst war am Abrufdatum weder über ford.de noch über media.ford.com erreichbar, deshalb keine Stufe A.',
+    },
+    hoehe: {
+      wert: 1.836,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/tourneo-courier/2generation/328913/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, Version 1.0 EcoBoost Active. Für TITANIUM nennt derselbe Katalog 1.817 mm, ebenso automobiledimension.com; aufgenommen ist der größere ACTIVE-Wert als konservative Annahme. Ob eine Dachreling enthalten ist, weist der Katalog nicht aus — die 19 mm Differenz sind eher dem höheren Fahrwerk der ACTIVE-Linie zuzuordnen, belegt ist das aber nicht.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.813,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/tourneo-courier/2generation/328913/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, Version ACTIVE. TITANIUM 1.800 mm, automobiledimension.com 1.791 mm — die Spanne von 22 mm bleibt ungeklärt, aufgenommen ist der größte Wert.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.076,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/tourneo-courier/2generation/328913/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Ausgeklappte Spiegel. Alle geprüften Quellen (ADAC-Autokatalog für ACTIVE und TITANIUM, automobiledimension.com) nennen übereinstimmend 2.076 mm — das ist der belastbarste Wert des Eintrags und zugleich der für diese Garage entscheidende.',
+    },
+    notiz:
+      'Kleinster echter Hochdachkombi am Markt und mit 2,076 m Spiegelbreite das mit Abstand entspannteste Fahrzeug an der engsten Achse dieser Garage — 16 cm Luft gegenüber den 2,240 m der Einfahrt. Radstand 2.692 mm. Pkw-Version des Transit Courier Kastenwagens; dessen Maße sind hier nicht übernommen. Der E-Tourneo Courier ist außen maßgleich.',
+  },
+  /*
+   * Ford Tourneo Courier 1. Generation. Aufgenommen sind nur Länge und Höhe — bei den Breiten
+   * widersprechen sich die Quellen so deutlich, dass jede Übernahme eine Entscheidung statt
+   * einer Messung wäre: ADAC-Autokatalog und fordfan.de nennen beide 1.976 mm „ohne Spiegel",
+   * was breiter wäre als die 1.800 mm der größeren 2. Generation und damit nicht stimmen kann;
+   * Wikipedia führt für den baugleichen Transit Courier 1.796 mm. Für die Spiegelbreite stehen
+   * 2.060 mm (fordfan.de) gegen 2.112 mm (ADAC-Autokatalog). Beide Felder bleiben deshalb leer.
+   */
+  {
+    id: 'ford-tourneo-courier-1-gen',
+    bezeichnung: 'Ford Tourneo Courier · 1. Gen.',
+    modell: 'Ford Tourneo Courier',
+    variante: '1. Gen.',
+    baujahre: '2014–2023',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.157,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/tourneo-courier/1generation/241590/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, 1.5 TDCi Titanium (06/14–07/15). fordfan.de und auto-data.net nennen denselben Wert, auto-data.net auch für das Facelift ab 2018. Wikipedia führt für den Transit Courier 4.160 mm.',
+    },
+    hoehe: {
+      wert: 1.726,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/ford/tourneo-courier/1generation/241590/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, 1.5 TDCi Titanium. fordfan.de und auto-data.net nennen 1.723 mm — 3 mm Unterschied, aufgenommen ist der größere Wert. Ob eine Dachreling enthalten ist, sagt keine der Quellen; ein ausdrücklich relingfreier Wert ist nicht belegt.',
+    },
+    notiz:
+      'Vorgänger der 2. Generation, rund 18 cm kürzer und 11 cm niedriger. Mit 4,157 m Länge das kürzeste Fahrzeug des Katalogs; an der Höhe unkritisch. Die Breite mit ausgeklappten Spiegeln ist bewusst nicht gesetzt: Die Quellen widersprechen sich um 52 mm, und die Karosseriebreite ist ihrerseits strittig — hochgerechnet würde daraus kein Messwert. Radstand 2.489 mm.',
+  },
+
+  /**
+   * Nissan Townstar Evalia L1 — die kurze Radstandsvariante (4.488 mm), die im Katalog bisher
+   * fehlte; der Bestandseintrag 'nissan-townstar-evalia-neu' führt mit 4.911 mm die L2.
+   *
+   * Zur Höhe (OFFEN-33): Für die L1 lösen sich Nissans Widersprüche weitgehend auf. Die Maßtabelle
+   * auf nissan.de nennt 1.838 mm Gesamthöhe und 1.860 mm mit Dachreling; die Seite „Beladung und
+   * Platz" nennt für die L1 ebenfalls 1.838 mm und bezeichnet den Wert ausdrücklich als „ohne
+   * Dachreling". Damit ist das Paar 1.838/1.860 für die L1 in sich stimmig — anders als bei der L2,
+   * wo dieselbe Seite 1.869 mm „ohne Dachreling" nennt. Offen bleibt nur nissan.at mit 1.801 mm.
+   *
+   * Zur Ladelänge (Pflichtpunkt b): Die 1.020 mm der L1 sind an zweiter Stelle bestätigt
+   * (nissan.at, gleiche Zeilenbeschriftung). Der scheinbare Widerspruch zur L2 ist ein
+   * Bezugspunktfehler, kein Rechenfehler: 1.020 mm sind „am Boden, ab Rückseite der hinteren
+   * Sitzreihe", die 2.230 mm der L2 stehen auf nissan.at in der Zeile „ab Rückseite der
+   * Vordersitze". Der vergleichbare L1-Wert dieser Zeile ist 1.885 mm (nissan.at: 1.865 mm) —
+   * die Differenz zur L2 passt zum Radstandsunterschied von 384 mm.
+   */
+  {
+    id: 'nissan-townstar-evalia-l1',
+    bezeichnung: 'Nissan Townstar Evalia · L1',
+    modell: 'Nissan Townstar Evalia',
+    variante: 'L1',
+    baujahre: '2022+',
+    kategorie: 'hochdachkombi',
+    laenge: {
+      wert: 4.488,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Maßtabelle „Townstar Kombi L1", für Benziner und Elektroversion gleich. Die Seite „Beladung und Platz" desselben Auftritts nennt ebenfalls 4.488 mm — bei der L1 sind die beiden Nissan-Seiten anders als bei der L2 (4.910/4.911 mm) einig.',
+    },
+    hoehe: {
+      wert: 1.838,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Gesamthöhe (mm)" der L1-Maßtabelle. Die Nissan-Seite „Beladung und Platz" nennt für die L1 denselben Wert und bezeichnet ihn ausdrücklich als „ohne Dachreling" — für die L1 ist OFFEN-33 damit weitgehend geklärt. nissan.at nennt in derselben Zeile 1.801 mm; welche der beiden Zahlen die relingfreie Serienhöhe ist, bleibt offen, für die lichte Höhe von 2,170 m ist die Differenz folgenlos.',
+    },
+    hoeheMitDachreling: {
+      wert: 1.86,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Gesamthöhe (mm) mit Dachreling". nissan.at nennt für die L1 denselben Wert, obwohl es bei der Höhe ohne Reling abweicht — das Relingmaß ist damit doppelt belegt. Anders als bei der L2 ist es hier größer als die relingfreie Höhe und deshalb plausibel.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.86,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Nissan führt Karosserie- und Spiegelbreite in einer gemeinsamen Zeile „Gesamtbreite / Breite inkl. Außenspiegel (mm)". Der Wert kann nur die Karosseriebreite sein; automobiledimension nennt für dasselbe Fahrzeug 1.860 mm ohne und 2.159 mm mit Spiegeln.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.159,
+      quellenstufe: 'C',
+      quelle: 'https://www.automobiledimension.com/model/nissan/townstar',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Datenportal, keine eigene Messung; Spiegel ausgeklappt. Der Eintrag ist der L1-Kombi zuzuordnen (4.486 mm Länge, 775 l Kofferraum — Nissan nennt für die L1 4.488 mm und 775 l). Nissan selbst gibt für den Townstar Kombi keine gesonderte Spiegelbreite an. Knappste Achse dieser Garage: 2,240 m minus 2,159 m sind 8 cm Luft, bei einem Portalwert aus zweiter Hand.',
+    },
+    ladelaenge: {
+      wert: 1.02,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Ladelänge am Boden (Rückseite der hinteren Sitzreihe bis zur Heckklappe)". An zweiter Stelle bestätigt: nissan.at nennt in derselben Zeile ebenfalls 1.020 mm. Nicht mit den 2.230 mm der L2 vergleichbar, die ab Rückseite der Vordersitze gemessen sind — der entsprechende L1-Wert lautet 1.885 mm (nissan.at: 1.865 mm).',
+    },
+    ladebreiteRadkasten: {
+      wert: 1.248,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Breite zwischen den Radkästen" im Laderaumblock der L1. nissan.at nennt an derselben Stelle einen anderen Wert; der Widerspruch ist ungeklärt (OFFEN-33). Für die Garagenfrage ohne Bedeutung.',
+    },
+    innenhoeheLaderaum: {
+      wert: 1.111,
+      quellenstufe: 'A',
+      quelle: 'https://www.nissan.de/fahrzeuge/neuwagen/townstar-combi/abmessungen.html',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Zeile „Höhe (mm)" im Laderaumblock der L1, Benziner; die Elektroversion ist mit 1.116 mm angegeben. Der Heckklappenblock nennt zufällig denselben Wert 1.111 mm.',
+    },
+    notiz:
+      'Kurze Radstandsvariante (2.716 mm) des Townstar Kombi, fünfsitzig, 775 l Kofferraum; Nissan Deutschland führt die Pkw-Version schlicht als „Townstar Kombi", der Name Evalia stammt aus dem Bestandskatalog. Als Hochdachkombi eingeordnet, nicht als Kleinbus wie die siebensitzige L2. Für diese Garage unkritisch in Länge und Höhe; entscheidend ist die Spiegelbreite von 2,159 m, die nur aus einem Datenportal stammt.',
   },
 ];
 

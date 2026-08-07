@@ -3,7 +3,13 @@ import { describe, it } from 'vitest';
 import { DEFAULT_CONFIG, nutzbareTiefe } from '../lib/kinematics';
 import { pruefeGarage, URTEIL_LABEL } from '../lib/garagenpruefung';
 import { m } from './garage';
-import { FAHRZEUGE, MARKTSTATUS_LABEL, pruefhoehe, schwaechsteQuellenstufe } from './fahrzeuge';
+import {
+  FAHRZEUGE,
+  MARKTSTATUS_LABEL,
+  marktstatus,
+  pruefhoehe,
+  schwaechsteQuellenstufe,
+} from './fahrzeuge';
 
 /**
  * Kein Test, sondern ein Werkzeug: druckt den Katalog samt Urteil je Eintrag.
@@ -27,7 +33,7 @@ describe('Katalogübersicht', () => {
 
     const nachStatus = new Map<string, number>();
     for (const f of FAHRZEUGE) {
-      nachStatus.set(f.marktstatus, (nachStatus.get(f.marktstatus) ?? 0) + 1);
+      nachStatus.set(marktstatus(f), (nachStatus.get(marktstatus(f)) ?? 0) + 1);
     }
 
     console.log(`\n${FAHRZEUGE.length} Katalogeinträge`);
@@ -53,7 +59,7 @@ describe('Katalogübersicht', () => {
           : `${zahl(f.hoeheHeckOffen.wert)}${b.heckklappeOeffenbar ? '' : '!'}`;
       console.log(
         f.id.padEnd(44) +
-          f.marktstatus.padEnd(16) +
+          marktstatus(f).padEnd(16) +
           zahl(f.laenge.wert).padEnd(7) +
           zahl(pruefhoehe(f).wert).padEnd(7) +
           zahl(f.breiteMitSpiegeln?.wert ?? f.breiteOhneSpiegel?.wert).padEnd(7) +
