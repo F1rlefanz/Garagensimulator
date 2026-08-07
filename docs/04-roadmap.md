@@ -53,9 +53,14 @@ Nachmessung vom 06.08.2026 eingearbeitet. Siehe
       Garagentiefe und ist damit der Anschlag beim Vorwärtseinparken
 - [ ] Kraftbetrachtung der Übertotpunkt-Federung, sobald
       [OFFEN-09](03-offene-fragen.md#offen-09) geklärt ist
-- [x] Veröffentlichung des Builds über GitHub Pages: `.github/workflows/pages.yml`
-      baut und deployt bei jedem Push auf `main`, nachdem Typprüfung und Tests
-      durchgelaufen sind
+- [x] Veröffentlichung des Builds über GitHub Pages:
+      `.github/workflows/pages.yml` baut und deployt, nachdem Typprüfung und
+      Tests durchgelaufen sind. **Der deklarierte `push`-Trigger auf `main`
+      feuert in diesem Repository nicht** — bislang lief jeder Lauf über
+      `workflow_dispatch`. Nach einem Push also `gh workflow run Pages --ref main`
+      anstoßen. Bleibt der Job mit leerem `runner_name` stehen und scheitert
+      nach exakt 15 Minuten, ist das die Runner-Warteschlange und kein
+      Build-Fehler; dann einfach erneut anstoßen.
 
 ## Phase 3 — Fahrzeugdatenbank
 
@@ -64,21 +69,39 @@ Umsetzung von Abschnitt 4 des Handoffs. Datenmodell und Auswahlmenü stehen in
 
 - [x] Auswahlmenü in der UI: `Individuell` plus fester Katalog; Katalogmaße
       gesperrt, nur die freie Eingabe ist editierbar
-- [x] Katalog aus der Vergleichsmatrix „Autokauf" befüllt: 30 Fahrzeuge über
-      alle Kategorien, maschinell übernommen statt abgetippt
-- [x] Quellenstufen A–D aus der Systematik der Matrix übernommen und in der
-      Oberfläche angezeigt
+- [x] Katalog aus der Vergleichsmatrix „Autokauf" befüllt, maschinell
+      übernommen statt abgetippt
+- [x] Katalog am 06.08.2026 vollständig gegen Herstellerdatenblätter geprüft;
+      36 Behauptungen von der Gegenprüfung gekippt, Befunde als OFFEN-12 bis
+      OFFEN-41 dokumentiert
+- [x] Beleg pro Maß statt pro Fahrzeug: Quellenstufe, Quelle und Abrufdatum
+      stehen am einzelnen Wert
+- [x] Höhe mit Dachreling als eigenes Feld; `pruefhoehe()` prüft gegen den
+      größeren der beiden Werte
+- [x] Marktstatus je Eintrag, hergeleitet aus Abgasnorm- und Assistenz-
+      stichtagen ([`06-marktrelevanz.md`](06-marktrelevanz.md))
+- [x] Breitenangaben ergänzt: Auf der Breitenachse ist nur noch ein einziger
+      Eintrag nicht prüfbar ([OFFEN-23](03-offene-fragen.md#offen-23))
+- [x] Marktsichtung über 94 Modellvarianten in drei Segmenten: Die Garage
+      begrenzt über die Breite, nicht über die Länge
 - [x] Ladelänge, Ladebreite zwischen den Radkästen und Innenhöhe des Laderaums
       aufgenommen — für die Frage, ob darin geschlafen werden kann
 - [x] Urteil je Achse gegen die **nachgemessene** Garage neu gerechnet; die
       Urteilsspalte der Matrix verworfen ([OFFEN-11](03-offene-fragen.md#offen-11))
 - [ ] Seitenprofil nachmessen — es bestimmt die Kollisionsprüfung und ist für
       **kein** Fahrzeug belegt ([OFFEN-06](03-offene-fragen.md#offen-06))
-- [ ] Breitenmaße mit angeklappten Spiegeln ergänzen
+- [ ] Breitenmaße mit angeklappten Spiegeln ergänzen — bei den Kleinbussen ist
+      das der Unterschied zwischen „passt" und „passt nicht"
 - [ ] Mehrere Fahrzeuge gleichzeitig vergleichen
+- [ ] Kleinbusse und Minivans in den Katalog aufnehmen, allen voran ID. Buzz
+      und die Stellantis-EMP2-Familie — die einzigen beiden Busfamilien, die
+      diese Einfahrt sicher passieren
+- [ ] Einfahrt an der schmalsten Stelle nachmessen: Die Mercedes-Gruppe liegt
+      4 bis 9 mm über den bisher gemessenen 2,240 m, und die Messung trägt ein
+      bis zwei Zentimeter Unsicherheit
 
-Datendisziplin: Jedes Fahrzeug trägt seine Quellenstufe, das Seitenprofil
-zusätzlich eine eigene. Was nicht belegt ist, bleibt `undefined` — ein
+Datendisziplin: Jedes **Maß** trägt seinen eigenen Beleg, das Seitenprofil
+zusätzlich eine eigene Quellenstufe. Was nicht belegt ist, bleibt `undefined` — ein
 geschätztes Maß, das wie ein gemessenes aussieht, ist hier gefährlicher als eine
 Lücke. Die Prüfung meldet eine unbelegte Achse als *nicht prüfbar*, statt sie zu
 bestehen.
