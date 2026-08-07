@@ -95,9 +95,11 @@ der beiden. Ein Relingwert im Feld `hoehe` ist ein Fehler — die Recherche vom
 06.08.2026 hat genau diese Verwechslung achtmal gefunden, und sie zeigt immer in
 dieselbe Richtung: Das Tor sieht freier aus, als es ist.
 
-Der `marktstatus` sagt, ob ein Modell 2026 noch als Kaufoption zählt. Er wird
-beim Zusammenbau aus `baujahre` abgeleitet und hängt an Abgasnorm und
-Assistenzpflicht, nicht am Alter — Herleitung in `docs/06-marktrelevanz.md`.
+`marktstatus(f)` sagt, ob ein Modell 2026 noch als Kaufoption zählt. Es ist eine
+**Funktion**, kein Feld: Der Status wird aus `baujahre` abgeleitet, damit er beim
+Ändern der Baujahre nicht stehenbleibt. Eine laufende Baureihe endet auf `+`.
+Die Stufen hängen an Abgasnorm und Assistenzpflicht, nicht am Alter — Herleitung
+in `docs/06-marktrelevanz.md`. Neue Katalogeinträge setzen ihn **nicht**.
 
 Optionale Felder sind `undefined`, wenn das Maß nicht belegt ist — nie ein
 Ersatzwert. `pruefeGarage()` in `src/lib/garagenpruefung.ts` meldet solche Achsen

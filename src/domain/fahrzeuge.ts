@@ -305,9 +305,9 @@ export const INDIVIDUELL: Fahrzeug = {
  * ihn ist weder Länge noch Höhe verifizierbar, und ohne diese beiden Maße lässt
  * sich nichts prüfen.
  *
- * Der `marktstatus` wird beim Zusammenbau aus `baujahre` abgeleitet und
- * beschreibt die jüngsten Fahrzeuge einer Baureihe — siehe
- * `docs/06-marktrelevanz.md`.
+ * Der Marktstatus steht nicht am Eintrag: `marktstatus(f)` leitet ihn aus
+ * `baujahre` ab und beschreibt die jüngsten Fahrzeuge einer Baureihe — siehe
+ * `docs/06-marktrelevanz.md`. Eine laufende Baureihe endet auf `+`.
  */
 export const FAHRZEUGE: readonly Fahrzeug[] = [
   /*

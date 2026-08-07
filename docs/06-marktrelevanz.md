@@ -13,9 +13,11 @@ Ein Katalogeintrag beschreibt eine Baureihe über mehrere Jahre. Der VW Caddy 2K
 lief von 2003 bis 2020 — ein Wagen von 2004 und einer von 2019 sind dasselbe
 Modell und trotzdem zwei völlig verschiedene Kaufentscheidungen.
 
-**Der `marktstatus` eines Eintrags beschreibt deshalb die jüngsten Fahrzeuge
-dieser Baureihe, die am Markt zu finden sind.** Wer ein frühes Baujahr kauft,
-muss die Stichtage unten selbst gegen das konkrete Fahrzeug prüfen.
+**`marktstatus(f)` beschreibt deshalb die jüngsten Fahrzeuge dieser Baureihe,
+die am Markt zu finden sind** — abgeleitet aus `baujahre` und nicht am Eintrag
+gepflegt, damit der Status beim Ändern der Baujahre nicht stehenbleibt. Wer ein
+frühes Baujahr kauft, muss die Stichtage unten selbst gegen das konkrete
+Fahrzeug prüfen.
 
 ## Die vier Stichtage, an denen sich alles entscheidet
 
