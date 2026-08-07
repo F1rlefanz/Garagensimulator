@@ -1,9 +1,15 @@
 import { GarageConfig } from '../lib/kinematics';
 import {
   AUSWAHL,
+  belegteMasse,
   Fahrzeug,
+  Fahrzeugmass,
   istEditierbar,
   KATEGORIE_LABEL,
+  MARKTSTATUS_LABEL,
+  MASSFELD_LABEL,
+  pruefhoehe,
+  schwaechsteQuellenstufe,
   Seitenprofil,
   STUFE_LABEL,
 } from '../domain/fahrzeuge';
@@ -78,13 +84,53 @@ function Feld({ schluessel, configKey, config, schritt = 0.005, onChange }: Feld
   );
 }
 
-/** Eine Zeile mit einem Maß aus dem Katalog, das nicht editierbar ist. */
-function Katalogzeile({ label, wert, einheit = 'm' }: { label: string; wert?: number; einheit?: string }) {
+/**
+ * Belegmarke am Maß: Quellenstufe als Kürzel, der volle Beleg im Tooltip.
+ *
+ * Die Stufe steht am einzelnen Maß und nicht am Fahrzeug — ein Eintrag kann
+ * eine herstellerbelegte Länge und eine Heckklappenhöhe aus dem Forum tragen.
+ */
+function Belegmarke({ mass }: { mass: Fahrzeugmass }) {
+  const titel = [
+    `Quellenstufe ${mass.quellenstufe} — ${STUFE_LABEL[mass.quellenstufe]}`,
+    mass.quelle,
+    `abgerufen am ${mass.abgerufenAm}`,
+    mass.bemerkung,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  return (
+    <span className={`marke stufe stufe-${mass.quellenstufe.toLowerCase()}`} title={titel}>
+      {mass.quellenstufe}
+    </span>
+  );
+}
+
+/**
+ * Eine nicht editierbare Zeile. Entweder ein belegtes Fahrzeugmaß samt
+ * Belegmarke, oder — für Garagenmaße, die keinen Fahrzeugbeleg haben — eine
+ * nackte Zahl.
+ */
+function Katalogzeile({
+  label,
+  mass,
+  wert,
+}: {
+  label: string;
+  mass?: Fahrzeugmass;
+  wert?: number;
+}) {
+  const anzeige = mass?.wert ?? wert;
+
   return (
     <div className="feld">
-      <label>{label}</label>
+      <label>
+        {label}
+        {mass && <Belegmarke mass={mass} />}
+      </label>
       <div className="abgeleitet-wert">
-        {wert === undefined ? 'nicht belegt' : `${kommaZahl(wert, 3)} ${einheit}`}
+        {anzeige === undefined ? 'nicht belegt' : `${kommaZahl(anzeige, 3)} m`}
       </div>
     </div>
   );
@@ -192,10 +238,16 @@ interface EingabenFahrzeugProps {
   seitenprofil?: Seitenprofil;
   abstandRueckwand: number;
   maxAbstand: number;
+  /** Bereits gefilterte Auswahlliste — die Filterlogik liegt in App.tsx. */
+  auswahl: readonly Fahrzeug[];
+  nurPassende: boolean;
+  nurNeue: boolean;
   onConfig: (key: keyof GarageConfig, wert: number) => void;
   onFahrzeug: (id: string) => void;
   onProfil: (feld: keyof Omit<Seitenprofil, 'quellenstufe'>, wert: number) => void;
   onAbstand: (wert: number) => void;
+  onNurPassende: (an: boolean) => void;
+  onNurNeue: (an: boolean) => void;
 }
 
 /** Rechte Spalte: Modellauswahl, Fahrzeugmaße, Seitenprofil. */
@@ -206,20 +258,32 @@ export function EingabenFahrzeug({
   seitenprofil,
   abstandRueckwand,
   maxAbstand,
+  auswahl,
+  nurPassende,
+  nurNeue,
   onConfig,
   onFahrzeug,
   onProfil,
   onAbstand,
+  onNurPassende,
+  onNurNeue,
 }: EingabenFahrzeugProps) {
   const editierbar = istEditierbar(fahrzeugId);
+  // Die Höhe, gegen die tatsächlich geprüft wird — mit Dachreling, wo belegt.
+  const hoeheFuerPruefung = pruefhoehe(fahrzeug);
+  // Länge und Höhe stehen oben als eigene Felder, alles Übrige wird gelistet.
+  const uebrigeMasse = belegteMasse(fahrzeug).filter(
+    ([feld]) => feld !== 'laenge' && feld !== 'hoehe' && feld !== 'hoeheMitDachreling',
+  );
 
-  // Nach Kategorie gruppieren, damit die Liste mit 30 Einträgen lesbar bleibt.
+  // Nach Kategorie gruppieren, damit die Liste lesbar bleibt.
   const gruppen = new Map<string, Fahrzeug[]>();
-  for (const f of AUSWAHL) {
+  for (const f of auswahl) {
     const label = istEditierbar(f.id) ? 'Freie Eingabe' : KATEGORIE_LABEL[f.kategorie];
     if (!gruppen.has(label)) gruppen.set(label, []);
     gruppen.get(label)!.push(f);
   }
+  const ausgeblendet = AUSWAHL.length - auswahl.length;
 
   const profilFelder: Array<[string, keyof Omit<Seitenprofil, 'quellenstufe'>]> = [
     ['Motorhaube Länge', 'haubenLaenge'],
@@ -246,12 +310,37 @@ export function EingabenFahrzeug({
                 {liste.map((f) => (
                   <option key={f.id} value={f.id}>
                     {f.bezeichnung}
+                    {f.marktstatus === 'neu' ? '' : ` · ${MARKTSTATUS_LABEL[f.marktstatus]}`}
                   </option>
                 ))}
               </optgroup>
             ))}
           </select>
         </div>
+
+        {/* Mit wachsendem Katalog ist die ungefilterte Liste unbrauchbar. Die
+            Filter blenden aus, sie löschen nichts — die Zahl der verborgenen
+            Einträge steht daneben, damit niemand glaubt, das sei alles. */}
+        <div className="schalter schalter-filter">
+          <label>
+            <input
+              type="checkbox"
+              checked={nurPassende}
+              onChange={(e) => onNurPassende(e.target.checked)}
+            />
+            Nur Fahrzeuge, die hineinpassen
+          </label>
+          <label>
+            <input type="checkbox" checked={nurNeue} onChange={(e) => onNurNeue(e.target.checked)} />
+            Nur 2026 neu bestellbare
+          </label>
+        </div>
+        <p className="block-hinweis quellenzeile">
+          {auswahl.length} von {AUSWAHL.length} Einträgen sichtbar
+          {ausgeblendet > 0 ? `, ${ausgeblendet} ausgeblendet` : ''}. Der Marktstatus hängt an
+          Abgasnorm und Assistenzpflicht, nicht am Alter — siehe{' '}
+          <code>docs/06-marktrelevanz.md</code>.
+        </p>
       </div>
 
       <div className="gruppe">
@@ -260,6 +349,7 @@ export function EingabenFahrzeug({
           <label htmlFor="feld-CAR_LENGTH">
             Fahrzeuglänge
             <span className="symbol">{fahrzeug.baujahre}</span>
+            <Belegmarke mass={fahrzeug.laenge} />
           </label>
           <input
             id="feld-CAR_LENGTH"
@@ -273,7 +363,10 @@ export function EingabenFahrzeug({
         <div className="feld">
           <label htmlFor="feld-CAR_HEIGHT">
             Fahrzeughöhe
-            <span className="symbol">ohne Dachreling</span>
+            <span className="symbol">
+              {fahrzeug.hoeheMitDachreling ? 'mit Dachreling' : 'ohne Dachreling'}
+            </span>
+            <Belegmarke mass={hoeheFuerPruefung} />
           </label>
           <input
             id="feld-CAR_HEIGHT"
@@ -285,11 +378,21 @@ export function EingabenFahrzeug({
           />
         </div>
 
-        <Katalogzeile label="Breite ohne Spiegel" wert={fahrzeug.breiteOhneSpiegel} />
-        <Katalogzeile label="Breite mit Spiegeln" wert={fahrzeug.breiteMitSpiegeln} />
-        <Katalogzeile label="Höhe bei offener Heckklappe" wert={fahrzeug.hoeheHeckOffen} />
-        <Katalogzeile label="Ladelänge" wert={fahrzeug.ladelaenge} />
-        <Katalogzeile label="Innenhöhe Laderaum" wert={fahrzeug.innenhoeheLaderaum} />
+        {/* Trägt das Fahrzeug eine Dachreling, steht oben deren Höhe — die
+            relingfreie Zeile bleibt daneben sichtbar, sonst sähe es aus, als
+            gäbe es sie nicht. */}
+        {fahrzeug.hoeheMitDachreling && (
+          <Katalogzeile label={MASSFELD_LABEL.hoehe} mass={fahrzeug.hoehe} />
+        )}
+
+        {/* Alle übrigen belegten Maße. Was fehlt, fehlt sichtbar — die Zeile
+            steht trotzdem da, damit die Lücke nicht unter den Tisch fällt. */}
+        {uebrigeMasse.map(([feld, mass]) => (
+          <Katalogzeile key={feld} label={MASSFELD_LABEL[feld]} mass={mass} />
+        ))}
+        {fahrzeug.hoeheHeckOffen === undefined && (
+          <Katalogzeile label={MASSFELD_LABEL.hoeheHeckOffen} />
+        )}
 
         <div className="feld feld-breit">
           <label htmlFor="feld-abstand">
@@ -310,7 +413,9 @@ export function EingabenFahrzeug({
         </div>
 
         <p className="block-hinweis quellenzeile">
-          Quellenstufe {fahrzeug.quellenstufe} — {STUFE_LABEL[fahrzeug.quellenstufe]}.
+          Schwächste Quellenstufe dieses Eintrags: {schwaechsteQuellenstufe(fahrzeug)} —{' '}
+          {STUFE_LABEL[schwaechsteQuellenstufe(fahrzeug)]}. Die Stufe je Maß steht als Kürzel an der
+          Zeile, Beleg und Abrufdatum im Tooltip.
           {fahrzeug.notiz ? ` ${fahrzeug.notiz}` : ''}
         </p>
       </div>

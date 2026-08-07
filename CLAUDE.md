@@ -77,13 +77,27 @@ anpassen, ohne die Dokumentation mitzuführen.
 
 ## Fahrzeuge
 
-`src/domain/fahrzeuge.ts` führt einen festen Katalog (30 Einträge aus der
-Vergleichsmatrix „Autokauf") plus den Eintrag `INDIVIDUELL`. Nur letzterer ist in
-der UI editierbar — Katalogmaße sind gesperrt.
+`src/domain/fahrzeuge.ts` führt einen festen Katalog plus den Eintrag
+`INDIVIDUELL`. Nur letzterer ist in der UI editierbar — Katalogmaße sind
+gesperrt. Ursprung war die Vergleichsmatrix „Autokauf"; am 06.08.2026 wurde der
+gesamte Katalog gegen Herstellerdatenblätter geprüft (OFFEN-12 bis OFFEN-41).
 
-Jedes Fahrzeug trägt eine **Quellenstufe** A–D aus der Systematik der Matrix:
-A Herstellerdatenblatt, B Fachredaktion mit eigener Messung, C Portaldaten,
-D Forum. Sie wird angezeigt und nicht hochgestuft.
+**Der Beleg steht am einzelnen Maß, nicht am Fahrzeug.** Jedes Maß ist ein
+`Fahrzeugmass` mit `wert`, `quellenstufe` A–D, `quelle` (URL) und `abgerufenAm`.
+Ein Eintrag kann eine herstellerbelegte Länge und eine Heckklappenhöhe aus dem
+Forum tragen — eine gemeinsame Stufe für beide wäre in einem der beiden Fälle
+gelogen. `schwaechsteQuellenstufe()` liefert die ehrliche Gesamtaussage.
+Stufen nicht hochstufen; ein neuer Beleg ersetzt den Wert **samt** Quelle.
+
+**`hoehe` ist immer die Höhe ohne Dachreling.** Wo die Reling serienmäßig ist,
+steht ihr Maß in `hoeheMitDachreling`, und `pruefhoehe()` liefert den größeren
+der beiden. Ein Relingwert im Feld `hoehe` ist ein Fehler — die Recherche vom
+06.08.2026 hat genau diese Verwechslung achtmal gefunden, und sie zeigt immer in
+dieselbe Richtung: Das Tor sieht freier aus, als es ist.
+
+Der `marktstatus` sagt, ob ein Modell 2026 noch als Kaufoption zählt. Er wird
+beim Zusammenbau aus `baujahre` abgeleitet und hängt an Abgasnorm und
+Assistenzpflicht, nicht am Alter — Herleitung in `docs/06-marktrelevanz.md`.
 
 Optionale Felder sind `undefined`, wenn das Maß nicht belegt ist — nie ein
 Ersatzwert. `pruefeGarage()` in `src/lib/garagenpruefung.ts` meldet solche Achsen
@@ -123,7 +137,8 @@ src/lib/        Kinematik, Fahrzeuggeometrie, Garagenprüfung — rein funktiona
 src/ui/         Riss, Eingaben, Befunde, Garagenbefund, Seitenpanel
 src/App.tsx     Zusammensetzung
 scripts/        Build zur eigenständigen HTML-Datei
-docs/           Handoff, Messwerte, offene Fragen, Roadmap, Architektur
+docs/           Handoff, Messwerte, offene Fragen, Roadmap, Architektur,
+                Marktrelevanz
 ```
 
 **Eine Implementierung, drei Ansichten.** Entwicklungsserver, GitHub Pages und

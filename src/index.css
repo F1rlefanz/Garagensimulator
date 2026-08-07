@@ -304,6 +304,9 @@ button.sekundaer {
   height: 14px;
   cursor: pointer;
 }
+.schalter-filter {
+  padding: var(--sp-2) 0 0;
+}
 
 /* ------------------------------------------------------------- Ablesungen */
 .ablesungen {
@@ -515,6 +518,26 @@ input[type='number']:read-only {
 }
 .marke.offen {
   color: var(--warnung);
+}
+
+/* Quellenstufe am einzelnen Maß. Die Farbe sagt, wie weit man der Zahl trauen
+   darf — A Herstellerdatenblatt bis D Forum. */
+.marke.stufe {
+  cursor: help;
+  min-width: 14px;
+  text-align: center;
+}
+.marke.stufe-a {
+  color: var(--geloest);
+}
+.marke.stufe-b {
+  color: var(--bahn);
+}
+.marke.stufe-c {
+  color: var(--warnung);
+}
+.marke.stufe-d {
+  color: var(--fehler);
 }
 
 /* ---------------------------------------------------------------- Befunde */
