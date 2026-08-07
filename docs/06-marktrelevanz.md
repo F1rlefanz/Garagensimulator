@@ -116,10 +116,16 @@ nur zwei Plattformen:
 | Mercedes Vito Tourer | 2,244 m | 4 mm |
 | Mercedes V-Klasse, Marco Polo, EQV, VLE | 2,248–2,249 m | 8–9 mm |
 | VW Multivan T7, California T7 | 2,252 m | 12 mm |
+| Kia PV5 Passenger | 2,255 m | **15 mm** |
 | Ford Tourneo Custom V710, VW Caravelle T7 | 2,275 m | 35 mm |
-| Ford Tourneo Custom V362 | 2,290 m | 50 mm |
+| Hyundai Staria, Ford Tourneo Custom V362 | 2,290 m | 50 mm |
 | VW Caravelle und California T6.1 | 2,297 m | 57 mm |
 | Renault Trafic, Nissan Primastar | 2,312 m | 72 mm |
+
+**Der knappste Fall ist der Kia PV5** — 15 Millimeter, und ausgerechnet bei ihm
+stammt die Spiegelbreite nur aus dem ADAC-Katalog, nicht vom Hersteller. Länge
+und Höhe sind völlig unkritisch. Siehe
+[OFFEN-45](03-offene-fragen.md#offen-45).
 
 ### Der Grenzfall, der keiner ist: die Mercedes-Gruppe
 

@@ -3414,8 +3414,9 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
    * ausgeklappten Spiegel gegen 2,240 m — die lichte Höhe ist bei keinem
    * einzigen dieser Fahrzeuge das Ausschlusskriterium.
    *
-   * Nicht enthalten: Hyundai Staria und Kia PV5. Das Paket ist an einem
-   * API-Fehler gescheitert, siehe OFFEN-45.
+   * Hyundai Staria und Kia PV5 sind am 07.08.2026 nachgetragen worden; ihre
+   * Spiegelbreiten stehen bei keinem der beiden Hersteller, sondern nur im
+   * ADAC-Katalog (OFFEN-45).
    * ------------------------------------------------------------------------
    */
   {
@@ -6303,6 +6304,131 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
     },
     notiz:
       'Von den vier hier belegten Varianten die einzige Primastar-Version, in der sich liegen lässt: 2.079 mm ebene Länge am Boden als 6-Sitzer, bei 1.369 mm Innenhöhe. Als 9-Sitzer bleiben 1.136 mm. Breitestes Teil sind die ausgeklappten Spiegel mit 2.312 mm gegenüber 1.956 mm Karosserie — die 400 mm Mehrlänge gegenüber L1H1 stecken vollständig im Radstand.',
+  },
+  /*
+   * Hyundai Staria. Die Vorabsichtung hielt ihn für den einzigen Kandidaten, der
+   * primär an der Länge scheitert — das trägt nicht: Er reißt beide kritischen Maße,
+   * über die Spiegel sogar deutlicher als über die Länge.
+   */
+  {
+    id: 'hyundai-staria',
+    bezeichnung: 'Hyundai Staria · Hybrid 9-/7-Sitzer',
+    modell: 'Staria',
+    variante: 'Hybrid 1.6 T-GDI, 9- oder 7-Sitzer',
+    baujahre: '2021+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 5.253,
+      quellenstufe: 'A',
+      quelle: 'https://dmassets.hyundai.com/is/content/hyundaiautoever/hyundai-staria-preislistepdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Preisliste Hyundai Motor Deutschland, Stand Februar 2026, Seite 19, Tabelle ' +
+        '„STARIA Hybrid — Technische Daten, 9- und 7-Sitzer": 5.253 / 1.997 / 1.990 mm, ' +
+        'Radstand 3.273 mm. Die Maßskizze auf Seite 20 bestätigt dieselben Zahlen. ' +
+        'Stabiler Einstieg: https://www.hyundai.com/de/de/preislisten/staria-9-sitzer.html ' +
+        '(302 auf das PDF). Es gibt keine kürzere Karosserie.',
+    },
+    hoehe: {
+      wert: 1.99,
+      quellenstufe: 'A',
+      quelle: 'https://dmassets.hyundai.com/is/content/hyundaiautoever/hyundai-staria-preislistepdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Dieselbe Tabelle, Seite 19. Die Preisliste nennt eine einzige Höhe für alle ' +
+        'Ausstattungslinien und unterscheidet nicht nach Dachreling; ein gesonderter Wert ' +
+        'mit Reling ist nicht ausgewiesen.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.997,
+      quellenstufe: 'A',
+      quelle: 'https://dmassets.hyundai.com/is/content/hyundaiautoever/hyundai-staria-preislistepdf',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Dieselbe Tabelle, Seite 19; die Maßskizze auf Seite 20 bestätigt 1.997 mm.',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.29,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/hyundai/staria/1generation/337602/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, Datenblatt „Hyundai Staria 1.6 T-GDI HEV Trend Automatik ' +
+        '(ab 11/24)", Zeile „Breite mit Außenspiegel: 2290 mm". Identisch in den ' +
+        'Datenblättern der Diesel 2.2 CRDi (08/21–11/24) und der Signature-Ausführung. ' +
+        'Hyundai selbst weist in der deutschen Preisliste keine Spiegelbreite aus — daher ' +
+        'Quellenstufe C statt A. Eine Breite mit angeklappten Spiegeln ist nicht veröffentlicht.',
+    },
+    notiz:
+      'Wird in Deutschland angeboten (Hybrid Trend, Prime, Signature); die Diesel 2.2 CRDi ' +
+      'liefen 08/21 bis 11/24 und stehen nicht mehr in der Preisliste. Alle Ausführungen — ' +
+      '9- und 7-Sitzer, Diesel wie Hybrid, Front- wie Allradantrieb — tragen identische ' +
+      'Außenmaße, eine kurze Version gibt es nicht. Er überschreitet beide kritischen Maße: ' +
+      'die Länge um 33 mm, die Spiegelbreite um 50 mm. Über die Spiegel scheitert er also ' +
+      'deutlicher als über die Länge.',
+  },
+  /*
+   * Kia PV5 Passenger. Konzeptionell der interessanteste Fund der Kleinbus-Runde:
+   * Nutzfahrzeugplattform, flacher Boden, kurz und niedrig genug. Er scheitert an
+   * 15 Millimetern Spiegelbreite — und ausgerechnet die Breite mit angeklappten
+   * Spiegeln, die hier über ja oder nein entscheiden würde, veröffentlicht Kia nicht.
+   */
+  {
+    id: 'kia-pv5-passenger',
+    bezeichnung: 'Kia PV5 · Passenger',
+    modell: 'PV5',
+    variante: 'Passenger, 5- bis 7-Sitzer',
+    baujahre: '2025+',
+    kategorie: 'kleinbus',
+    laenge: {
+      wert: 4.695,
+      quellenstufe: 'A',
+      quelle: 'https://www.kia.com/de/modelle/pv5-passenger/entdecken/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Abschnitt „Technische Daten", Zeile „Länge, Breite, Höhe (Höhe ohne Antenne): ' +
+        '4.695, 1.895, 1.923 (1.899)" mm. In Deutschland nur diese eine Länge — alle 15 im ' +
+        'ADAC-Katalog geführten Passenger-Ausführungen tragen dieselben Außenmaße. Die ' +
+        'Kürzel L1H1 und L2H1 gehören zum PV5 Cargo, nicht zum Passenger.',
+    },
+    hoehe: {
+      wert: 1.899,
+      quellenstufe: 'A',
+      quelle: 'https://www.kia.com/de/modelle/pv5-passenger/entdecken/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'Aus derselben Zeile: 1.923 mm mit Dachantenne, 1.899 mm ohne. Hier steht der Wert ' +
+        'ohne Antenne. Eine Antenne ist keine Dachreling, deshalb kein Relingfeld; für die ' +
+        'Garage ohnehin folgenlos, auch 1,923 m liegen weit unter der lichten Höhe.',
+    },
+    breiteOhneSpiegel: {
+      wert: 1.895,
+      quellenstufe: 'A',
+      quelle: 'https://www.kia.com/de/modelle/pv5-passenger/entdecken/',
+      abgerufenAm: '2026-08-07',
+      bemerkung: 'Dieselbe Zeile im Abschnitt „Technische Daten".',
+    },
+    breiteMitSpiegeln: {
+      wert: 2.255,
+      quellenstufe: 'C',
+      quelle:
+        'https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/kia/pv5/1generation/340735/',
+      abgerufenAm: '2026-08-07',
+      bemerkung:
+        'ADAC-Autokatalog, Datenblatt „Kia PV5 Passenger (51,5 kWh) Essential (5-Sitzer)", ' +
+        'ab 10/2025, Zeile „Breite mit Außenspiegel: 2255 mm". Identisch in drei weiteren ' +
+        'Datenblättern quer über Batteriegrößen, Ausstattungen und Sitzzahlen — kein ' +
+        'Streuwert. Kia veröffentlicht den Wert selbst nicht; wo gesucht wurde, steht in ' +
+        'der notiz. Eine Breite mit angeklappten Spiegeln ist nirgends veröffentlicht.',
+    },
+    notiz:
+      'Kia gibt die Spiegelbreite in keiner eigenen Quelle heraus. Erfolglos geprüft: die ' +
+      'Modellseite samt „Technische Daten", die PV5-Cargo-Seite, die Broschüren-Übersicht ' +
+      '(lädt PDF-Links dynamisch nach), der Konfigurator, kia.com/nl und kia.com/uk, die ' +
+      'digitale Broschüre und der Presseraum. Diese Suche muss nicht wiederholt werden, ' +
+      'solange Kia keine Preisliste als PDF veröffentlicht. Länge und Höhe sind völlig ' +
+      'unkritisch; es scheitert allein an 15 mm Spiegelbreite. Die Breite mit angeklappten ' +
+      'Spiegeln würde hier über ja oder nein entscheiden und fehlt (OFFEN-45).',
   },
 ];
 

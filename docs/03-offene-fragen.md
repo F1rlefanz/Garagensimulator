@@ -63,7 +63,7 @@ Messwerte, dieses Dokument und den Test gemeinsam nachzuziehen.
 | [OFFEN-42](#offen-42) | Toyota Proace City Verso: Quelle nicht belastbar | offen |
 | [OFFEN-43](#offen-43) | Ford Tourneo Connect: Preisliste nicht abrufbar | offen |
 | [OFFEN-44](#offen-44) | marktstatus meint die Baureihe, nicht den deutschen Markt | Beschriftung korrigiert, Feld offen |
-| [OFFEN-45](#offen-45) | Hyundai Staria und Kia PV5 nicht recherchiert | offen |
+| [OFFEN-45](#offen-45) | Spiegelbreite von Staria und Kia PV5 nur vom Portal | offen |
 
 ---
 
@@ -987,28 +987,40 @@ Einzelfall zählt, steht sie in der `notiz`.
 
 ## OFFEN-45
 
-**Hyundai Staria und Kia PV5 fehlen im Katalog.** Schwere: offen.
+**Die Spiegelbreite von Hyundai Staria und Kia PV5 stammt nicht vom Hersteller.**
+Schwere: offen.
 
-Beide waren Teil der Kleinbus-Recherche vom 07.08.2026 und fehlen, weil das
-Arbeitspaket an einem Serverfehler abgebrochen ist — kein inhaltlicher Befund,
-sondern ein Ausfall.
+Beide Fahrzeuge sind seit dem 07.08.2026 im Katalog, mit Länge, Höhe und
+Karosseriebreite aus Herstellerquellen. **Die Breite über die ausgeklappten
+Spiegel — bei dieser Garage die entscheidende Achse — veröffentlicht keiner der
+beiden Hersteller.** Sie steht nur im ADAC-Autokatalog und trägt deshalb
+Quellenstufe C:
 
-Was die vorangegangene Marktsichtung über sie sagt, ohne Herstellerbeleg:
-
-| Fahrzeug | Länge | Breite mit Spiegeln | Bewertung |
+| Fahrzeug | Länge | Breite mit Spiegeln | Rest zu 2,240 m |
 | --- | --- | --- | --- |
-| Hyundai Staria | 5,253 m | nicht belegt | überschreitet die nutzbare Tiefe um 33 mm |
-| Kia PV5 Passenger | 4,695 m | **nicht belegt** | Länge und Höhe unkritisch |
+| Hyundai Staria | 5,253 m (A) | 2,290 m (C) | −50 mm |
+| Kia PV5 Passenger | 4,695 m (A) | 2,255 m (C) | −15 mm |
 
-Der **Staria** wäre der einzige Kandidat des gesamten Katalogs, der primär an
-der Länge scheitert, und er hat keine kürzere Variante. Der **PV5** ist der
-interessanteste Fund der Marktsichtung: Nutzfahrzeugplattform, flacher Boden,
-1,899 m hoch, 4,695 m lang — und ausgerechnet bei ihm fehlt die eine Zahl, die
-bei dieser Garage entscheidet.
+Beim **Staria** ist das folgenlos: Er überschreitet auch die nutzbare Tiefe um
+33 mm. Die frühere Annahme, er scheitere *primär* an der Länge, trägt nicht — er
+reißt beide Maße, über die Spiegel sogar deutlicher.
 
-**Zur Klärung nötig:** Spiegelbreite beider Fahrzeuge aus einer Hersteller-
-quelle, beim PV5 zusätzlich die Frage, ob es mehrere Längen- oder Dachvarianten
-gibt.
+Beim **Kia PV5** hängt alles an dieser einen Zahl. Länge (4,695 m) und Höhe
+(1,899 m) sind völlig unkritisch; er scheitert allein an **15 Millimetern**
+Spiegelbreite, belegt durch ein Datenportal. Vier ADAC-Datenblätter quer über
+Batteriegrößen, Ausstattungen und Sitzzahlen nennen denselben Wert — es ist kein
+Ausreißer, aber eben keine Herstellerangabe.
+
+**Was zusätzlich fehlt:** die Breite mit **angeklappten** Spiegeln. Bei der
+Mercedes V-Klasse hat genau dieser zweite Wert die Entscheidung gedreht
+(2,249 m ausgeklappt gegen 2,057 m angeklappt). Für Staria und PV5 veröffentlicht
+ihn niemand.
+
+**Zur Klärung nötig:** eine Kia-Preisliste als PDF — die Suche danach war
+ausführlich und erfolglos (Modellseite, Broschürenübersicht, Konfigurator,
+kia.com/nl und /uk, digitale Broschüre, Presseraum). Solange es sie nicht gibt,
+bleibt die Zahl auf Stufe C. Bei 15 mm ist das der Unterschied zwischen einer
+Absage und einer offenen Frage.
 
 ---
 
