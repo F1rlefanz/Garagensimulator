@@ -63,6 +63,49 @@ Frage, und dafür ist dieses Werkzeug nicht gebaut.
    konkreten Angebot gehört immer die Prüfung von Erstzulassung, Abgasnorm und
    Ausstattung — der Katalog kann das nicht abnehmen.
 
+## Welche Fahrzeugklasse diese Garage überhaupt zulässt
+
+Stand der Marktsichtung vom 07.08.2026 über 94 Modellvarianten aus drei
+Segmenten. Das Ergebnis ist eindeutig genug, um es hier festzuhalten:
+
+**Die Garage begrenzt über die Breite, nicht über die Länge.**
+
+| Achse | Maß | Wie oft sie das Ausschlusskriterium ist |
+| --- | --- | --- |
+| Breite mit Spiegeln | 2,240 m | fast immer |
+| Nutzbare Tiefe | 5,220 m | sechs Fahrzeugtypen |
+| Lichte Höhe | 2,170 m | **kein einziges Fahrzeug** — das höchste gefundene misst 2,02 m |
+
+- **Hochdachkombis** passen durchweg. Der längste (Mercedes T-Klasse lang,
+  4,922 m) hat 30 cm Reserve, die breitesten (Mercedes- und Renault-Plattform,
+  2,159 m) noch 8 cm. Hier entscheidet nicht die Garage, sondern der Bedarf.
+- **Kleinbusse sind realistisch** — aber nur zwei Familien: **VW ID. Buzz**
+  (2,212 m, beide Radstände) und die **Stellantis-EMP2-Familie in kurz und
+  mittel** (Zafira Life, Traveller, SpaceTourer, Proace Verso, Ulysse; 2,204 m).
+- **Die Mercedes-Gruppe ist der Grenzfall**, an dem sich alles entscheidet:
+  V-Klasse, Vito Tourer und Marco Polo liegen mit 2,244 bis 2,249 m nur **4 bis
+  9 Millimeter** über der Engstelle. Das ist der einzige Fall, in dem ein
+  Nachmessen der Einfahrt über ja oder nein entscheidet — die 2,240 m stammen
+  aus einer Messung mit ein bis zwei Zentimetern Unsicherheit.
+- **Transporter-basierte Busse scheiden aus**: VW T6.1 Caravelle und California
+  (2,297 m), Ford Tourneo Custom und VW Caravelle T7 (2,275 m), Renault Trafic
+  (2,282 m), Nissan Primastar (2,312 m). Bemerkenswert am T6.1: Er hätte mit
+  4,904 m Länge 32 cm Reserve und scheitert **allein an den Spiegeln**.
+- **Der Hyundai Staria** ist der einzige, der primär an der Länge scheitert
+  (5,253 m), und er hat keine kürzere Variante.
+- **Minivans** passen alle mühelos, taugen für den Zweck aber kaum: Bei gleicher
+  Außenlänge bleibt nach Bodenaufbau und Dachkonstruktion deutlich weniger
+  Innenhöhe, und das Heck ist abgeschrägt statt senkrecht. Die Karosserieform,
+  nicht die Länge, ist hier die entscheidende Größe. Das Segment ist zudem
+  praktisch tot — mit dem VW Touran verschwindet 2026 der letzte klassische
+  Kompaktvan eines deutschen Herstellers ohne Nachfolger.
+
+**Ein Hinweis zur Höhe, weil er wiederholt falsch gerechnet wurde:**
+`lichteHoehe` ist in `src/domain/garage.ts` ausdrücklich vom **Garagenboden**
+bis zur Unterkante des Schienenprofils definiert — also ab der Ebene, auf der
+das Fahrzeug steht. Die 12,4 cm Bodenversatz dürfen **nicht** aufgeschlagen
+werden. Ein 1,99 m hoher Camper hat 18 cm Luft, nicht 5,6 cm.
+
 ## Warum nicht einfach „zehn Jahre alt"
 
 Eine reine Altersgrenze wäre bequem und falsch. Ein Fiat Doblò von 2021 und ein
