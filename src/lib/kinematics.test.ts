@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
+import { pruefhoehe, REFERENZ_FAHRZEUG } from '../domain/fahrzeuge';
+
 import {
   calculateKinematics,
   DEFAULT_CONFIG,
@@ -147,5 +149,21 @@ describe('maximalerOeffnungswinkel', () => {
     const blockiert = { ...DEFAULT_CONFIG, Y_A: 0.0 };
 
     expect(maximalerOeffnungswinkel(blockiert)).toBe(0);
+  });
+});
+
+describe('Fahrzeugmaße in DEFAULT_CONFIG', () => {
+  it('nimmt die Höhe MIT Dachreling, nicht die relingfreie', () => {
+    // Ohne diese Zusicherung bleibt eine Änderung von pruefhoehe(f).wert auf
+    // f.hoehe.wert unbemerkt: Alle Tests, die CAR_HEIGHT anfassen, messen die
+    // Kontur gegen CAR_HEIGHT selbst und sind damit tautologisch. Die Folge
+    // wäre ein 2,9 cm zu niedriges Fahrzeug in Zeichnung und Kollisionsprüfung.
+    expect(DEFAULT_CONFIG.CAR_HEIGHT).toBeCloseTo(pruefhoehe(REFERENZ_FAHRZEUG).wert, 9);
+    expect(REFERENZ_FAHRZEUG.hoeheMitDachreling).toBeDefined();
+    expect(DEFAULT_CONFIG.CAR_HEIGHT).toBeGreaterThan(REFERENZ_FAHRZEUG.hoehe.wert);
+  });
+
+  it('nimmt die Länge des Referenzfahrzeugs', () => {
+    expect(DEFAULT_CONFIG.CAR_LENGTH).toBeCloseTo(REFERENZ_FAHRZEUG.laenge.wert, 9);
   });
 });

@@ -46,6 +46,12 @@ export interface Garagenbefund {
   readonly engsteReserve?: number;
   /** Lässt sich die Heckklappe in der Garage öffnen? `undefined` = unbekannt. */
   readonly heckklappeOeffenbar?: boolean;
+  /**
+   * Lichte Höhe minus Höhe bei geöffneter Klappe. Negativ heißt: passt nicht.
+   * Ein knappes Ja ist hier kein belastbares Ja — beim Referenzfahrzeug geht es
+   * um 15 mm, und die Herstellerangaben streuen um 23 mm (OFFEN-12).
+   */
+  readonly heckklappeReserve?: number;
 }
 
 function bewerte(verfuegbar: number, benoetigt: number | undefined): Urteil {
@@ -141,6 +147,10 @@ export function pruefeGarage(
       fahrzeug.hoeheHeckOffen === undefined
         ? undefined
         : fahrzeug.hoeheHeckOffen.wert <= config.CLEAR_HEIGHT,
+    heckklappeReserve:
+      fahrzeug.hoeheHeckOffen === undefined
+        ? undefined
+        : config.CLEAR_HEIGHT - fahrzeug.hoeheHeckOffen.wert,
   };
 }
 

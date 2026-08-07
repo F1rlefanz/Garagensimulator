@@ -1,5 +1,9 @@
 import { Fahrzeug } from '../domain/fahrzeuge';
-import { Garagenbefund as GaragenbefundDaten, URTEIL_LABEL } from '../lib/garagenpruefung';
+import {
+  Garagenbefund as GaragenbefundDaten,
+  RESERVE_SICHER,
+  URTEIL_LABEL,
+} from '../lib/garagenpruefung';
 
 /**
  * Statische Passgenauigkeitsprüfung — unabhängig von der Torbewegung.
@@ -32,8 +36,10 @@ export function Garagenbefund({ befund, fahrzeug, lichteHoehe }: Props) {
 
       {befund.achsen.map((a) => (
         <div
+          // Nur 'sicher' ist grün. 'nicht-pruefbar' war vorher grün eingefärbt und
+          // sah damit aus wie bestanden — das Gegenteil dessen, was es heißt.
           className={`befund ${
-            a.urteil === 'passt-nicht' ? 'fehler' : a.urteil === 'knapp' ? 'warnung' : 'geloest'
+            a.urteil === 'passt-nicht' ? 'fehler' : a.urteil === 'sicher' ? 'geloest' : 'warnung'
           }`}
           key={a.achse}
         >
@@ -66,13 +72,29 @@ export function Garagenbefund({ befund, fahrzeug, lichteHoehe }: Props) {
       ))}
 
       {befund.heckklappeOeffenbar !== undefined && (
-        <div className={`befund ${befund.heckklappeOeffenbar ? 'geloest' : 'fehler'}`}>
+        // Bei wenigen Millimetern Reserve ist Grün eine Behauptung, die die
+        // Messgenauigkeit nicht hergibt — dann Gelb statt Grün.
+        <div
+          className={`befund ${
+            !befund.heckklappeOeffenbar
+              ? 'fehler'
+              : (befund.heckklappeReserve ?? 0) < RESERVE_SICHER
+                ? 'warnung'
+                : 'geloest'
+          }`}
+        >
           <div className="befund-kopf">
             <span>Heckklappe</span>
             <span>·</span>
             <span>
               {befund.heckklappeOeffenbar ? 'lässt sich öffnen' : 'lässt sich nicht öffnen'}
             </span>
+            {befund.heckklappeReserve !== undefined && (
+              <>
+                <span>·</span>
+                <span>{zahl(befund.heckklappeReserve * 100, 1)} cm Reserve</span>
+              </>
+            )}
           </div>
           <p>
             Bei geöffneter Heckklappe braucht das Fahrzeug{' '}

@@ -17,14 +17,18 @@ import {
 } from './lib/fahrzeuggeometrie';
 import {
   AUSWAHL,
+  Fahrzeug,
   fahrzeugNachId,
+  INDIVIDUELL,
   istEditierbar,
+  Massfeld,
   pruefhoehe,
   REFERENZ_FAHRZEUG,
   Seitenprofil,
 } from './domain/fahrzeuge';
 import { m, pruefeGeometrie } from './domain/garage';
 import { pruefeGarage, URTEIL_LABEL } from './lib/garagenpruefung';
+import { filtereAuswahl } from './lib/fahrzeugfilter';
 import { Befunde } from './ui/Befunde';
 import { EingabenFahrzeug, EingabenGarage } from './ui/Eingaben';
 import { Garagenbefund } from './ui/Garagenbefund';
@@ -39,8 +43,25 @@ function zahl(v: number, stellen = 3): string {
   return bereinigt.toFixed(stellen).replace('.', ',');
 }
 
+/**
+ * Beleg für ein Maß, das gerade in der Oberfläche eingetippt wurde.
+ *
+ * Stufe D ist hier keine Abwertung, sondern die Wahrheit: Eine Zahl aus einem
+ * Eingabefeld ist durch nichts gedeckt außer der Absicht dessen, der sie
+ * eingetippt hat.
+ */
+const EINGEGEBEN = {
+  quellenstufe: 'D' as const,
+  quelle: 'in der Oberfläche eingegeben',
+  abgerufenAm: '—',
+};
+
 export default function App() {
-  const [config, setConfig] = useState<GarageConfig>(DEFAULT_CONFIG);
+  // Nur die Garagen- und Tormaße. Die Fahrzeugmaße stehen NICHT hier, sondern
+  // am Fahrzeug — sonst urteilt die Prüfung über ein anderes Fahrzeug als das
+  // gezeichnete, und genau das ist lange unbemerkt passiert.
+  const [basisConfig, setBasisConfig] = useState<GarageConfig>(DEFAULT_CONFIG);
+  const [individuell, setIndividuell] = useState<Fahrzeug>(INDIVIDUELL);
   const [fahrzeugId, setFahrzeugId] = useState(REFERENZ_FAHRZEUG.id);
   const [seitenprofil, setSeitenprofil] = useState<Seitenprofil | undefined>(
     REFERENZ_FAHRZEUG.seitenprofil,
@@ -55,7 +76,23 @@ export default function App() {
   const [nurPassende, setNurPassende] = useState(false);
   const [nurNeue, setNurNeue] = useState(false);
 
-  const fahrzeug = fahrzeugNachId(fahrzeugId) ?? REFERENZ_FAHRZEUG;
+  // Für die freie Eingabe gilt der bearbeitete Stand, nicht der Katalogeintrag
+  // mit seinen Startwerten.
+  const fahrzeug = istEditierbar(fahrzeugId)
+    ? individuell
+    : (fahrzeugNachId(fahrzeugId) ?? REFERENZ_FAHRZEUG);
+
+  // Die Fahrzeugmaße der Szene werden aus dem Fahrzeug abgeleitet, nicht
+  // parallel gepflegt. Damit zeichnen Riss und Kollisionsprüfung dasselbe
+  // Fahrzeug, über das pruefeGarage() urteilt.
+  const config: GarageConfig = useMemo(
+    () => ({
+      ...basisConfig,
+      CAR_LENGTH: fahrzeug.laenge.wert,
+      CAR_HEIGHT: pruefhoehe(fahrzeug).wert,
+    }),
+    [basisConfig, fahrzeug],
+  );
 
   // Der Schwenkarm begrenzt den Öffnungsweg — kein fest gesetzter Wert.
   const maxWinkel = maximalerOeffnungswinkel(config);
@@ -72,25 +109,22 @@ export default function App() {
   const einfahrtBreite = m('schmalsteStelleEinfahrt');
   const garagenbefund = pruefeGarage(fahrzeug, config, einfahrtBreite);
 
-  // Gefilterte Auswahlliste. Das gerade gewählte Fahrzeug bleibt immer drin —
-  // sonst stünde die Auswahl leer da, sobald ein Filter es ausschließt.
+  // Gefilterte Auswahlliste. Die Logik liegt in src/lib/fahrzeugfilter.ts,
+  // damit sie prüfbar ist.
   const auswahl = useMemo(
-    () =>
-      AUSWAHL.filter((f) => {
-        if (f.id === fahrzeugId || istEditierbar(f.id)) return true;
-        if (nurNeue && f.marktstatus !== 'neu') return false;
-        if (nurPassende && pruefeGarage(f, config, einfahrtBreite).urteil === 'passt-nicht') {
-          return false;
-        }
-        return true;
-      }),
+    () => filtereAuswahl(AUSWAHL, { nurPassende, nurNeue }, fahrzeugId, config, einfahrtBreite),
     [fahrzeugId, nurNeue, nurPassende, config, einfahrtBreite],
   );
 
   const k = calculateKinematics(Math.min(winkel, maxWinkel), config);
   // Geprüft wird bislang nur die Torunterkante B gegen die Fahrzeugkontur —
   // Torblatt und Schwenkarme fehlen noch, siehe docs/04-roadmap.md.
-  const kollision = zeigeFahrzeug && liegtInnerhalb(k.xB, k.yB, kontur);
+  //
+  // Die Prüfung hängt NICHT am Schalter „Fahrzeug einblenden": Der blendet die
+  // Zeichnung aus, nicht das Fahrzeug aus der Garage. Vorher meldete die Kachel
+  // bei ausgeblendetem Fahrzeug grün „keine Kollision", während die
+  // Torunterkante durch die Kontur fuhr.
+  const kollision = liegtInnerhalb(k.xB, k.yB, kontur);
 
   const letzterRahmen = useRef(0);
   const richtung = useRef(1);
@@ -122,20 +156,39 @@ export default function App() {
     return () => cancelAnimationFrame(handle);
   }, [laeuft, maxWinkel]);
 
-  const handleConfig = (key: keyof GarageConfig, wert: number) =>
-    setConfig((vorher) => ({ ...vorher, [key]: wert }));
+  /**
+   * Eingaben aus den Formularfeldern.
+   *
+   * Länge und Höhe gehören zum Fahrzeug, alles Übrige zur Garage. Die beiden
+   * Fahrzeugfelder sind nur für die freie Eingabe entsperrt; bei einem
+   * Katalogfahrzeug läuft der Aufruf ins Leere, statt still eine zweite
+   * Wahrheit anzulegen.
+   */
+  const handleConfig = (key: keyof GarageConfig, wert: number) => {
+    if (key === 'CAR_LENGTH' || key === 'CAR_HEIGHT') {
+      if (!istEditierbar(fahrzeugId)) return;
+      handleIndividuellMass(key === 'CAR_LENGTH' ? 'laenge' : 'hoehe', wert);
+      return;
+    }
+    setBasisConfig((vorher) => ({ ...vorher, [key]: wert }));
+  };
 
-  // Katalogfahrzeuge sind fest hinterlegt: Auswahl setzt die Maße, die Felder
-  // werden gesperrt. Nur 'Individuell' bleibt frei editierbar.
+  /** Ein einzelnes Maß der freien Eingabe setzen. */
+  const handleIndividuellMass = (feld: Massfeld, wert: number) =>
+    setIndividuell((vorher) => ({
+      ...vorher,
+      // Die Höhe der freien Eingabe ist die geprüfte Höhe. Ein zusätzliches
+      // Relingmaß würde sie stillschweigend überstimmen.
+      ...(feld === 'hoehe' ? { hoeheMitDachreling: undefined } : {}),
+      [feld]: { wert, ...EINGEGEBEN },
+    }));
+
+  // Katalogfahrzeuge sind fest hinterlegt und gesperrt. Nur 'Individuell'
+  // bleibt frei editierbar.
   const handleFahrzeug = (id: string) => {
     setFahrzeugId(id);
     const f = fahrzeugNachId(id);
     if (!f) return;
-    setConfig((vorher) => ({
-      ...vorher,
-      CAR_LENGTH: f.laenge.wert,
-      CAR_HEIGHT: pruefhoehe(f).wert,
-    }));
     setSeitenprofil(f.seitenprofil);
   };
 
@@ -189,7 +242,8 @@ export default function App() {
                 einfahrtBreite={einfahrtBreite}
                 onConfig={handleConfig}
                 onZuruecksetzen={() => {
-                  setConfig(DEFAULT_CONFIG);
+                  setBasisConfig(DEFAULT_CONFIG);
+                  setIndividuell(INDIVIDUELL);
                   handleFahrzeug(REFERENZ_FAHRZEUG.id);
                   setAbstandRueckwand(0);
                   setWinkel(0);
@@ -280,7 +334,10 @@ export default function App() {
                   <div className={`kachel-wert ${kollision ? 'schlecht' : 'gut'}`}>
                     {kollision ? 'Ja' : 'Nein'}
                   </div>
-                  <div className="kachel-fussnote">geprüft wird nur die Torunterkante</div>
+                  <div className="kachel-fussnote">
+                    geprüft wird nur die Torunterkante
+                    {zeigeFahrzeug ? '' : ' · Fahrzeug nur ausgeblendet'}
+                  </div>
                 </div>
                 <div className="kachel">
                   <div className="kachel-label">Passt in die Garage</div>
@@ -321,6 +378,7 @@ export default function App() {
                 onAbstand={setAbstandRueckwand}
                 onNurPassende={setNurPassende}
                 onNurNeue={setNurNeue}
+                onIndividuellMass={handleIndividuellMass}
               />
             </div>
           </div>

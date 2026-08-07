@@ -118,6 +118,19 @@ describe('Katalogeinträge', () => {
     }
   });
 
+  it('behauptet nirgends in der Bemerkung, hoehe sei die Höhe mit Reling', () => {
+    // Der Test unten greift nur, wo hoeheMitDachreling gesetzt ist — genau die
+    // Einträge, bei denen die Invariante ohnehin gilt. Die Lücke war real: Der
+    // Dacia Jogger trug den Relingwert im Feld hoehe und sagte das in der
+    // Bemerkung sogar dazu. Wer das wieder tut, muss das Relingmaß setzen.
+    for (const f of AUSWAHL) {
+      if (f.hoeheMitDachreling) continue;
+      expect(f.hoehe.bemerkung ?? '', `${f.id}: Relingwert im Feld hoehe`).not.toMatch(
+        /mit Dachreling/i,
+      );
+    }
+  });
+
   it('führt die Dachreling nie im Feld für die Höhe ohne Reling', () => {
     // Die häufigste Verwechslung der Recherche vom 06.08.2026: ein Wert mit
     // Dachreling im Feld `hoehe`. Das Relingmaß muss größer sein, sonst ist

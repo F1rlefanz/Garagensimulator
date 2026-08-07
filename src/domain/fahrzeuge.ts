@@ -2753,12 +2753,21 @@ export const FAHRZEUGE: readonly Fahrzeug[] = [
       bemerkung: 'Bestandswert, in der Recherche vom 06.08.2026 nicht gegengeprüft; keine URL.',
     },
     hoehe: {
+      wert: 1.631,
+      quellenstufe: 'A',
+      quelle:
+        'https://www.sueverkruep.de/dacia/wp-content/uploads/sites/4/2023/01/230101-Dacia-Jogger.pdf',
+      abgerufenAm: '2026-08-06',
+      bemerkung:
+        'Höhe ohne Dachreling. Sie beschreibt kein bestellbares Fahrzeug — die Reling ist in allen vier Ausstattungslinien serienmäßig. Geprüft wird deshalb hoeheMitDachreling; dieser Wert steht nur hier, damit das Feld seiner Bedeutung entspricht (OFFEN-38).',
+    },
+    hoeheMitDachreling: {
       wert: 1.674,
       quellenstufe: 'A',
       quelle: 'https://www.dacia.de/modelle/jogger/technische-daten.html',
       abgerufenAm: '2026-08-06',
       bemerkung:
-        'Abweichend von der Konvention die Höhe MIT Dachreling: die Reling ist in allen vier Ausstattungslinien serienmäßig, ein relingfreies Fahrzeug war nicht bestellbar. Warnung: dieselbe Zahl führt dacia.de auch als „Höhe mit geöffneter Laderaumklappe" — physikalisch unmöglich, deshalb bleibt hoeheHeckOffen leer (OFFEN-38).',
+        'Die real bestellbare Höhe: Dachreling in allen Ausstattungslinien serienmäßig. Warnung: dieselbe Zahl führt dacia.de auch als „Höhe mit geöffneter Laderaumklappe" — für eine geöffnete Klappe physikalisch unmöglich, deshalb bleibt hoeheHeckOffen leer (OFFEN-38).',
     },
     breiteOhneSpiegel: {
       wert: 1.784,

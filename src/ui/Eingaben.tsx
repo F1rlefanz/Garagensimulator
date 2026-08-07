@@ -7,7 +7,9 @@ import {
   istEditierbar,
   KATEGORIE_LABEL,
   MARKTSTATUS_LABEL,
+  Massfeld,
   MASSFELD_LABEL,
+  MASSFELDER,
   pruefhoehe,
   schwaechsteQuellenstufe,
   Seitenprofil,
@@ -26,6 +28,21 @@ import { MESSWERTE, MesswertSchluessel } from '../domain/garage';
  * auf zwei Komponenten verteilt: links alles, was am Bauwerk hängt, rechts
  * alles, was am Fahrzeug hängt. Beide teilen sich die Hilfskomponenten unten.
  */
+
+/**
+ * Maße, die unter Länge und Höhe aufgelistet werden. Die Reihenfolge ist die
+ * des Domänenmodells, damit Liste und Datei dieselbe Ordnung haben.
+ */
+const LISTENMASSE: readonly Massfeld[] = MASSFELDER.filter(
+  (feld) => feld !== 'laenge' && feld !== 'hoehe' && feld !== 'hoeheMitDachreling',
+);
+
+/** Was sich bei der freien Eingabe von Hand setzen lässt. */
+const EDITIERBARE_MASSE: readonly Massfeld[] = [
+  'breiteOhneSpiegel',
+  'breiteMitSpiegeln',
+  'hoeheHeckOffen',
+];
 
 /** Zahl im deutschen Format. */
 function kommaZahl(v: number, stellen: number): string {
@@ -116,22 +133,41 @@ function Katalogzeile({
   label,
   mass,
   wert,
+  feldId,
+  onChange,
 }: {
   label: string;
   mass?: Fahrzeugmass;
   wert?: number;
+  feldId?: string;
+  /** Gesetzt nur bei der freien Eingabe — dann wird die Zeile zum Eingabefeld. */
+  onChange?: (wert: number) => void;
 }) {
   const anzeige = mass?.wert ?? wert;
 
   return (
     <div className="feld">
-      <label>
+      <label htmlFor={onChange ? feldId : undefined}>
         {label}
         {mass && <Belegmarke mass={mass} />}
       </label>
-      <div className="abgeleitet-wert">
-        {anzeige === undefined ? 'nicht belegt' : `${kommaZahl(anzeige, 3)} m`}
-      </div>
+      {onChange ? (
+        <input
+          id={feldId}
+          type="number"
+          step={0.001}
+          value={anzeige ?? ''}
+          placeholder="nicht belegt"
+          onChange={(e) => {
+            const zahl = parseFloat(e.target.value);
+            if (!Number.isNaN(zahl)) onChange(zahl);
+          }}
+        />
+      ) : (
+        <div className="abgeleitet-wert">
+          {anzeige === undefined ? 'nicht belegt' : `${kommaZahl(anzeige, 3)} m`}
+        </div>
+      )}
     </div>
   );
 }
@@ -248,6 +284,8 @@ interface EingabenFahrzeugProps {
   onAbstand: (wert: number) => void;
   onNurPassende: (an: boolean) => void;
   onNurNeue: (an: boolean) => void;
+  /** Setzt ein einzelnes Maß der freien Eingabe. */
+  onIndividuellMass: (feld: Massfeld, wert: number) => void;
 }
 
 /** Rechte Spalte: Modellauswahl, Fahrzeugmaße, Seitenprofil. */
@@ -267,13 +305,18 @@ export function EingabenFahrzeug({
   onAbstand,
   onNurPassende,
   onNurNeue,
+  onIndividuellMass,
 }: EingabenFahrzeugProps) {
   const editierbar = istEditierbar(fahrzeugId);
   // Die Höhe, gegen die tatsächlich geprüft wird — mit Dachreling, wo belegt.
   const hoeheFuerPruefung = pruefhoehe(fahrzeug);
   // Länge und Höhe stehen oben als eigene Felder, alles Übrige wird gelistet.
-  const uebrigeMasse = belegteMasse(fahrzeug).filter(
-    ([feld]) => feld !== 'laenge' && feld !== 'hoehe' && feld !== 'hoeheMitDachreling',
+  // Bei der freien Eingabe werden auch unbelegte Zeilen gezeigt, damit sich das
+  // Maß eintragen lässt; beim Katalogfahrzeug nur, was belegt ist — plus die
+  // Heckklappenhöhe, deren Fehlen eine Aussage ist.
+  const belegt = new Set(belegteMasse(fahrzeug).map(([feld]) => feld));
+  const sichtbareMasse = LISTENMASSE.filter(
+    (feld) => belegt.has(feld) || editierbar || feld === 'hoeheHeckOffen',
   );
 
   // Nach Kategorie gruppieren, damit die Liste lesbar bleibt.
@@ -328,7 +371,7 @@ export function EingabenFahrzeug({
               checked={nurPassende}
               onChange={(e) => onNurPassende(e.target.checked)}
             />
-            Nur Fahrzeuge, die hineinpassen
+            Ausblenden, was nachweislich nicht passt
           </label>
           <label>
             <input type="checkbox" checked={nurNeue} onChange={(e) => onNurNeue(e.target.checked)} />
@@ -336,6 +379,7 @@ export function EingabenFahrzeug({
           </label>
         </div>
         <p className="block-hinweis quellenzeile">
+          Einträge ohne belegte Breite bleiben sichtbar — was fehlt, soll fehlen dürfen.{' '}
           {auswahl.length} von {AUSWAHL.length} Einträgen sichtbar
           {ausgeblendet > 0 ? `, ${ausgeblendet} ausgeblendet` : ''}. Der Marktstatus hängt an
           Abgasnorm und Assistenzpflicht, nicht am Alter — siehe{' '}
@@ -387,12 +431,19 @@ export function EingabenFahrzeug({
 
         {/* Alle übrigen belegten Maße. Was fehlt, fehlt sichtbar — die Zeile
             steht trotzdem da, damit die Lücke nicht unter den Tisch fällt. */}
-        {uebrigeMasse.map(([feld, mass]) => (
-          <Katalogzeile key={feld} label={MASSFELD_LABEL[feld]} mass={mass} />
+        {sichtbareMasse.map((feld) => (
+          <Katalogzeile
+            key={feld}
+            label={MASSFELD_LABEL[feld]}
+            mass={fahrzeug[feld]}
+            feldId={`feld-${feld}`}
+            onChange={
+              editierbar && EDITIERBARE_MASSE.includes(feld)
+                ? (wert) => onIndividuellMass(feld, wert)
+                : undefined
+            }
+          />
         ))}
-        {fahrzeug.hoeheHeckOffen === undefined && (
-          <Katalogzeile label={MASSFELD_LABEL.hoeheHeckOffen} />
-        )}
 
         <div className="feld feld-breit">
           <label htmlFor="feld-abstand">
